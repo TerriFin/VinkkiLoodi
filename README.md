@@ -1,0 +1,2 @@
+# VinkkiLoodi
+Ohtu Miniprojekti
