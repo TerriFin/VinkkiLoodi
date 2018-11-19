@@ -9,12 +9,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
+import vinkkiloodi.domain.Kirjavinkki;
 
 /**
  *
  * @author sami
  */
-public class VinkkiSqliteDAO {
+public class VinkkiSqliteDAO implements VinkkiDAO {
     private String db;
     
     public VinkkiSqliteDAO(String db) {
@@ -42,11 +44,26 @@ public class VinkkiSqliteDAO {
             Connection conn = getConnection();
             
             // Create Kirjavinkki Table
-            PreparedStatement statement = conn.prepareStatement("CREATE Table Kirjavinkki (title string, author string, is_read int)");
+            PreparedStatement statement = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Kirjavinkki (id int, title string, author string, is_read int)");
             statement.execute();
             
         } catch (SQLException e) {
             System.out.println("Failed to create tables: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void add(Kirjavinkki kirja) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Kirjavinkki> getAll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Kirjavinkki getById(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
