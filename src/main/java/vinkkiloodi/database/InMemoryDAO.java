@@ -7,7 +7,7 @@ package vinkkiloodi.database;
 
 import java.util.ArrayList;
 import java.util.List;
-import vinkkiloodi.domain.Kirjavinkki;
+import vinkkiloodi.domain.Vinkki;
 
 /**
  *
@@ -15,25 +15,25 @@ import vinkkiloodi.domain.Kirjavinkki;
  */
 public class InMemoryDAO implements VinkkiDAO {
     
-    public ArrayList<Kirjavinkki> kirjaDB;
+    public ArrayList<Vinkki> kirjaDB;
     
     public InMemoryDAO() {
         this.kirjaDB = new ArrayList<>();
     }
     
     @Override
-    public void add(Kirjavinkki kirja) {
+    public void add(Vinkki kirja) {
         this.kirjaDB.add(kirja);
     }
 
     @Override
-    public List<Kirjavinkki> getAll() {
+    public List<Vinkki> getAll() {
         return this.kirjaDB;
     }
 
     @Override
-    public Kirjavinkki getById(int id) {
-        for (Kirjavinkki k : this.kirjaDB) {
+    public Vinkki getById(int id) {
+        for (Vinkki k : this.kirjaDB) {
             if (k.getId() == id) {
                 return k;
             }

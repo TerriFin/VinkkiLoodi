@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-import vinkkiloodi.domain.Kirjavinkki;
+import vinkkiloodi.domain.Vinkki;
 
 /**
  *
@@ -53,17 +53,17 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
     }
 
     @Override
-    public void add(Kirjavinkki kirja) {
+    public void add(Vinkki kirja) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Kirjavinkki> getAll() {
+    public List<Vinkki> getAll() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Kirjavinkki getById(int id) {
+    public Vinkki getById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

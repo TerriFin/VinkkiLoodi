@@ -6,14 +6,14 @@
 package vinkkiloodi.database;
 
 import java.util.List;
-import vinkkiloodi.domain.Kirjavinkki;
+import vinkkiloodi.domain.Vinkki;
 
 /**
  *
  * @author sami
  */
 public interface VinkkiDAO {
-    public void add(Kirjavinkki kirja);
-    public List<Kirjavinkki> getAll();
-    public Kirjavinkki getById(int id);
+    public void add(Vinkki kirja);
+    public List<Vinkki> getAll();
+    public Vinkki getById(int id);
 }
