@@ -11,11 +11,11 @@ package vinkkiloodi.io;
  */
 public interface IO {
 
-    String readLine();
+    String nextLine();
 
     void print(String text);
     
     void printLine(String text);
     
-    int readInt();
+    int nextInt();
 }

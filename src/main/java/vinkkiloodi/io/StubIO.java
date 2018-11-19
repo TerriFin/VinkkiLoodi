@@ -24,7 +24,7 @@ public class StubIO implements IO {
     }
 
     @Override
-    public String readLine() {
+    public String nextLine() {
         return input.get(i++);
     }
 
@@ -43,7 +43,7 @@ public class StubIO implements IO {
     }
 
     @Override
-    public int readInt() {
+    public int nextInt() {
         return Integer.parseInt(input.get(i++));
     }
 }

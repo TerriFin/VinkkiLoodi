@@ -16,7 +16,7 @@ public class KomentoriviIO implements IO{
     private Scanner scanner = new Scanner(System.in);
 
     @Override
-    public String readLine() {
+    public String nextLine() {
         return scanner.nextLine();
     }
 
@@ -31,7 +31,7 @@ public class KomentoriviIO implements IO{
     }
 
     @Override
-    public int readInt() {
+    public int nextInt() {
         return Integer.parseInt(scanner.nextLine());
     }
     

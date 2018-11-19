@@ -1,6 +1,7 @@
 
-import java.util.Scanner;
 import vinkkiloodi.database.InMemoryDAO;
+import vinkkiloodi.io.IO;
+import vinkkiloodi.io.KomentoriviIO;
 import vinkkiloodi.ui.KomentoriviUI;
 
 
@@ -11,9 +12,9 @@ import vinkkiloodi.ui.KomentoriviUI;
 public class Main {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        IO io = new KomentoriviIO();
         InMemoryDAO dao = new InMemoryDAO();
-        KomentoriviUI ui = new KomentoriviUI(scanner, dao);
+        KomentoriviUI ui = new KomentoriviUI(io, dao);
         ui.start();
     }
     
