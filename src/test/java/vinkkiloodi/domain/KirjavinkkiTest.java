@@ -46,8 +46,8 @@ public class KirjavinkkiTest {
     }
 
     @Test
-    public void PienemiKonstruktoriLuoUndefIsbn() {
-        assertEquals("undef", kirjaPieniKonstruktori.getIsbn());
+    public void PienemiKonstruktoriTyhjanIsbn() {
+        assertEquals("", kirjaPieniKonstruktori.getIsbn());
     }
 
     @Test
