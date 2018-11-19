@@ -32,7 +32,7 @@ public class KomentoriviUI {
                     + "\n1 - Lisää vinkki"
                     + "\n2 - Listaa vinkit"
                     + "\n3 - Merkitse vinkki luetuksi"
-                    + "\nX - Sammuta ohjelma");
+                    + "\nX - Sammuta ohjelma\n");
 
             String komento = io.nextLine();
 
@@ -80,16 +80,26 @@ public class KomentoriviUI {
 
     public void merkitseVinkkiLuetuksi() {
         io.printLine("\nMerkitse vinkki luetuksi\n--------------------\n");
-        io.printLine("Syötä lukuvinkin id: ");
-        int hakuId = io.nextInt();
-
-        // TODO haku tietokannasta daon avulla.
-        Vinkki haettu = dao.getById(hakuId);
+        io.printLine("Syötä lukuvinkin otsikko: ");
+        String haku = io.nextLine();
+        haku = haku.toLowerCase().trim();
+        
+        // Alkeellinen hakutoiminnallisuus.
+        Vinkki haettu = null;
+        List<Vinkki> vinkit = dao.getAll();
+        for (Vinkki v : vinkit) {
+            if (v.getOtsikko().toLowerCase().trim().equals(haku)) {
+                haettu = v;
+                break;
+            }
+        }
 
         if (haettu != null) {
-            io.printLine("Vinkki " + hakuId + " merkittiin luetuksi.");
+            haettu.setLuettu(1);
+            dao.update(haettu.getId(), haettu);
+            io.printLine("Vinkki " + haku + " merkittiin luetuksi.");
         } else {
-            io.printLine("Vinkki " + hakuId + " ei löytynyt järjestelmästä.");
+            io.printLine("Vinkki " + haku + " ei löytynyt järjestelmästä.");
         }
     }
 }
