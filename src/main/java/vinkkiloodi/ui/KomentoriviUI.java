@@ -4,7 +4,7 @@ package vinkkiloodi.ui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import vinkkiloodi.database.VinkkiSqliteDAO;
+import vinkkiloodi.database.VinkkiDAO;
 import vinkkiloodi.domain.Vinkki;
 
 /**
@@ -14,12 +14,11 @@ import vinkkiloodi.domain.Vinkki;
 
 public class KomentoriviUI {
     Scanner scanner;
-    VinkkiSqliteDAO dao;
+    VinkkiDAO dao;
 
-    public KomentoriviUI(Scanner scanner, VinkkiSqliteDAO dao) {
+    public KomentoriviUI(Scanner scanner, VinkkiDAO dao) {
         this.scanner = scanner;
         this.dao = dao;
-        dao.getConnection();
     }
     
     public void start() {
