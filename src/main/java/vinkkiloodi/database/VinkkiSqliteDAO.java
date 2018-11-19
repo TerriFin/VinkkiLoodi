@@ -8,8 +8,11 @@ package vinkkiloodi.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import vinkkiloodi.domain.Kirjavinkki;
 import vinkkiloodi.domain.Vinkki;
 
 /**
@@ -25,16 +28,16 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         createTables();
     }
     
-    public Connection getConnection() {
+    private Connection getConnection() throws SQLException {
         Connection conn = null;
         
         // Try to get a connection, return null on fail
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:" + db);
-            
-        } catch (SQLException e) {
-            System.out.println("Couldn't establish connection: " + e.getMessage());
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println("JDBC driver not found!");
         }
+        conn = DriverManager.getConnection("jdbc:sqlite:" + db);
         
         return conn;
     }
@@ -44,7 +47,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             Connection conn = getConnection();
             
             // Create Kirjavinkki Table
-            PreparedStatement statement = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Kirjavinkki (id int, title string, author string, is_read int)");
+            PreparedStatement statement = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Kirjavinkki (id INTEGER PRIMARY KEY, title string, author string, is_read int)");
             statement.execute();
             
         } catch (SQLException e) {
@@ -54,12 +57,42 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
     @Override
     public void add(Vinkki kirja) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            Connection conn = getConnection();
+            
+            PreparedStatement insertion = conn.prepareStatement("INSERT INTO Kirjavinkki (title, author, is_read) VALUES (?, ?, ?)");
+            insertion.setString(1, kirja.getKirjoittaja());
+            insertion.setString(2, kirja.getOtsikko());
+            insertion.setInt(3, kirja.getLuettu());
+            
+            insertion.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Failed to insert into database: " + e.getMessage());
+        }
     }
 
     @Override
     public List<Vinkki> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            Connection conn = getConnection();
+            
+            PreparedStatement selection = conn.prepareStatement("SELECT * FROM Kirjavinkki");
+            ResultSet tulokset = selection.executeQuery();
+            
+            ArrayList<Vinkki> vinkit = new ArrayList<>();
+            
+            while (tulokset.next()) {
+                Kirjavinkki uusi = new Kirjavinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getInt("is_read"), "");
+                uusi.setId(tulokset.getInt("id"));
+                vinkit.add(uusi);
+            }
+            
+            return vinkit;
+        } catch (SQLException e) {
+            System.out.println("Failed to select from database: " + e.getMessage());
+        }
+        
+        return null;
     }
 
     @Override

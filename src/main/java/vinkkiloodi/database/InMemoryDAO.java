@@ -15,27 +15,28 @@ import vinkkiloodi.domain.Vinkki;
  */
 public class InMemoryDAO implements VinkkiDAO {
     
-    public ArrayList<Vinkki> kirjaDB;
+    public ArrayList<Vinkki> vinkkiDB;
     
     public InMemoryDAO() {
-        this.kirjaDB = new ArrayList<>();
+        this.vinkkiDB = new ArrayList<>();
     }
     
     @Override
     public void add(Vinkki kirja) {
-        this.kirjaDB.add(kirja);
+        this.vinkkiDB.add(kirja);
+        kirja.setId(vinkkiDB.indexOf(kirja));
     }
 
     @Override
     public List<Vinkki> getAll() {
-        return this.kirjaDB;
+        return this.vinkkiDB;
     }
 
     @Override
     public Vinkki getById(int id) {
-        for (Vinkki k : this.kirjaDB) {
-            if (k.getId() == id) {
-                return k;
+        for (Vinkki v : vinkkiDB) {
+            if (v.getId() == id) {
+                return v;
             }
         }
         
