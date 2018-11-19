@@ -1,8 +1,6 @@
 
 import vinkkiloodi.domain.Kirjavinkki;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -48,8 +46,8 @@ public class KirjavinkkiTest {
     }
 
     @Test
-    public void PienemiKonstruktoriLuoUndefIsbn() {
-        assertEquals("undef", kirjaPieniKonstruktori.getIsbn());
+    public void PienemiKonstruktoriTyhjanIsbn() {
+        assertEquals("", kirjaPieniKonstruktori.getIsbn());
     }
 
     @Test

@@ -19,7 +19,7 @@ public class Kirjavinkki extends Vinkki {
     
     public Kirjavinkki(String kirjoittaja, String otsikko) {
         super(kirjoittaja, otsikko, 0);
-        this.isbn = "undef";
+        this.isbn = "";
     }
 
     public String getIsbn() {
@@ -32,6 +32,6 @@ public class Kirjavinkki extends Vinkki {
 
     @Override
     public String toString() {
-        return super.toString();
+        return super.toString() + " ISBN: " + getIsbn();
     }
 }

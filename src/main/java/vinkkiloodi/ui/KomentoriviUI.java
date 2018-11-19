@@ -57,8 +57,17 @@ public class KomentoriviUI {
         String nimi = io.nextLine();
         io.printLine("Otsikko: ");
         String otsikko = io.nextLine();
+        io.printLine("ISBN: ");
+        String isbn = io.nextLine();
+        
+        if (isbn.trim().length() < 1) {
+            dao.add(new Kirjavinkki(nimi, otsikko));
+        }
+        else {
+            dao.add(new Kirjavinkki(nimi, otsikko, 0, isbn));
+        }
 
-        dao.add(new Kirjavinkki(nimi, otsikko));
+        
     }
 
     public void listaaKaikki() {
