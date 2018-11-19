@@ -66,7 +66,7 @@ public class KirjavinkkiTest {
         assertEquals(isbn, kirjaSuuriKonstruktori.getIsbn());
     }
     
-     @Test
+    @Test
     public void SuuriKonstruktoriLuoLuetun() {
         assertEquals(luettu, kirjaSuuriKonstruktori.getLuettu());
     }
