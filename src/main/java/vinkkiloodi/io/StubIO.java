@@ -32,6 +32,11 @@ public class StubIO implements IO {
     public void print(String text) {
         output.add(text);
     }
+    
+    @Override
+    public void printLine(String text) {
+        output.add(text);
+    }
 
     public List<String> getOutput() {
         return output;

@@ -14,4 +14,6 @@ public interface IO {
     String readLine();
 
     void print(String text);
+    
+    void printLine(String text);
 }
