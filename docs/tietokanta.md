@@ -6,7 +6,7 @@
 
 ```SQL
 CREATE TABLE Kirjavinkki (
-    id int,
+    id INTEGER PRIMARY KEY,
     title string,
     author string,
     is_read int
