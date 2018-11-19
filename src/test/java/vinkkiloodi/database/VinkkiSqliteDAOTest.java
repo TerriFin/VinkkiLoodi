@@ -1,6 +1,9 @@
 package vinkkiloodi.database;
 
 import java.io.File;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -13,7 +16,11 @@ public class VinkkiSqliteDAOTest {
     
     @Before
     public void setUp() {
-        dao = new VinkkiSqliteDAO("test.db");
+        try {
+            dao = new VinkkiSqliteDAO("test.db");
+        } catch (SQLException ex) {
+            Logger.getLogger(VinkkiSqliteDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @After

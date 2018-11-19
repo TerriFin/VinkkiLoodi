@@ -10,8 +10,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vinkkiloodi.domain.Kirjavinkki;
 import vinkkiloodi.domain.Vinkki;
 
@@ -22,7 +25,7 @@ import vinkkiloodi.domain.Vinkki;
 public class VinkkiSqliteDAO implements VinkkiDAO {
     private String db;
     
-    public VinkkiSqliteDAO(String db) {
+    public VinkkiSqliteDAO(String db) throws SQLException {
         this.db = db;
         
         createTables();
@@ -42,17 +45,12 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         return conn;
     }
     
-    public void createTables() {
-        try {
-            Connection conn = getConnection();
-            
-            // Create Kirjavinkki Table
-            PreparedStatement statement = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Kirjavinkki (id INTEGER PRIMARY KEY, title string, author string, is_read int)");
-            statement.execute();
-            
-        } catch (SQLException e) {
-            System.out.println("Failed to create tables: " + e.getMessage());
-        }
+    public void createTables() throws SQLException {
+        Connection conn = getConnection();
+        
+        // Create Kirjavinkki Table
+        PreparedStatement statement = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Kirjavinkki (id INTEGER PRIMARY KEY, title string, author string, is_read int)");
+        statement.execute();
     }
 
     @Override
@@ -60,12 +58,20 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         try {
             Connection conn = getConnection();
             
-            PreparedStatement insertion = conn.prepareStatement("INSERT INTO Kirjavinkki (title, author, is_read) VALUES (?, ?, ?)");
+            PreparedStatement insertion = conn.prepareStatement("INSERT INTO Kirjavinkki (title, author, is_read) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             insertion.setString(1, kirja.getKirjoittaja());
             insertion.setString(2, kirja.getOtsikko());
             insertion.setInt(3, kirja.getLuettu());
             
             insertion.executeUpdate();
+            
+            ResultSet id = insertion.getGeneratedKeys();
+            
+            id.next();
+            
+            kirja.setId(id.getInt(1));
+            
+            id.close();
         } catch (SQLException e) {
             System.out.println("Failed to insert into database: " + e.getMessage());
         }
@@ -87,6 +93,8 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                 vinkit.add(uusi);
             }
             
+            tulokset.close();
+            
             return vinkit;
         } catch (SQLException e) {
             System.out.println("Failed to select from database: " + e.getMessage());
@@ -97,6 +105,25 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
     @Override
     public Vinkki getById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection conn;
+        try {
+            conn = getConnection();
+            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Kirjavinkki WHERE id = ?");
+            
+            haku.setInt(1, id);
+            ResultSet tulokset = haku.executeQuery();
+            
+            while(tulokset.next()) {
+                Kirjavinkki vinkki = new Kirjavinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getInt("is_read"), "");
+                vinkki.setId(tulokset.getInt("id"));
+                
+                tulokset.close();
+                return vinkki;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
     }
 }
