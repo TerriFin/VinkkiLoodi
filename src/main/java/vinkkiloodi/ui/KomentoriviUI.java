@@ -74,20 +74,17 @@ public class KomentoriviUI {
     
     public void merkitseVinkkiLuetuksi() {
         System.out.println("Merkitse vinkki luetuksi\n--------------------\n");
-        System.out.print("Syötä lukuvinkin otsikko: ");
-        String hakuOtsikko = scanner.nextLine();
+        System.out.print("Syötä lukuvinkin id: ");
+        int hakuId = Integer.parseInt(scanner.nextLine());
         
         // TODO haku tietokannasta daon avulla.
-        boolean onkoOlemassa = true;
+        Vinkki haettu = dao.getById(hakuId);
         
-        if (onkoOlemassa) {
-            System.out.println("Vinkki " + hakuOtsikko + " merkittiin luetuksi.");
+        if (haettu != null) {
+            System.out.println("Vinkki " + hakuId + " merkittiin luetuksi.");
         } else {
-            System.out.println("Vinkki " + hakuOtsikko + " ei löytynyt järjestelmästä.");
+            System.out.println("Vinkki " + hakuId + " ei löytynyt järjestelmästä.");
         }
         paavalikko();
     }
-    
-    
-
 }

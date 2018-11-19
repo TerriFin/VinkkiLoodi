@@ -1,6 +1,6 @@
 
 import java.util.Scanner;
-import vinkkiloodi.database.VinkkiSqliteDAO;
+import vinkkiloodi.database.InMemoryDAO;
 import vinkkiloodi.ui.KomentoriviUI;
 
 
@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        VinkkiSqliteDAO dao = new VinkkiSqliteDAO("db/testitietokanta.db");
+        InMemoryDAO dao = new InMemoryDAO();
         KomentoriviUI ui = new KomentoriviUI(scanner, dao);
         ui.start();
     }
