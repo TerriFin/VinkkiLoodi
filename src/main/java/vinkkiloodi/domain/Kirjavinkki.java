@@ -19,6 +19,7 @@ public class Kirjavinkki {
     private String otsikko;
     private String isbn;
     private int luettu;
+    List<String> tagit;
     List<String> esitietokurssit;
     List<String> relatedCourses;
 
@@ -28,6 +29,7 @@ public class Kirjavinkki {
         this.otsikko = otsikko;
         this.isbn = isbn;
         this.luettu = luettu;
+        this.tagit = new ArrayList<>();
         this.esitietokurssit = new ArrayList<>();
         this.relatedCourses = new ArrayList<>();
     }
@@ -62,5 +64,9 @@ public class Kirjavinkki {
 
     public void addRealtedCourse(String nimi) {
         this.relatedCourses.add(nimi);
+    }
+    
+    public void addTag(String tag) {
+        this.relatedCourses.add(tag);
     }
 }
