@@ -94,9 +94,9 @@ public abstract class Vinkki {
     public String toString() {
         String luettuTeksti = "";
         if (luettu == 0) {
-            luettuTeksti = "on luettu";
-        } else {
             luettuTeksti = "ei ole luettu";
+        } else {
+            luettuTeksti = "on luettu";
         }
         return "\"" + otsikko + "\", " + kirjoittaja + ", " + luettuTeksti + ", tagit: " + tagit;
     }
