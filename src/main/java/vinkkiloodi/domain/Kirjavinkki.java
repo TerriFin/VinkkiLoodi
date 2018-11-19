@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Niko
  */
-public class Kirjavinkki {
+public class KirjaVinkki implements Vinkki {
 
     private int id;
     private String kirjoittaja;
@@ -23,7 +23,7 @@ public class Kirjavinkki {
     List<String> esitietokurssit;
     List<String> relatedCourses;
 
-    public Kirjavinkki(int id, String kirjoittaja, String otsikko, String isbn, int luettu) {
+    public KirjaVinkki(int id, String kirjoittaja, String otsikko, String isbn, int luettu) {
         this.id = id;
         this.kirjoittaja = kirjoittaja;
         this.otsikko = otsikko;
@@ -34,14 +34,17 @@ public class Kirjavinkki {
         this.relatedCourses = new ArrayList<>();
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public String getKirjoittaja() {
         return kirjoittaja;
     }
 
+    @Override
     public String getOtsikko() {
         return otsikko;
     }
@@ -66,6 +69,7 @@ public class Kirjavinkki {
         this.relatedCourses.add(nimi);
     }
     
+    @Override
     public void addTag(String tag) {
         this.relatedCourses.add(tag);
     }

@@ -1,15 +1,20 @@
 
+import java.util.Scanner;
+import vinkkiloodi.database.VinkkiSqliteDAO;
+import vinkkiloodi.ui.KomentoriviUI;
+
+
 /**
  *
  * @author samisaukkonen
  */
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Scanner scanner = new Scanner(System.in);
+        VinkkiSqliteDAO dao = new VinkkiSqliteDAO("db/testitietokanta.db");
+        KomentoriviUI ui = new KomentoriviUI(scanner, dao);
+        ui.start();
     }
     
 }
