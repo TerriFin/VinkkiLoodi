@@ -15,7 +15,7 @@ public class InMemoryDAOTest {
     }
     
     @Test 
-    public void lisäysLisääElementinTietokantaan() {
+    public void lisaysLisaaElementinTietokantaan() {
         int alkuKoko = dao.getAll().size();
         
         Kirjavinkki vinkki = new Kirjavinkki("Testi", "Testi");
@@ -26,26 +26,26 @@ public class InMemoryDAOTest {
     }
     
     @Test 
-    public void elementtiLöytyyListaltaLisäyksenJälkeen() {
+    public void elementtiLoytyyListaltaLisayksenJalkeen() {
         int alkuKoko = dao.getAll().size();
         
         Kirjavinkki vinkki = new Kirjavinkki("Testi2", "Testi2");
         
         dao.add(vinkki);
         
-        boolean löytyi = false;
+        boolean loytyi = false;
         
         for (Vinkki v : dao.getAll()) {
             if (v.getOtsikko().equals(vinkki.getOtsikko())) {
-                löytyi = true;
+                loytyi = true;
             }
         }
         
-        assert(löytyi);
+        assert(loytyi);
     }
     
     @Test 
-    public void idHakuLöytääOikeanElementin() {
+    public void idHakuLoytaaOikeanElementin() {
         int alkuKoko = dao.getAll().size();
         
         Kirjavinkki vinkki = new Kirjavinkki("Testi3", "Testi3");
@@ -73,7 +73,7 @@ public class InMemoryDAOTest {
     }
     
     @Test 
-    public void päivitysMuuttaaKirjoittajaa() {
+    public void paivitysMuuttaaKirjoittajaa() {
         Kirjavinkki vinkki = new Kirjavinkki("Alkuperäinen", "Alkuperäinen");
         
         dao.add(vinkki);
@@ -103,7 +103,7 @@ public class InMemoryDAOTest {
     }
     
     @Test 
-    public void päivitysMuuttaaLuettua() {
+    public void paivitysMuuttaaLuettua() {
         Kirjavinkki vinkki = new Kirjavinkki("Alkuperäinen", "Alkuperäinen");
         
         dao.add(vinkki);
