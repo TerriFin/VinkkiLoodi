@@ -11,9 +11,13 @@ import java.util.Scanner;
  *
  * @author Niko
  */
-public class KomentoriviIO implements IO{
-    
-    private Scanner scanner = new Scanner(System.in);
+public class KomentoriviIO implements IO {
+
+    private Scanner scanner;
+
+    public KomentoriviIO(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
     @Override
     public String nextLine() {
@@ -34,5 +38,5 @@ public class KomentoriviIO implements IO{
     public int nextInt() {
         return Integer.parseInt(scanner.nextLine());
     }
-    
+
 }
