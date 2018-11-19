@@ -53,28 +53,26 @@ public class KomentoriviUI {
     }
 
     public void lisaaVinkki() {
-        System.out.println("Lisää vinkki\n-----------\n");
-        System.out.print("Nimi: ");
+        System.out.println("\nLisää vinkki\n-----------\n");
+        System.out.println("Kirjoittajan nimi: ");
         String nimi = input.nextLine();
-        System.out.print("Otsikko: ");
+        System.out.println("Otsikko: ");
         String otsikko = input.nextLine();
 
         dao.add(new Kirjavinkki(nimi, otsikko));
     }
 
     public void listaaKaikki() {
-        System.out.println("Kaikki vinkit\n------------\n");
-        List<Vinkki> vinkit = new ArrayList<>();
-
-        //TODO daosta saatu lista vinkit = dao.esimesim();
+        System.out.println("\nKaikki vinkit\n------------\n");
+        List<Vinkki> vinkit = dao.getAll();
         for (int i = 0; i < vinkit.size(); i++) {
             System.out.println(vinkit.get(i));
         }
     }
 
     public void merkitseVinkkiLuetuksi() {
-        System.out.println("Merkitse vinkki luetuksi\n--------------------\n");
-        System.out.print("Syötä lukuvinkin id: ");
+        System.out.println("\nMerkitse vinkki luetuksi\n--------------------\n");
+        System.out.println("Syötä lukuvinkin id: ");
         int hakuId = Integer.parseInt(input.nextLine());
 
         // TODO haku tietokannasta daon avulla.
