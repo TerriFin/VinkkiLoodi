@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import vinkkiloodi.database.VinkkiDAO;
+import vinkkiloodi.domain.Kirjavinkki;
 import vinkkiloodi.domain.Vinkki;
 
 /**
@@ -54,8 +55,8 @@ public class KomentoriviUI {
         String nimi = scanner.nextLine();
         System.out.print("Otsikko: ");
         String otsikko = scanner.nextLine();
-        
-        // TODO: vinkin lisäys tietokantaan.
+
+        dao.add(new Kirjavinkki(nimi, otsikko));
         paavalikko();
     }
     
