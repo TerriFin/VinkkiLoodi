@@ -89,4 +89,49 @@ public class VinkkiSqliteDAOTest {
         
         assertEquals(tulos, null);
     }
+    
+    @Test 
+    public void päivitysMuuttaaKirjoittajaa() {
+        Kirjavinkki vinkki = new Kirjavinkki("Alkuperäinen", "Alkuperäinen");
+        
+        dao.add(vinkki);
+        
+        Kirjavinkki uusiVinkki = new Kirjavinkki("Uusi Kirjoittaja", "Alkuperäinen");
+        
+        dao.update(vinkki.getId(), uusiVinkki);
+        
+        Vinkki tulos = dao.getById(vinkki.getId());
+        
+        assertEquals(tulos.getKirjoittaja(), "Uusi Kirjoittaja");
+    }
+    
+    @Test 
+    public void päivitysMuuttaaOtsikkoa() {
+        Kirjavinkki vinkki = new Kirjavinkki("Alkuperäinen", "Alkuperäinen");
+        
+        dao.add(vinkki);
+        
+        Kirjavinkki uusiVinkki = new Kirjavinkki("Alkuperäinen", "Uusi Otsikko");
+        
+        dao.update(vinkki.getId(), uusiVinkki);
+        
+        Vinkki tulos = dao.getById(vinkki.getId());
+        
+        assertEquals(tulos.getOtsikko(), "Uusi Otsikko");
+    }
+    
+    @Test 
+    public void päivitysMuuttaaLuettua() {
+        Kirjavinkki vinkki = new Kirjavinkki("Alkuperäinen", "Alkuperäinen");
+        
+        dao.add(vinkki);
+        
+        Kirjavinkki uusiVinkki = new Kirjavinkki("Alkuperäinen", "Alkuperäinen", 1, "");
+        
+        dao.update(vinkki.getId(), uusiVinkki);
+        
+        Vinkki tulos = dao.getById(vinkki.getId());
+        
+        assertEquals(tulos.getLuettu(), 1);
+    }
 }

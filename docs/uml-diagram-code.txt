@@ -1,0 +1,1 @@
+%2F%2F Lukuvinkkitietokanta, [Main]-[KomentoriviUI], [KomentoriviUI]-[IO], [IO]-.-^[IOStub], [IO]-.-^[KomentoriviIO], [KomentoriviUI]-[VinkkiDAO], [VinkkiDAO]-.-^[InMemoryDAO], [VinkkiDAO]-.-^[VinkkiSqliteDAO], [VinkkiDAO]-[Vinkki], [Vinkki]-.-^[Kirjavinkki]

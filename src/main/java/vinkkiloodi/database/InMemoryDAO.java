@@ -42,5 +42,17 @@ public class InMemoryDAO implements VinkkiDAO {
         
         return null;
     }
+
+    @Override
+    public void update(int id, Vinkki vinkki) {
+        for (Vinkki v : vinkkiDB) {
+            if (v.getId() == id) {
+                v.setKirjoittaja(vinkki.getKirjoittaja());
+                v.setOtsikko(vinkki.getOtsikko());
+                v.setLuettu(vinkki.getLuettu());
+                break;
+            }
+        }
+    }
     
 }

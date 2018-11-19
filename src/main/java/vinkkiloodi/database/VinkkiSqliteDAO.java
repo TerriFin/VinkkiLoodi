@@ -126,4 +126,21 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         
         return null;
     }
+
+    @Override
+    public void update(int id, Vinkki vinkki) {
+        Connection conn;
+        try {
+            conn = getConnection();
+            PreparedStatement päivitys = conn.prepareStatement("UPDATE Kirjavinkki SET title = ?, author = ?, is_read = ? WHERE id = ?");
+            päivitys.setString(1, vinkki.getOtsikko());
+            päivitys.setString(2, vinkki.getKirjoittaja());
+            päivitys.setInt(3, vinkki.getLuettu());
+            päivitys.setInt(4, id);
+            
+            päivitys.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
