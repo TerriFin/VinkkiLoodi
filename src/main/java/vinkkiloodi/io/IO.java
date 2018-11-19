@@ -16,4 +16,6 @@ public interface IO {
     void print(String text);
     
     void printLine(String text);
+    
+    int readInt();
 }

@@ -41,4 +41,9 @@ public class StubIO implements IO {
     public List<String> getOutput() {
         return output;
     }
+
+    @Override
+    public int readInt() {
+        return Integer.parseInt(input.get(i++));
+    }
 }

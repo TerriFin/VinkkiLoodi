@@ -29,5 +29,10 @@ public class KomentoriviIO implements IO{
     public void printLine(String text) {
         System.out.println(text);
     }
+
+    @Override
+    public int readInt() {
+        return Integer.parseInt(scanner.nextLine());
+    }
     
 }
