@@ -1,6 +1,8 @@
 
+import java.sql.SQLException;
 import java.util.Scanner;
 import vinkkiloodi.database.InMemoryDAO;
+import vinkkiloodi.database.VinkkiSqliteDAO;
 import vinkkiloodi.io.IO;
 import vinkkiloodi.io.KomentoriviIO;
 import vinkkiloodi.ui.KomentoriviUI;
@@ -12,10 +14,14 @@ import vinkkiloodi.ui.KomentoriviUI;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+        
         Scanner scanner = new Scanner(System.in);
         IO io = new KomentoriviIO(scanner);
-        InMemoryDAO dao = new InMemoryDAO();
+        
+        // Testausta varten käytetään mieluummin InMemoryDAOa
+        VinkkiSqliteDAO dao = new VinkkiSqliteDAO("db/tietokanta.db");
+        
         KomentoriviUI ui = new KomentoriviUI(io, dao);
         ui.start();
     }

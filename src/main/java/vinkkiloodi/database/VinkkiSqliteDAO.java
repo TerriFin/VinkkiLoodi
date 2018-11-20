@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package vinkkiloodi.database;
 
 import java.sql.Connection;
@@ -62,8 +58,8 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             Connection conn = getConnection();
             
             PreparedStatement insertion = conn.prepareStatement("INSERT INTO Kirjavinkki (title, author, is_read) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            insertion.setString(1, kirja.getKirjoittaja());
-            insertion.setString(2, kirja.getOtsikko());
+            insertion.setString(1, kirja.getOtsikko());
+            insertion.setString(2, kirja.getKirjoittaja());
             insertion.setInt(3, kirja.getLuettu());
             
             insertion.executeUpdate();
