@@ -1,25 +1,18 @@
-package vinkkiloodi.ui;
 
 import java.util.ArrayList;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import vinkkiloodi.database.InMemoryDAO;
-import vinkkiloodi.database.VinkkiDAO;
-import vinkkiloodi.io.IO;
+import vinkkiloodi.domain.Kirjavinkki;
 import vinkkiloodi.io.StubIO;
+import vinkkiloodi.ui.KomentoriviUI;
 
-/**
- *
- * @author samisaukkonen
- */
 public class KomentoriviUITest {
-    
+
     private KomentoriviUI ui;
-    private IO io;
-    private VinkkiDAO dao;
-    private List<String> komennot;
+    private StubIO io;
+    private ArrayList<String> komennot;
+    private InMemoryDAO dao;
 
     @Before
     public void setUp() {
@@ -28,20 +21,104 @@ public class KomentoriviUITest {
     }
 
     @Test
-    public void lisayksenJalkeenLoytyy() {
+    public void vinkinLisaysLisaaTietokantaan() {
         komennot.add("1");
-        komennot.add("test");
-        komennot.add("test");
-        komennot.add("test");
+        komennot.add("Kirjoittaja");
+        komennot.add("Otsikko");
+        komennot.add("ISBN");
+        komennot.add("x");
+
+        io = new StubIO(komennot);
+        ui = new KomentoriviUI(io, dao);
+
+        int alkukoko = dao.getAll().size();
+
+        ui.start();
+
+        assert (alkukoko < dao.getAll().size());
+    }
+
+    @Test
+    public void lisattyVinkkiNakyyListalla() {
+        komennot.add("1");
+        komennot.add("UniikkiKirjoittaja");
+        komennot.add("UniikkiOtsikko");
+        komennot.add("ISBN");
+        komennot.add("2");
+        komennot.add("x");
+
+        io = new StubIO(komennot);
+        ui = new KomentoriviUI(io, dao);
+
+        ui.start();
+
+        for (String merkkijono : io.getOutput()) {
+            if (merkkijono.contains("UniikkiOtsikko")) {
+                assert (true);
+            }
+        }
+
+        assert (false);
+    }
+
+    @Test
+    public void lisattyjenListausToimii() {
+        Kirjavinkki vinkki1 = new Kirjavinkki("Hyvä kirja", "Matti", 0, "123456789");
+        Kirjavinkki vinkki2 = new Kirjavinkki("Parempi kirja", "Teppo", 0, "987654321");
+
+        komennot.add("1");
+        komennot.add(vinkki1.getKirjoittaja());
+        komennot.add(vinkki1.getOtsikko());
+        komennot.add(vinkki1.getIsbn());
+        komennot.add("1");
+        komennot.add(vinkki2.getKirjoittaja());
+        komennot.add(vinkki2.getOtsikko());
+        komennot.add(vinkki2.getIsbn());
+        komennot.add("2");
+        komennot.add("x");
+
+        io = new StubIO(komennot);
+        ui = new KomentoriviUI(io, dao);
+
+        ui.start();
+
+        boolean sisaltaaVinkki1 = false;
+        boolean sisaltaaVinkki2 = false;
+
+        for (String merkkijono : io.getOutput()) {
+            if (merkkijono.contains(vinkki1.toString())) {
+                sisaltaaVinkki1 = true;
+            } else if (merkkijono.contains(vinkki2.toString())) {
+                sisaltaaVinkki2 = true;
+            }
+        }
+
+        assert (sisaltaaVinkki1 && sisaltaaVinkki2);
+    }
+    
+    @Test
+    public void kirjanMuuttaminenLuetuksiToimii() {
+        Kirjavinkki vinkki = new Kirjavinkki("Hyvä kirja", "Matti", 1, "123456789");
+        
+        komennot.add("1");
+        komennot.add(vinkki.getKirjoittaja());
+        komennot.add(vinkki.getOtsikko());
+        komennot.add(vinkki.getIsbn());
+        komennot.add("3");
+        komennot.add(vinkki.getOtsikko());
         komennot.add("x");
         
         io = new StubIO(komennot);
         ui = new KomentoriviUI(io, dao);
-        
-        int kokoEnnen = dao.getAll().size();
-        
+
         ui.start();
         
-        assertTrue(kokoEnnen < dao.getAll().size());
+        for(String merkkijono:io.getOutput()) {
+            if(merkkijono.contains(vinkki.toString())){
+                assert(true);
+            }
+        }
+        
+        assert(false);
     }
 }
