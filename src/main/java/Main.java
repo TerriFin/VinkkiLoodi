@@ -20,7 +20,7 @@ public class Main {
         IO io = new KomentoriviIO(scanner);
         
         // Testausta varten käytetään mieluummin InMemoryDAOa
-        VinkkiSqliteDAO dao = new VinkkiSqliteDAO("db/tietokanta.db");
+        VinkkiSqliteDAO dao = new VinkkiSqliteDAO("tietokanta.db");
         
         KomentoriviUI ui = new KomentoriviUI(io, dao);
         ui.start();

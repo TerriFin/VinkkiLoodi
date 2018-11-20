@@ -92,4 +92,4 @@ atlassian-ide-plugin.xml
 .gradletasknamecache
 
 # Database
-/db/tietokanta.db
+tietokanta.db
