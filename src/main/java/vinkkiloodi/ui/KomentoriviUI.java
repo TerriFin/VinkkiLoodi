@@ -59,15 +59,13 @@ public class KomentoriviUI {
         String otsikko = io.nextLine();
         io.printLine("ISBN: ");
         String isbn = io.nextLine();
-        
+
         if (isbn.trim().length() < 1) {
             dao.add(new Kirjavinkki(nimi, otsikko));
-        }
-        else {
+        } else {
             dao.add(new Kirjavinkki(nimi, otsikko, 0, isbn));
         }
 
-        
     }
 
     public void listaaKaikki() {
@@ -83,7 +81,7 @@ public class KomentoriviUI {
         io.printLine("Syötä lukuvinkin otsikko: ");
         String haku = io.nextLine();
         haku = haku.toLowerCase().trim();
-        
+
         // Alkeellinen hakutoiminnallisuus.
         Vinkki haettu = null;
         List<Vinkki> vinkit = dao.getAll();

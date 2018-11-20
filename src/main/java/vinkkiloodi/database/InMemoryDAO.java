@@ -14,13 +14,13 @@ import vinkkiloodi.domain.Vinkki;
  * @author sami
  */
 public class InMemoryDAO implements VinkkiDAO {
-    
+
     public ArrayList<Vinkki> vinkkiDB;
-    
+
     public InMemoryDAO() {
         this.vinkkiDB = new ArrayList<>();
     }
-    
+
     @Override
     public void add(Vinkki kirja) {
         this.vinkkiDB.add(kirja);
@@ -39,20 +39,21 @@ public class InMemoryDAO implements VinkkiDAO {
                 return v;
             }
         }
-        
+
         return null;
     }
 
     @Override
     public void update(int id, Vinkki vinkki) {
-        for (Vinkki v : vinkkiDB) {
-            if (v.getId() == id) {
-                v.setKirjoittaja(vinkki.getKirjoittaja());
-                v.setOtsikko(vinkki.getOtsikko());
-                v.setLuettu(vinkki.getLuettu());
-                break;
-            }
+        Vinkki v = getById(id);
+        
+        if (v == null) {
+            return;
         }
+        
+        v.setKirjoittaja(vinkki.getKirjoittaja());
+        v.setOtsikko(vinkki.getOtsikko());
+        v.setLuettu(vinkki.getLuettu());
     }
-    
+
 }

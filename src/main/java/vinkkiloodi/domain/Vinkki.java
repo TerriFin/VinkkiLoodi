@@ -82,7 +82,7 @@ public abstract class Vinkki {
         this.esitietokurssit.add(nimi);
     }
 
-    public void addRealtedCourse(String nimi) {
+    public void addRelatedCourse(String nimi) {
         this.liittyvatKurssit.add(nimi);
     }
 

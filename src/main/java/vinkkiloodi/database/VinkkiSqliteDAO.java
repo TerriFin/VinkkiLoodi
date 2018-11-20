@@ -51,6 +51,9 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         // Create Kirjavinkki Table
         PreparedStatement statement = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Kirjavinkki (id INTEGER PRIMARY KEY, title string, author string, is_read int)");
         statement.execute();
+        
+        statement.close();
+        conn.close();
     }
 
     @Override
@@ -72,6 +75,9 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             kirja.setId(id.getInt(1));
             
             id.close();
+            insertion.close();
+            conn.close();
+            
         } catch (SQLException e) {
             System.out.println("Failed to insert into database: " + e.getMessage());
         }
@@ -94,6 +100,8 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             }
             
             tulokset.close();
+            selection.close();
+            conn.close();
             
             return vinkit;
         } catch (SQLException e) {
@@ -118,6 +126,9 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                 vinkki.setId(tulokset.getInt("id"));
                 
                 tulokset.close();
+                haku.close();
+                conn.close();
+                
                 return vinkki;
             }
         } catch (SQLException ex) {
@@ -139,6 +150,11 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             päivitys.setInt(4, id);
             
             päivitys.executeUpdate();
+            
+            päivitys.close();
+            päivitys.close();
+            conn.close();
+            
         } catch (SQLException ex) {
             Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

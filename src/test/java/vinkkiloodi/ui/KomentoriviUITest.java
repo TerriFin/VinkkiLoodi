@@ -1,62 +1,47 @@
+package vinkkiloodi.ui;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import vinkkiloodi.database.InMemoryDAO;
+import vinkkiloodi.database.VinkkiDAO;
+import vinkkiloodi.io.IO;
 import vinkkiloodi.io.StubIO;
-import vinkkiloodi.ui.KomentoriviUI;
 
-
+/**
+ *
+ * @author samisaukkonen
+ */
 public class KomentoriviUITest {
-    private KomentoriviUI ui;
-    private StubIO io;
-    private ArrayList<String> komennot;
-    private InMemoryDAO dao;
     
+    private KomentoriviUI ui;
+    private IO io;
+    private VinkkiDAO dao;
+    private List<String> komennot;
+
     @Before
     public void setUp() {
         dao = new InMemoryDAO();
         komennot = new ArrayList<>();
     }
-    
-    @Test 
-    public void vinkinLisäysLisääTietokantaan() {
+
+    @Test
+    public void lisayksenJalkeenLoytyy() {
         komennot.add("1");
-        komennot.add("Kirjoittaja");
-        komennot.add("Otsikko");
-        komennot.add("ISBN");
+        komennot.add("test");
+        komennot.add("test");
+        komennot.add("test");
         komennot.add("x");
         
         io = new StubIO(komennot);
         ui = new KomentoriviUI(io, dao);
         
-        int alkukoko = dao.getAll().size();
+        int kokoEnnen = dao.getAll().size();
         
         ui.start();
         
-        assert(alkukoko < dao.getAll().size());
-    }
-    
-    @Test 
-    public void lisättyVinkkiNäkyyListalla() {
-        komennot.add("1");
-        komennot.add("UniikkiKirjoittaja");
-        komennot.add("UniikkiOtsikko");
-        komennot.add("ISBN");
-        komennot.add("2");
-        komennot.add("x");
-        
-        io = new StubIO(komennot);
-        ui = new KomentoriviUI(io, dao);
-                
-        ui.start();
-        
-        for (String merkkijono : io.getOutput()) {
-            if (merkkijono.contains("UniikkiOtsikko")) {
-                assert(true);
-            }
-        }
-        
-        assert(false);
+        assertTrue(kokoEnnen < dao.getAll().size());
     }
 }
