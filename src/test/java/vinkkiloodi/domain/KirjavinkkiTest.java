@@ -1,3 +1,4 @@
+package vinkkiloodi.domain;
 
 import vinkkiloodi.domain.Kirjavinkki;
 import org.junit.Before;
