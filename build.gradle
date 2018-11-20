@@ -1,6 +1,11 @@
+plugins {
+  id 'com.github.johnrengelman.shadow' version '2.0.1'
+}
+
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: "jacoco" 
+apply plugin: "checkstyle"
 
 jacocoTestReport {
     reports {
@@ -38,3 +43,14 @@ mainClassName = "Main"
 run {
     standardInput = System.in
 }
+<<<<<<< HEAD
+=======
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'Main'
+        )
+    }
+}
+>>>>>>> 985209e7e3c70346761b35dfb6dc296f9a832d62
