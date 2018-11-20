@@ -1,10 +1,7 @@
-plugins {
-  id 'com.github.johnrengelman.shadow' version '2.0.1'
-}
 
 apply plugin: 'java'
 apply plugin: 'application'
-apply plugin: "jacoco" 
+apply plugin: "jacoco"
 apply plugin: "checkstyle"
 
 jacocoTestReport {
@@ -12,13 +9,11 @@ jacocoTestReport {
         xml.enabled true
         html.enabled true
     }
+}
 
-    afterEvaluate {
-        classDirectories = files(classDirectories.files.collect {
-            fileTree(dir: it,
-                    exclude: ['org/sqlite/SQLite'])
-        })
-    }    
+project.ext {
+    cucumberVersion = '1.2.5'
+    junitVersion = '4.12'
 }
 
 repositories {
@@ -26,9 +21,18 @@ repositories {
 }
 
 dependencies {
+
     // https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
     compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.7.2'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'info.cukes:cucumber-java:' + cucumberVersion
+    testCompile 'info.cukes:cucumber-junit:' + cucumberVersion
+}
+
+
+test {
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
 }
 
 mainClassName = "Main"
@@ -44,3 +48,5 @@ jar {
         )
     }
 }
+
+

@@ -65,6 +65,8 @@ public class KomentoriviUI {
         } else {
             dao.add(new Kirjavinkki(nimi, otsikko, 0, isbn));
         }
+        
+        io.printLine("Vinkki lisätty!");
 
     }
 
