@@ -1,4 +1,4 @@
-package vinkkiloodi.ui;
+package vinkkiloodi;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;

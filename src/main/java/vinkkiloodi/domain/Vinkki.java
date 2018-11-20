@@ -98,6 +98,6 @@ public abstract class Vinkki {
         } else {
             luettuTeksti = "on luettu";
         }
-        return "\"" + otsikko + "\", " + kirjoittaja + ", " + luettuTeksti + ", tagit: " + tagit;
+        return "'otsikko'" + ", " + kirjoittaja + ", " + luettuTeksti + ", tagit: " + tagit;
     }
 }
