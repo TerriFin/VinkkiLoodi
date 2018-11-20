@@ -7,7 +7,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import vinkkiloodi.database.InMemoryDAO;
 import vinkkiloodi.database.VinkkiDAO;
-import vinkkiloodi.io.IO;
 import vinkkiloodi.io.StubIO;
 
 /**
@@ -17,7 +16,7 @@ import vinkkiloodi.io.StubIO;
 public class KomentoriviUITest {
     
     private KomentoriviUI ui;
-    private IO io;
+    private StubIO io;
     private VinkkiDAO dao;
     private List<String> komennot;
 
@@ -26,22 +25,42 @@ public class KomentoriviUITest {
         dao = new InMemoryDAO();
         komennot = new ArrayList<>();
     }
-
-    @Test
-    public void lisayksenJalkeenLoytyy() {
+    
+    private void lisaaVinkki(String lisattava) {
         komennot.add("1");
-        komennot.add("test");
-        komennot.add("test");
-        komennot.add("test");
+        komennot.add(lisattava);
+        komennot.add(lisattava);
+        komennot.add(lisattava);
+    }
+    
+    private void alustaTesti() {
         komennot.add("x");
         
         io = new StubIO(komennot);
         ui = new KomentoriviUI(io, dao);
+    }
+
+    @Test
+    public void lisayksenJalkeenLoytyy() {
+        lisaaVinkki("test");
+        alustaTesti();
         
         int kokoEnnen = dao.getAll().size();
         
         ui.start();
         
         assertTrue(kokoEnnen < dao.getAll().size());
+    }
+    
+    @Test
+    public void vinkkiLoytyyLisayksenJalkeen() {
+        lisaaVinkki("test1");
+        lisaaVinkki("test2");
+        komennot.add("2");
+        alustaTesti();
+        
+        ui.start();
+        
+        assertTrue(io.getOutput().contains("test2"));
     }
 }
