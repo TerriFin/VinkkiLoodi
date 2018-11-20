@@ -87,7 +87,8 @@ public class KomentoriviUI {
         // Alkeellinen hakutoiminnallisuus.
         Vinkki haettu = null;
         List<Vinkki> vinkit = dao.getAll();
-        for (Vinkki v : vinkit) {
+        for (int i = 0; i < vinkit.size(); i++) {
+            Vinkki v = vinkit.get(i);
             if (v.getOtsikko().toLowerCase().trim().equals(haku)) {
                 haettu = v;
                 break;
