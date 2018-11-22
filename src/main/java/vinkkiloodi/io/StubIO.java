@@ -20,6 +20,7 @@ public class StubIO implements IO {
 
     public StubIO(List<String> input) {
         this.input = input;
+        i = 0;
         this.output = new ArrayList<>();
     }
 
@@ -29,21 +30,16 @@ public class StubIO implements IO {
     }
 
     @Override
-    public void print(String text) {
-        output.add(text);
-    }
-
-    @Override
     public void printLine(String text) {
         output.add(text);
     }
 
-    public List<String> getOutput() {
-        return output;
-    }
-
     @Override
     public int nextInt() {
-        return Integer.parseInt(input.get(i++));
+        return Integer.parseInt(input.get(i));
+    }
+    
+    public List<String> getOutput() {
+        return output;
     }
 }

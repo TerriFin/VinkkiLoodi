@@ -13,8 +13,6 @@ public interface IO {
 
     String nextLine();
 
-    void print(String text);
-
     void printLine(String text);
 
     int nextInt();

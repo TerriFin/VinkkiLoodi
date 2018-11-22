@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vinkkiloodi.domain.Kirjavinkki;
+import vinkkiloodi.domain.KirjaVinkki;
 import vinkkiloodi.domain.Vinkki;
 
 /**
@@ -58,9 +58,9 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             Connection conn = getConnection();
             
             PreparedStatement insertion = conn.prepareStatement("INSERT INTO Kirjavinkki (title, author, is_read) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            insertion.setString(1, kirja.getOtsikko());
-            insertion.setString(2, kirja.getKirjoittaja());
-            insertion.setInt(3, kirja.getLuettu());
+            insertion.setString(1, kirja.getNimi());
+            insertion.setString(2, kirja.getTekija());
+            insertion.setInt(3, kirja.getTarkastettu());
             
             insertion.executeUpdate();
             
@@ -90,7 +90,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             ArrayList<Vinkki> vinkit = new ArrayList<>();
             
             while (tulokset.next()) {
-                Kirjavinkki uusi = new Kirjavinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getInt("is_read"), "");
+                KirjaVinkki uusi = new KirjaVinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getInt("is_read"), "");
                 uusi.setId(tulokset.getInt("id"));
                 vinkit.add(uusi);
             }
@@ -118,7 +118,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             ResultSet tulokset = haku.executeQuery();
             
             while(tulokset.next()) {
-                Kirjavinkki vinkki = new Kirjavinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getInt("is_read"), "");
+                KirjaVinkki vinkki = new KirjaVinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getInt("is_read"), "");
                 vinkki.setId(tulokset.getInt("id"));
                 
                 tulokset.close();
@@ -140,9 +140,9 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         try {
             conn = getConnection();
             PreparedStatement päivitys = conn.prepareStatement("UPDATE Kirjavinkki SET title = ?, author = ?, is_read = ? WHERE id = ?");
-            päivitys.setString(1, vinkki.getOtsikko());
-            päivitys.setString(2, vinkki.getKirjoittaja());
-            päivitys.setInt(3, vinkki.getLuettu());
+            päivitys.setString(1, vinkki.getNimi());
+            päivitys.setString(2, vinkki.getTekija());
+            päivitys.setInt(3, vinkki.getTarkastettu());
             päivitys.setInt(4, id);
             
             päivitys.executeUpdate();

@@ -3,7 +3,7 @@ package vinkkiloodi.database;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import vinkkiloodi.domain.Kirjavinkki;
+import vinkkiloodi.domain.KirjaVinkki;
 import vinkkiloodi.domain.Vinkki;
 
 public class InMemoryDAOTest {
@@ -18,7 +18,7 @@ public class InMemoryDAOTest {
     public void lisaysLisaaElementinTietokantaan() {
         int alkuKoko = dao.getAll().size();
         
-        Kirjavinkki vinkki = new Kirjavinkki("Testi", "Testi");
+        KirjaVinkki vinkki = new KirjaVinkki("Testi", "Testi");
         
         dao.add(vinkki);
         
@@ -29,14 +29,14 @@ public class InMemoryDAOTest {
     public void elementtiLoytyyListaltaLisayksenJalkeen() {
         int alkuKoko = dao.getAll().size();
         
-        Kirjavinkki vinkki = new Kirjavinkki("Testi2", "Testi2");
+        KirjaVinkki vinkki = new KirjaVinkki("Testi2", "Testi2");
         
         dao.add(vinkki);
         
         boolean loytyi = false;
         
         for (Vinkki v : dao.getAll()) {
-            if (v.getOtsikko().equals(vinkki.getOtsikko())) {
+            if (v.getNimi().equals(vinkki.getNimi())) {
                 loytyi = true;
             }
         }
@@ -48,8 +48,8 @@ public class InMemoryDAOTest {
     public void idHakuLoytaaOikeanElementin() {
         int alkuKoko = dao.getAll().size();
         
-        Kirjavinkki vinkki = new Kirjavinkki("Testi3", "Testi3");
-        Kirjavinkki vinkki2 = new Kirjavinkki("Testi4", "Testi4");
+        KirjaVinkki vinkki = new KirjaVinkki("Testi3", "Testi3");
+        KirjaVinkki vinkki2 = new KirjaVinkki("Testi4", "Testi4");
         
         dao.add(vinkki);
         dao.add(vinkki2);
@@ -63,7 +63,7 @@ public class InMemoryDAOTest {
     public void olematonIdPalauttaaNull() {
         int alkuKoko = dao.getAll().size();
         
-        Kirjavinkki vinkki = new Kirjavinkki("Testi5", "Testi5");
+        KirjaVinkki vinkki = new KirjaVinkki("Testi5", "Testi5");
         
         dao.add(vinkki);
         
@@ -74,46 +74,46 @@ public class InMemoryDAOTest {
     
     @Test 
     public void paivitysMuuttaaKirjoittajaa() {
-        Kirjavinkki vinkki = new Kirjavinkki("Alkuperäinen", "Alkuperäinen");
+        KirjaVinkki vinkki = new KirjaVinkki("Alkuperäinen", "Alkuperäinen");
         
         dao.add(vinkki);
         
-        Kirjavinkki uusiVinkki = new Kirjavinkki("Uusi Kirjoittaja", "Alkuperäinen");
+        KirjaVinkki uusiVinkki = new KirjaVinkki("Uusi Kirjoittaja", "Alkuperäinen");
         
         dao.update(vinkki.getId(), uusiVinkki);
         
         Vinkki tulos = dao.getById(vinkki.getId());
         
-        assertEquals(tulos.getKirjoittaja(), "Uusi Kirjoittaja");
+        assertEquals(tulos.getTekija(), "Uusi Kirjoittaja");
     }
     
     @Test 
     public void päivitysMuuttaaOtsikkoa() {
-        Kirjavinkki vinkki = new Kirjavinkki("Alkuperäinen", "Alkuperäinen");
+        KirjaVinkki vinkki = new KirjaVinkki("Alkuperäinen", "Alkuperäinen");
         
         dao.add(vinkki);
         
-        Kirjavinkki uusiVinkki = new Kirjavinkki("Alkuperäinen", "Uusi Otsikko");
+        KirjaVinkki uusiVinkki = new KirjaVinkki("Alkuperäinen", "Uusi Otsikko");
         
         dao.update(vinkki.getId(), uusiVinkki);
         
         Vinkki tulos = dao.getById(vinkki.getId());
         
-        assertEquals(tulos.getOtsikko(), "Uusi Otsikko");
+        assertEquals(tulos.getNimi(), "Uusi Otsikko");
     }
     
     @Test 
     public void paivitysMuuttaaLuettua() {
-        Kirjavinkki vinkki = new Kirjavinkki("Alkuperäinen", "Alkuperäinen");
+        KirjaVinkki vinkki = new KirjaVinkki("Alkuperäinen", "Alkuperäinen");
         
         dao.add(vinkki);
         
-        Kirjavinkki uusiVinkki = new Kirjavinkki("Alkuperäinen", "Alkuperäinen", 1, "");
+        KirjaVinkki uusiVinkki = new KirjaVinkki("Alkuperäinen", "Alkuperäinen", 1, "");
         
         dao.update(vinkki.getId(), uusiVinkki);
         
         Vinkki tulos = dao.getById(vinkki.getId());
         
-        assertEquals(tulos.getLuettu(), 1);
+        assertEquals(tulos.getTarkastettu(), 1);
     }
 }

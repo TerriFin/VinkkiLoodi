@@ -2,7 +2,7 @@ package vinkkiloodi.ui;
 
 import java.util.List;
 import vinkkiloodi.database.VinkkiDAO;
-import vinkkiloodi.domain.Kirjavinkki;
+import vinkkiloodi.domain.KirjaVinkki;
 import vinkkiloodi.domain.Vinkki;
 import vinkkiloodi.io.IO;
 
@@ -26,7 +26,7 @@ public class KomentoriviUI {
         paavalikko();
     }
 
-    public void paavalikko() {
+    private void paavalikko() {
         while (true) {
             io.printLine("\nMitä haluat tehdä?"
                     + "\n1 - Lisää vinkki"
@@ -48,10 +48,9 @@ public class KomentoriviUI {
                 io.printLine("\nVirheellinen komento.");
             }
         }
-        System.exit(0);
     }
 
-    public void lisaaVinkki() {
+    private void lisaaVinkki() {
         io.printLine("\nLisää vinkki\n-----------\n");
         io.printLine("Kirjoittajan nimi: ");
         String nimi = io.nextLine();
@@ -61,16 +60,16 @@ public class KomentoriviUI {
         String isbn = io.nextLine();
 
         if (isbn.trim().length() < 1) {
-            dao.add(new Kirjavinkki(nimi, otsikko));
+            dao.add(new KirjaVinkki(nimi, otsikko));
         } else {
-            dao.add(new Kirjavinkki(nimi, otsikko, 0, isbn));
+            dao.add(new KirjaVinkki(nimi, otsikko, 0, isbn));
         }
         
         io.printLine("Vinkki lisätty!");
 
     }
 
-    public void listaaKaikki() {
+    private void listaaKaikki() {
         io.printLine("\nKaikki vinkit\n------------\n");
         List<Vinkki> vinkit = dao.getAll();
         for (int i = 0; i < vinkit.size(); i++) {
@@ -78,7 +77,7 @@ public class KomentoriviUI {
         }
     }
 
-    public void merkitseVinkkiLuetuksi() {
+    private void merkitseVinkkiLuetuksi() {
         io.printLine("\nMerkitse vinkki luetuksi\n--------------------\n");
         io.printLine("Syötä lukuvinkin otsikko: ");
         String haku = io.nextLine();
@@ -89,14 +88,14 @@ public class KomentoriviUI {
         List<Vinkki> vinkit = dao.getAll();
         for (int i = 0; i < vinkit.size(); i++) {
             Vinkki v = vinkit.get(i);
-            if (v.getOtsikko().toLowerCase().trim().equals(haku)) {
+            if (v.getNimi().toLowerCase().trim().equals(haku)) {
                 haettu = v;
                 break;
             }
         }
 
         if (haettu != null) {
-            haettu.setLuettu(1);
+            haettu.setTarkastettu(1);
             dao.update(haettu.getId(), haettu);
             io.printLine("Vinkki " + haku + " merkittiin luetuksi.");
         } else {

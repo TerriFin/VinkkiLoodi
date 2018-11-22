@@ -47,9 +47,9 @@ public class InMemoryDAO implements VinkkiDAO {
             return;
         }
         
-        v.setKirjoittaja(vinkki.getKirjoittaja());
-        v.setOtsikko(vinkki.getOtsikko());
-        v.setLuettu(vinkki.getLuettu());
+        v.setTekija(vinkki.getTekija());
+        v.setNimi(vinkki.getNimi());
+        v.setTarkastettu(vinkki.getTarkastettu());
     }
 
 }

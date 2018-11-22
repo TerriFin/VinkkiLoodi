@@ -10,8 +10,8 @@ import static org.junit.Assert.*;
  */
 public class KirjavinkkiTest {
 
-    private Kirjavinkki kirjaPieniKonstruktori;
-    private Kirjavinkki kirjaSuuriKonstruktori;
+    private KirjaVinkki kirjaPieniKonstruktori;
+    private KirjaVinkki kirjaSuuriKonstruktori;
     private String kirjoittaja;
     private String otsikko;
     private int luettu;
@@ -25,56 +25,56 @@ public class KirjavinkkiTest {
         isbn = "978-951-98548-9-2";
         
 
-        kirjaPieniKonstruktori = new Kirjavinkki(kirjoittaja, otsikko);
-        kirjaSuuriKonstruktori = new Kirjavinkki(kirjoittaja, otsikko, luettu, isbn);
+        kirjaPieniKonstruktori = new KirjaVinkki(kirjoittaja, otsikko);
+        kirjaSuuriKonstruktori = new KirjaVinkki(kirjoittaja, otsikko, luettu, isbn);
 
     }
 
     @Test
     public void PienempiKonstruktoriLuoKirjanKirjoittajalla() {
-        assertEquals(kirjoittaja, kirjaPieniKonstruktori.getKirjoittaja());
+        assertEquals(kirjoittaja, kirjaPieniKonstruktori.getTekija());
     }
 
     @Test
     public void PienempiKonstruktoriLuoOtsikolla() {
-        assertEquals(otsikko, kirjaPieniKonstruktori.getOtsikko());
+        assertEquals(otsikko, kirjaPieniKonstruktori.getNimi());
     }
 
     @Test
     public void PienempiKonstruktoriLuoLukemattomanKirjan() {
-        assertEquals(0, kirjaPieniKonstruktori.getLuettu());
+        assertEquals(0, kirjaPieniKonstruktori.getTarkastettu());
     }
 
     @Test
     public void PienemiKonstruktoriTyhjanIsbn() {
-        assertEquals("", kirjaPieniKonstruktori.getIsbn());
+        assertEquals("", kirjaPieniKonstruktori.getISBN());
     }
 
     @Test
     public void SuurempiKonstruktoriLuoKirjanKIrjoittajalla() {
-        assertEquals(kirjoittaja, kirjaSuuriKonstruktori.getKirjoittaja());
+        assertEquals(kirjoittaja, kirjaSuuriKonstruktori.getTekija());
 
     }
 
     @Test
     public void SuuriKonstruktoriLuoOtsikolla() {
-        assertEquals(otsikko, kirjaSuuriKonstruktori.getOtsikko());
+        assertEquals(otsikko, kirjaSuuriKonstruktori.getNimi());
     }
 
     @Test
     public void SuuriKonstruktoriLuoIsbn() {
-        assertEquals(isbn, kirjaSuuriKonstruktori.getIsbn());
+        assertEquals(isbn, kirjaSuuriKonstruktori.getISBN());
     }
     
     @Test
     public void SuuriKonstruktoriLuoLuetun() {
-        assertEquals(luettu, kirjaSuuriKonstruktori.getLuettu());
+        assertEquals(luettu, kirjaSuuriKonstruktori.getTarkastettu());
     }
 
     @Test
     public void IsbnVoidaanPaivittaa() {
-        kirjaPieniKonstruktori.setIsbn(isbn);
-        assertEquals(isbn, kirjaPieniKonstruktori.getIsbn());
+        kirjaPieniKonstruktori.setISBN(isbn);
+        assertEquals(isbn, kirjaPieniKonstruktori.getISBN());
     }
 
 }

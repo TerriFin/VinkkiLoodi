@@ -6,17 +6,17 @@ import java.util.List;
 public abstract class Vinkki {
 
     private int id;
-    private String kirjoittaja;
-    private String otsikko;
-    private int luettu;
+    private String tekija;
+    private String nimi;
+    private int tarkastettu;
     List<String> tagit;
     List<String> esitietokurssit;
     List<String> liittyvatKurssit;
 
-    public Vinkki(String kirjoittaja, String otsikko, int luettu) {
-        this.kirjoittaja = kirjoittaja;
-        this.otsikko = otsikko;
-        this.luettu = luettu;
+    public Vinkki(String tekija, String nimi, int tarkastettu) {
+        this.tekija = tekija;
+        this.nimi = nimi;
+        this.tarkastettu = tarkastettu;
         this.tagit = new ArrayList<>();
         this.esitietokurssit = new ArrayList<>();
         this.liittyvatKurssit = new ArrayList<>();
@@ -26,16 +26,16 @@ public abstract class Vinkki {
         return id;
     }
 
-    public String getKirjoittaja() {
-        return kirjoittaja;
+    public String getTekija() {
+        return tekija;
     }
 
-    public String getOtsikko() {
-        return otsikko;
+    public String getNimi() {
+        return nimi;
     }
 
-    public int getLuettu() {
-        return luettu;
+    public int getTarkastettu() {
+        return tarkastettu;
     }
 
     public List<String> getTagit() {
@@ -54,16 +54,16 @@ public abstract class Vinkki {
         this.id = id;
     }
 
-    public void setOtsikko(String otsikko) {
-        this.otsikko = otsikko;
+    public void setNimi(String nimi) {
+        this.nimi = nimi;
     }
 
-    public void setKirjoittaja(String kirjoittaja) {
-        this.kirjoittaja = kirjoittaja;
+    public void setTekija(String tekija) {
+        this.tekija = tekija;
     }
 
-    public void setLuettu(int luettu) {
-        this.luettu = luettu;
+    public void setTarkastettu(int tarkastettu) {
+        this.tarkastettu = tarkastettu;
     }
 
     public void setTagit(List<String> tagit) {
@@ -92,12 +92,12 @@ public abstract class Vinkki {
 
     @Override
     public String toString() {
-        String luettuTeksti = "";
-        if (luettu == 0) {
-            luettuTeksti = "ei ole luettu";
+        String tarkistettuVinkki = "";
+        if (tarkastettu == 0) {
+            tarkistettuVinkki = "ei ole tarkistettu";
         } else {
-            luettuTeksti = "on luettu";
+            tarkistettuVinkki = "on tarkistettu";
         }
-        return "'otsikko'" + ", " + kirjoittaja + ", " + luettuTeksti + ", tagit: " + tagit;
+        return "'" + nimi + "', " + tekija + ", " + tarkistettuVinkki + ", tagit: " + tagit;
     }
 }
