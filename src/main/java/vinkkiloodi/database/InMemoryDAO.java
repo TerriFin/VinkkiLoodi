@@ -18,9 +18,9 @@ public class InMemoryDAO implements VinkkiDAO {
     }
 
     @Override
-    public void add(Vinkki kirja) {
-        this.vinkkiDB.add(kirja);
-        kirja.setId(vinkkiDB.indexOf(kirja));
+    public void add(Vinkki vinkki) {
+        this.vinkkiDB.add(vinkki);
+        vinkki.setId(vinkkiDB.indexOf(vinkki));
     }
 
     @Override
