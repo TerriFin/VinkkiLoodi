@@ -2,6 +2,8 @@ package vinkkiloodi.ui;
 
 import java.util.List;
 import vinkkiloodi.database.VinkkiDAO;
+import vinkkiloodi.domain.ArtikkeliVinkki;
+import vinkkiloodi.domain.BlogiVinkki;
 import vinkkiloodi.domain.KirjaVinkki;
 import vinkkiloodi.domain.Vinkki;
 import vinkkiloodi.io.IO;
@@ -39,7 +41,7 @@ public class KomentoriviUI {
             if (komento.toLowerCase().equals("x")) {
                 break;
             } else if (komento.equals("1")) {
-                lisaaVinkki();
+                lisaa();
             } else if (komento.equals("2")) {
                 listaaKaikki();
             } else if (komento.equals("3")) {
@@ -50,8 +52,34 @@ public class KomentoriviUI {
         }
     }
 
-    private void lisaaVinkki() {
-        io.printLine("\nLisää vinkki\n-----------\n");
+    private void lisaa() {
+        while (true) {
+            io.printLine("\n-----------\n");
+            io.printLine("\nOnko vinkkisi: "
+                    + "\n1 - Kirja"
+                    + "\n2 - Blogipostaus"
+                    + "\n3 - Artikkeli"
+                    + "\nX - Peruuta\n");
+            String komento = io.nextLine().toLowerCase();
+
+            if (komento.equals("1")) {
+                lisaaKirjaVinkki();
+                break;
+            } else if (komento.equals("2")) {
+                lisaaBlogiVinkki();
+                break;
+            } else if (komento.equals("3")) {
+                lisaaArtikkeliVinkki();
+                break;
+            } else if (komento.equals("x")) {
+                break;
+            }
+        }
+
+    }
+
+    private void lisaaKirjaVinkki() {
+        io.printLine("\nLisää kirja\n-----------\n");
         io.printLine("Kirjoittajan nimi: ");
         String nimi = io.nextLine();
         io.printLine("Otsikko: ");
@@ -64,8 +92,32 @@ public class KomentoriviUI {
         } else {
             dao.add(new KirjaVinkki(nimi, otsikko, 0, isbn));
         }
-        
+
         io.printLine("Vinkki lisätty!");
+
+    }
+
+    private void lisaaBlogiVinkki() {
+        io.printLine("\nLisää blogpost\n-----------\n");
+        io.printLine("Kirjoittajan nimi: ");
+        String nimi = io.nextLine();
+        io.printLine("Otsikko: ");
+        String otsikko = io.nextLine();
+        io.printLine("URL-osoite:");
+        String url = io.nextLine();
+
+        dao.add(new BlogiVinkki(nimi, otsikko, url, 0));
+
+    }
+
+    private void lisaaArtikkeliVinkki() {
+        io.printLine("\nLisää artikkeli\n-----------\n");
+        io.printLine("Kirjoittajan nimi: ");
+        String nimi = io.nextLine();
+        io.printLine("Otsikko: ");
+        String otsikko = io.nextLine();
+
+        dao.add(new ArtikkeliVinkki(nimi, otsikko, 0));
 
     }
 
