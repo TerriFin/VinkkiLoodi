@@ -51,7 +51,7 @@ CREATE TABLE Blogivinkki (
     title string,
     author string,
     url string,
-    checked_out int
+    checked_out int,
     FOREIGN KEY(id) REFERENCES Vinkki(id),
 )
 ```

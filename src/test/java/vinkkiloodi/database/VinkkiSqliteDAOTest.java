@@ -8,6 +8,7 @@ import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import vinkkiloodi.domain.BlogiVinkki;
 import vinkkiloodi.domain.KirjaVinkki;
 import vinkkiloodi.domain.Vinkki;
 
@@ -100,7 +101,7 @@ public class VinkkiSqliteDAOTest {
     }
     
     @Test 
-    public void paivitysMuuttaaKirjoittajaa() {
+    public void kirjanPaivitysMuuttaaKirjoittajaa() {
         KirjaVinkki vinkki = new KirjaVinkki("Alkuperäinen", "Alkuperäinen");
         
         dao.add(vinkki);
@@ -115,7 +116,7 @@ public class VinkkiSqliteDAOTest {
     }
     
     @Test 
-    public void paivitysMuuttaaOtsikkoa() {
+    public void kirjanPaivitysMuuttaaOtsikkoa() {
         KirjaVinkki vinkki = new KirjaVinkki("Alkuperäinen", "Alkuperäinen");
         
         dao.add(vinkki);
@@ -130,7 +131,7 @@ public class VinkkiSqliteDAOTest {
     }
     
     @Test 
-    public void paivitysMuuttaaLuettua() {
+    public void kirjanPaivitysMuuttaaLuettua() {
         KirjaVinkki vinkki = new KirjaVinkki("Alkuperäinen", "Alkuperäinen");
         
         dao.add(vinkki);
@@ -142,5 +143,51 @@ public class VinkkiSqliteDAOTest {
         Vinkki tulos = dao.getById(vinkki.getId());
         
         assertEquals(tulos.getTarkastettu(), 1);
+    }
+    
+    @Test
+    public void blogipostauksenLisaysLisaaTietokantaan() {
+        int alkuKoko = dao.getAll().size();
+        
+        BlogiVinkki vinkki = new BlogiVinkki("BlogiOtsikko", "BlogiKirjoittaja", "www.blogi.osoite", 0);
+        
+        dao.add(vinkki);
+        
+        assert(alkuKoko < dao.getAll().size());
+    }
+    
+    @Test
+    public void blogiSaaIDnLisayksessa() {
+        BlogiVinkki vinkki = new BlogiVinkki("BlogiOtsikko", "BlogiKirjoittaja", "www.blogi.osoite", 0);
+        
+        dao.add(vinkki);
+        
+        assert(vinkki.getId() != 0);
+    }
+    
+    @Test
+    public void blogiLoytyyIDlla() {
+        BlogiVinkki vinkki = new BlogiVinkki("BlogiOtsikko", "BlogiKirjoittaja", "www.blogi.osoite", 0);
+        
+        dao.add(vinkki);
+        
+        BlogiVinkki tulos = (BlogiVinkki) dao.getById(vinkki.getId());
+        
+        assert(tulos != null && tulos.getId() == vinkki.getId());
+    }
+    
+    @Test
+    public void bloginOtsikkoPaivittyy() {
+        BlogiVinkki vinkki = new BlogiVinkki("BlogiOtsikko", "BlogiKirjoittaja", "www.blogi.osoite", 0);
+        
+        dao.add(vinkki);
+        
+        BlogiVinkki paivitys = new BlogiVinkki("Uusi", "Uusi", "Uusi", 0);
+        
+        dao.update(vinkki.getId(), paivitys);
+        
+        BlogiVinkki paivitetty = (BlogiVinkki) dao.getById(vinkki.getId());
+        
+        assert(paivitetty.getNimi().equals("Uusi"));
     }
 }

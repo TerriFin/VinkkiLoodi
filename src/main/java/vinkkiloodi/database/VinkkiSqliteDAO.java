@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vinkkiloodi.domain.BlogiVinkki;
 import vinkkiloodi.domain.KirjaVinkki;
 import vinkkiloodi.domain.Vinkki;
 import vinkkiloodi.domain.Tyyppi;
@@ -50,7 +51,13 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         statement.execute();
         statement.close();
         
+        // Kirjavinkit
         statement = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Kirjavinkki (id INTEGER, title string, author string, isbn string, checked_out int, FOREIGN KEY(id) REFERENCES Vinkki(id))");
+        statement.execute();
+        statement.close();
+        
+        // Blogipostaukset
+        statement = conn.prepareStatement("CREATE TABLE IF NOT EXISTS Blogivinkki (id INTEGER, title string, author string, url string, checked_out int, FOREIGN KEY(id) REFERENCES Vinkki(id))");
         statement.execute();
         statement.close();
         
@@ -99,6 +106,8 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                 case None:  break;
                 case Kirja: storeKirja((KirjaVinkki) vinkki);
                             break;
+                case Blog: storeBlogi((BlogiVinkki) vinkki);
+                            break;
             }
         } catch (SQLException e) {
             
@@ -122,8 +131,27 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }    
+    }
+    
+    private void storeBlogi(BlogiVinkki blogi) {
+        try {
+            Connection conn = getConnection();
             
+            PreparedStatement insertion = conn.prepareStatement("INSERT INTO Blogivinkki (id, title, author, url, checked_out) VALUES (?, ?, ?, ?, ?)");
+            insertion.setInt(1, blogi.getId());
+            insertion.setString(2, blogi.getNimi());
+            insertion.setString(3, blogi.getTekija());
+            insertion.setString(4, blogi.getUrl());
+            insertion.setInt(5, blogi.getTarkastettu());
+            
+            insertion.executeUpdate();
+            
+            insertion.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }    
     }
     
     private KirjaVinkki getKirja(int id) {
@@ -136,6 +164,31 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             
             while(tulokset.next()) {
                 KirjaVinkki vinkki = new KirjaVinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getInt("checked_out"), "");
+                vinkki.setId(id);
+                
+                tulokset.close();
+                haku.close();
+                conn.close();
+                
+                return vinkki;
+            }
+        } catch (SQLException e) {
+            
+        }
+        
+        return null;
+    }
+    
+    private BlogiVinkki getBlogi(int id) {
+        try {
+            Connection conn = getConnection();
+            
+            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Blogivinkki WHERE id = ?");
+            haku.setInt(1, id);
+            ResultSet tulokset = haku.executeQuery();
+            
+            while(tulokset.next()) {
+                BlogiVinkki vinkki = new BlogiVinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getString("url"), tulokset.getInt("checked_out"));
                 vinkki.setId(id);
                 
                 tulokset.close();
@@ -168,6 +221,8 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                 
                 switch (tyyppi) {
                     case Kirja: vinkki = getKirja(id);
+                                break;
+                    case Blog:  vinkki = getBlogi(id);
                                 break;
                     default:    break;
                 }
@@ -206,6 +261,8 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                 switch (tyyppi) {
                     case Kirja: vinkki = getKirja(id);
                                 break;
+                    case Blog:  vinkki = getBlogi(id);
+                                break;
                     default:    break;
                 }
                 
@@ -232,6 +289,26 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             päivitys.executeUpdate();
             
             päivitys.close();
+            conn.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updateBlogi(int id, BlogiVinkki blogi) {
+        Connection conn;
+        try {
+            conn = getConnection();
+            PreparedStatement päivitys = conn.prepareStatement("UPDATE Blogivinkki SET title = ?, author = ?, url = ?, checked_out = ? WHERE id = ?");
+            päivitys.setString(1, blogi.getNimi());
+            päivitys.setString(2, blogi.getTekija());
+            päivitys.setString(3, blogi.getUrl());
+            päivitys.setInt(4, blogi.getTarkastettu());
+            päivitys.setInt(5, id);
+            
+            päivitys.executeUpdate();
+            
             päivitys.close();
             conn.close();
             
@@ -244,6 +321,8 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
     public void update(int id, Vinkki vinkki) {
         switch(vinkki.getTyyppi()) {
             case Kirja: updateKirja(id, (KirjaVinkki) vinkki);
+                        break;
+            case Blog: updateBlogi(id, (BlogiVinkki) vinkki);
                         break;
             default:    break;
         }
