@@ -17,7 +17,11 @@ public class KirjaVinkki extends Vinkki {
         super(tekija, nimi, 0);
         this.ISBN = "";
     }
-
+    
+    public Tyyppi getTyyppi() {
+        return Tyyppi.Kirja;
+    }
+    
     public String getISBN() {
         return ISBN;
     }

@@ -25,7 +25,11 @@ public abstract class Vinkki {
     public int getId() {
         return id;
     }
-
+    
+    public Tyyppi getTyyppi() {
+        return Tyyppi.None;
+    }
+    
     public String getTekija() {
         return tekija;
     }

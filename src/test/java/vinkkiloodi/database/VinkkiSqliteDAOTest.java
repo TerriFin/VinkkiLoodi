@@ -33,6 +33,15 @@ public class VinkkiSqliteDAOTest {
     }
     
     @Test 
+    public void sqliteDAOMuodostaaTietokantaYhteyden() {
+        try {
+            assert(dao.getConnection() != null);
+        } catch (SQLException ex) {
+            assert(false);
+        }
+    }
+    
+    @Test 
     public void lisaysLisaaElementinTietokantaan() {
         int alkuKoko = dao.getAll().size();
         

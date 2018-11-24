@@ -1,21 +1,65 @@
 # Tietokannan tietokantataulut ja niiden luonti
 
+## Vinkki
+
+### Luonti
+
+```SQL
+CREATE TABLE Vinkki (
+    id INTEGER PRIMARY KEY,
+    type int
+)
+```
+
+### Ominaisuudet
+
+Vinkkien supertaulu, sisältää jokaisen vinkin id:n ja tyypin
+
+- id            - vinkin uniikki id
+- type          - vinkin tyyppi, (1 = kirja, 2 = artikkeli, 3 = blogipostaus)
+
 ## Kirjavinkki
 
 ### Luonti
 
 ```SQL
 CREATE TABLE Kirjavinkki (
-    id INTEGER PRIMARY KEY,
+    id INTEGER,
     title string,
     author string,
-    is_read int
+    isbn string,
+    checked_out int,
+    FOREIGN KEY(id) REFERENCES Vinkki(id)
 )
 ```
 
 ### Ominaisuudet
 
-- id        - uniikki id kirjavinkille
-- title     - vinkatun kirjan nimi, merkkijono
-- author    - kirjailijan nimi, merkkijono
-- is_read   - onko vinkki luettu, int (0: ei, 1: on)
+- id            - vinkin id, viittaa Vinkki-tauluun 
+- title         - vinkatun kirjan nimi, merkkijono
+- author        - kirjailijan nimi, merkkijono
+- isbn          - kirjan ISBN tunnus
+- checked_out   - onko kirja luettu (0 = ei, 1 = kyllä)
+
+## Blogivinkki
+
+### Luonti
+
+```SQL
+CREATE TABLE Blogivinkki (
+    id INTEGER,
+    title string,
+    author string,
+    url string,
+    checked_out int
+    FOREIGN KEY(id) REFERENCES Vinkki(id),
+)
+```
+
+### Ominaisuudet
+
+- id            - vinkin id, viittaa Vinkki-tauluun 
+- title         - vinkatun blogipostauksen nimi, merkkijono
+- author        - kirjoittajan nimi, merkkijono
+- url           - blogipostauksen URL
+- checked_out   - onko blogipostaus luettu

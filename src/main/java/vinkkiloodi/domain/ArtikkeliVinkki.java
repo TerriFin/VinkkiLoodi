@@ -10,4 +10,7 @@ public class ArtikkeliVinkki extends Vinkki {
         super(tekija, nimi, tarkastettu);
     }
     
+    public Tyyppi getTyyppi() {
+        return Tyyppi.Artikkeli;
+    }
 }
