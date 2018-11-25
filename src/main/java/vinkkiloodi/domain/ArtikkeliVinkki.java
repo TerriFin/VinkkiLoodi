@@ -6,11 +6,23 @@ package vinkkiloodi.domain;
  */
 public class ArtikkeliVinkki extends Vinkki {
     
-    public ArtikkeliVinkki(String tekija, String nimi, int tarkastettu) {
+    private String julkaisija;
+    
+    public ArtikkeliVinkki(String tekija, String nimi, String julkaisija, int tarkastettu) {
         super(tekija, nimi, tarkastettu);
+        
+        this.julkaisija = julkaisija;
     }
     
     public Tyyppi getTyyppi() {
         return Tyyppi.Artikkeli;
+    }
+    
+    public String getJulkaisija() {
+        return this.julkaisija;
+    }
+    
+    public void setJulkaisija(String julkaisija) {
+        this.julkaisija = julkaisija;
     }
 }

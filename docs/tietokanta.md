@@ -63,3 +63,26 @@ CREATE TABLE Blogivinkki (
 - author        - kirjoittajan nimi, merkkijono
 - url           - blogipostauksen URL
 - checked_out   - onko blogipostaus luettu
+
+## Artikkelivinkki
+
+### Luonti
+
+```SQL
+CREATE TABLE Artikkelivinkki (
+    id INTEGER,
+    title string,
+    author string,
+    published_in string,
+    checked_out int,
+    FOREIGN KEY(id) REFERENCES Vinkki(id),
+)
+```
+
+### Ominaisuudet
+
+- id            - vinkin id, viittaa Vinkki-tauluun 
+- title         - vinkatun artikkelin nimi, merkkijono
+- author        - kirjoittajan nimi, merkkijono
+- published_in  - artikkelin julkaisupaikka
+- checked_out   - onko artikkeli luettu

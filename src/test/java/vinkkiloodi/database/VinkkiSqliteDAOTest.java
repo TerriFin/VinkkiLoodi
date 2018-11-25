@@ -8,6 +8,7 @@ import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import vinkkiloodi.domain.ArtikkeliVinkki;
 import vinkkiloodi.domain.BlogiVinkki;
 import vinkkiloodi.domain.KirjaVinkki;
 import vinkkiloodi.domain.Vinkki;
@@ -187,6 +188,52 @@ public class VinkkiSqliteDAOTest {
         dao.update(vinkki.getId(), paivitys);
         
         BlogiVinkki paivitetty = (BlogiVinkki) dao.getById(vinkki.getId());
+        
+        assert(paivitetty.getNimi().equals("Uusi"));
+    }
+    
+    @Test
+    public void artikkelinLisaysLisaaTietokantaan() {
+        int alkuKoko = dao.getAll().size();
+        
+        ArtikkeliVinkki vinkki = new ArtikkeliVinkki("ArtikkeliOtsikko", "ArtikkeliKirjoittaja", "Julkaisija", 0);
+        
+        dao.add(vinkki);
+        
+        assert(alkuKoko < dao.getAll().size());
+    }
+    
+    @Test
+    public void artikkeliSaaIDnLisayksessa() {
+        ArtikkeliVinkki vinkki = new ArtikkeliVinkki("ArtikkeliOtsikko", "ArtikkeliKirjoittaja", "Julkaisija", 0);
+        
+        dao.add(vinkki);
+        
+        assert(vinkki.getId() != 0);
+    }
+    
+    @Test
+    public void artikkeliLoytyyIDlla() {
+        ArtikkeliVinkki vinkki = new ArtikkeliVinkki("ArtikkeliOtsikko", "ArtikkeliKirjoittaja", "Julkaisija", 0);
+        
+        dao.add(vinkki);
+        
+        ArtikkeliVinkki tulos = (ArtikkeliVinkki) dao.getById(vinkki.getId());
+        
+        assert(tulos != null && tulos.getId() == vinkki.getId());
+    }
+    
+    @Test
+    public void artikkelinOtsikkoPaivittyy() {
+        ArtikkeliVinkki vinkki = new ArtikkeliVinkki("ArtikkeliOtsikko", "ArtikkeliKirjoittaja", "Julkaisija", 0);
+        
+        dao.add(vinkki);
+        
+        ArtikkeliVinkki paivitys = new ArtikkeliVinkki("Uusi", "Uusi", "Uusi", 0);
+        
+        dao.update(vinkki.getId(), paivitys);
+        
+        ArtikkeliVinkki paivitetty = (ArtikkeliVinkki) dao.getById(vinkki.getId());
         
         assert(paivitetty.getNimi().equals("Uusi"));
     }
