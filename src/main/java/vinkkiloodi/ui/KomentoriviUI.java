@@ -116,8 +116,10 @@ public class KomentoriviUI {
         String nimi = io.nextLine();
         io.printLine("Otsikko: ");
         String otsikko = io.nextLine();
+        io.printLine("Julkaisija: ");
+        String julkaisija = io.nextLine();
 
-        dao.add(new ArtikkeliVinkki(nimi, otsikko, "", 0));
+        dao.add(new ArtikkeliVinkki(nimi, otsikko, julkaisija, 0));
 
     }
 

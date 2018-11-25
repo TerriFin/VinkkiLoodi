@@ -47,11 +47,12 @@ public class KomentoriviUITest {
         input.add(url);
     }
 
-    private void lisaaTestiArtikkeli(String kirjoittaja, String otsikko) {
+    private void lisaaTestiArtikkeli(String kirjoittaja, String otsikko, String julkaisija) {
         input.add("1");
         input.add("3");
         input.add(kirjoittaja);
         input.add(otsikko);
+        input.add(julkaisija);
 
     }
 
@@ -85,7 +86,7 @@ public class KomentoriviUITest {
 
     @Test
     public void voiLisataArtikkeliVinkin() {
-        lisaaTestiArtikkeli("kirjoittaja", "artikkeli");
+        lisaaTestiArtikkeli("kirjoittaja", "artikkeli", "testiLehti");
 
         int vinkkejaEnnen = dao.getAll().size();
 
