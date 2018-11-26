@@ -5,7 +5,7 @@ import vinkkiloodi.database.VinkkiDAO;
 import vinkkiloodi.domain.ArtikkeliVinkki;
 import vinkkiloodi.domain.BlogiVinkki;
 import vinkkiloodi.domain.KirjaVinkki;
-import vinkkiloodi.domain.Tyyppi;
+//import vinkkiloodi.domain.Tyyppi;
 import vinkkiloodi.domain.Vinkki;
 import vinkkiloodi.io.IO;
 
