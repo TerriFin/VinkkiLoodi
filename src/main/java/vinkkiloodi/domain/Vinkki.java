@@ -87,12 +87,12 @@ public abstract class Vinkki {
         this.esitietokurssit.add(nimi);
     }
 
-    public void addRelatedCourse(String nimi) {
+    public void addLiittyvakurssi(String nimi) {
         this.liittyvatKurssit.add(nimi);
     }
 
     public void addTag(String tag) {
-        this.liittyvatKurssit.add(tag);
+        this.tagit.add(tag);
     }
 
     private String listaToString(List<String> lista) {
