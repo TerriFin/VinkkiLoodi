@@ -9,17 +9,13 @@ public class KirjaVinkki extends Vinkki {
     private String ISBN;
 
     public KirjaVinkki(String tekija, String nimi, int tarkastettu, String ISBN) {
-        super(tekija, nimi, tarkastettu);
+        super(tekija, nimi, tarkastettu, Tyyppi.Kirja);
         this.ISBN = ISBN;
     }
 
     public KirjaVinkki(String tekija, String nimi) {
         super(tekija, nimi, 0);
         this.ISBN = "";
-    }
-
-    public Tyyppi getTyyppi() {
-        return Tyyppi.Kirja;
     }
 
     public String getISBN() {

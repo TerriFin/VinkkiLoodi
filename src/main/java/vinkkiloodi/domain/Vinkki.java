@@ -10,6 +10,7 @@ public abstract class Vinkki {
     private String tekija;
     private String nimi;
     private int tarkastettu;
+    private Tyyppi tyyppi;
     List<String> tagit;
     List<String> esitietokurssit;
     List<String> liittyvatKurssit;
@@ -21,6 +22,17 @@ public abstract class Vinkki {
         this.tagit = new ArrayList<>();
         this.esitietokurssit = new ArrayList<>();
         this.liittyvatKurssit = new ArrayList<>();
+        this.tyyppi = Tyyppi.None;
+    }
+    
+    public Vinkki(String tekija, String nimi, int tarkastettu, Tyyppi tyyppi) {
+        this.tekija = tekija;
+        this.nimi = nimi;
+        this.tarkastettu = tarkastettu;
+        this.tagit = new ArrayList<>();
+        this.esitietokurssit = new ArrayList<>();
+        this.liittyvatKurssit = new ArrayList<>();
+        this.tyyppi = tyyppi;
     }
 
     public int getId() {
@@ -28,7 +40,7 @@ public abstract class Vinkki {
     }
 
     public Tyyppi getTyyppi() {
-        return Tyyppi.None;
+        return tyyppi;
     }
 
     public String getTekija() {
@@ -146,10 +158,15 @@ public abstract class Vinkki {
         }
         return s;
     }
+    
+    private String tyyppiToString() {
+        return "Tyyppi: " + tyyppi + "\n";
+    }
 
     @Override
     public String toString() {
-        return tekijaToString()
+        return tyyppiToString()
+                + tekijaToString()
                 + nimiToString()
                 + tarkastettuToString()
                 + tagitToString()

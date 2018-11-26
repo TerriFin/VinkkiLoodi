@@ -9,13 +9,9 @@ public class ArtikkeliVinkki extends Vinkki {
     private String julkaisija;
 
     public ArtikkeliVinkki(String tekija, String nimi, String julkaisija, int tarkastettu) {
-        super(tekija, nimi, tarkastettu);
+        super(tekija, nimi, tarkastettu, Tyyppi.Artikkeli);
 
         this.julkaisija = julkaisija;
-    }
-
-    public Tyyppi getTyyppi() {
-        return Tyyppi.Artikkeli;
     }
 
     public String getJulkaisija() {
