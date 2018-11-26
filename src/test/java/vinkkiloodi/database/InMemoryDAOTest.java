@@ -1,8 +1,11 @@
 package vinkkiloodi.database;
 
+import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import vinkkiloodi.domain.ArtikkeliVinkki;
+import vinkkiloodi.domain.BlogiVinkki;
 import vinkkiloodi.domain.KirjaVinkki;
 import vinkkiloodi.domain.Vinkki;
 
@@ -115,5 +118,52 @@ public class InMemoryDAOTest {
         Vinkki tulos = dao.getById(vinkki.getId());
         
         assertEquals(tulos.getTarkastettu(), 1);
+    }
+    
+    @Test
+    public void kirjaLoytyyTekijalla() {
+        Vinkki vinkki = new KirjaVinkki("Uniikkitekija", "testi", 0, "12345678");
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getKirjaByTekija("Uniikkitekija");
+
+        assertEquals(1, haku.size());
+    }
+
+    @Test
+    public void BlogiLoytyyTekijalla() {
+
+        Vinkki vinkki = new BlogiVinkki("Uniikkitekija", "testi", "hienptestnurl.net", 0);
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getBlogiByTekija("Uniikkitekija");
+
+        assertEquals(1, haku.size());
+    }
+
+    @Test
+    public void ArtikkeliLoytyyTekijalla() {
+
+        Vinkki vinkki = new ArtikkeliVinkki("Uniikkitekija", "testi", "julkaisija", 0);
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getArtikkeliByTekija("Uniikkitekija");
+
+        assertEquals(1, haku.size());
+    }
+
+    @Test
+    public void VinkitLoytyvatTekijalla() {
+        Vinkki vinkki = new KirjaVinkki("Uniikkitekija", "testi", 0, "12345678");
+        Vinkki vinkki2 = new BlogiVinkki("Uniikkitekija", "testi", "www.url.ei", 0);
+        Vinkki vinkki3 = new ArtikkeliVinkki("Uniikkitekija", "testi", "julkaisija", 0);
+
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+
+        List<Vinkki> haku = dao.getByTekija("Uniikkitekija");
+
+        assertEquals(3, haku.size());
     }
 }
