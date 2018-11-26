@@ -9,8 +9,12 @@ public class KirjaVinkki extends Vinkki {
     private String ISBN;
 
     public KirjaVinkki(String tekija, String nimi, int tarkastettu, String ISBN) {
-        super(tekija, nimi, tarkastettu, Tyyppi.Kirja);
+        super(tekija, nimi, tarkastettu);
         this.ISBN = ISBN;
+    }
+    
+    public Tyyppi getTyyppi() {
+        return Tyyppi.Kirja;
     }
 
     public KirjaVinkki(String tekija, String nimi) {
@@ -36,7 +40,8 @@ public class KirjaVinkki extends Vinkki {
 
     @Override
     public String toString() {
-        return super.toString() 
+        return "Tyyppi: Kirja\n"
+                + super.toString() 
                 + isbnToString();
     }
 }

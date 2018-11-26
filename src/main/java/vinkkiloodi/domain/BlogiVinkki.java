@@ -9,8 +9,12 @@ public class BlogiVinkki extends Vinkki {
     private String url;
 
     public BlogiVinkki(String tekija, String nimi, String url, int tarkastettu) {
-        super(tekija, nimi, tarkastettu, Tyyppi.Blog);
+        super(tekija, nimi, tarkastettu);
         this.url = url;
+    }
+
+    public Tyyppi getTyyppi() {
+        return Tyyppi.Blog;
     }
 
     public String getUrl() {
@@ -31,7 +35,8 @@ public class BlogiVinkki extends Vinkki {
 
     @Override
     public String toString() {
-        return super.toString() 
+        return "Tyyppi: Blog\n"
+                + super.toString()
                 + urlToString();
     }
 }

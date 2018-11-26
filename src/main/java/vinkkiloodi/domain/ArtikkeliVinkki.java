@@ -9,9 +9,13 @@ public class ArtikkeliVinkki extends Vinkki {
     private String julkaisija;
 
     public ArtikkeliVinkki(String tekija, String nimi, String julkaisija, int tarkastettu) {
-        super(tekija, nimi, tarkastettu, Tyyppi.Artikkeli);
+        super(tekija, nimi, tarkastettu);
 
         this.julkaisija = julkaisija;
+    }
+
+    public Tyyppi getTyyppi() {
+        return Tyyppi.Artikkeli;
     }
 
     public String getJulkaisija() {
@@ -32,7 +36,8 @@ public class ArtikkeliVinkki extends Vinkki {
 
     @Override
     public String toString() {
-        return super.toString() 
+        return "Tyyppi: Artikkeli\n"
+                + super.toString()
                 + julkaisijaToString();
     }
 }
