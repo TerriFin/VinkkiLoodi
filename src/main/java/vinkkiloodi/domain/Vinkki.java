@@ -102,6 +102,6 @@ public abstract class Vinkki {
         } else {
             tarkistettuVinkki = "on tarkistettu";
         }
-        return getTyyppi() + "'" + nimi + "', " + tekija + ", " + tarkistettuVinkki + ", tagit: " + tagit;
+        return getTyyppi() + ": '" + nimi + "', " + tekija + ", " + tarkistettuVinkki + ", tagit: " + tagit;
     }
 }

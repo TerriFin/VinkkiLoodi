@@ -5,6 +5,7 @@ import vinkkiloodi.database.VinkkiDAO;
 import vinkkiloodi.domain.ArtikkeliVinkki;
 import vinkkiloodi.domain.BlogiVinkki;
 import vinkkiloodi.domain.KirjaVinkki;
+import vinkkiloodi.domain.Tyyppi;
 import vinkkiloodi.domain.Vinkki;
 import vinkkiloodi.io.IO;
 
@@ -33,7 +34,7 @@ public class KomentoriviUI {
             io.printLine("\nMitä haluat tehdä?"
                     + "\n1 - Lisää vinkki"
                     + "\n2 - Listaa vinkit"
-                    + "\n3 - Merkitse vinkki luetuksi"
+                    + "\n3 - Päivitä vinkki"
                     + "\nX - Sammuta ohjelma\n");
 
             String komento = io.nextLine();
@@ -45,7 +46,7 @@ public class KomentoriviUI {
             } else if (komento.equals("2")) {
                 listaaKaikki();
             } else if (komento.equals("3")) {
-                merkitseVinkkiLuetuksi();
+                paivitaVinkki();
             } else {
                 io.printLine("\nVirheellinen komento.");
             }
@@ -73,6 +74,8 @@ public class KomentoriviUI {
                 break;
             } else if (komento.equals("x")) {
                 break;
+            } else {
+                io.printLine("\nVirheellinen komento.");
             }
         }
 
@@ -131,29 +134,85 @@ public class KomentoriviUI {
         }
     }
 
-    private void merkitseVinkkiLuetuksi() {
-        io.printLine("\nMerkitse vinkki luetuksi\n--------------------\n");
+    private void paivitaVinkki() {
+        io.printLine("\nPäivitä vinkki\n--------------------\n");
         io.printLine("Syötä lukuvinkin otsikko: ");
         String haku = io.nextLine();
         haku = haku.toLowerCase().trim();
 
         // Alkeellinen hakutoiminnallisuus.
-        Vinkki haettu = null;
+        Vinkki haettu = haeVinkkiOtsikolla(haku);
+
+        if (haettu == null) {
+            io.printLine("Ei löytynyt vinkkiä hakusanalla \"" + haku + "\".");
+            return;
+        }
+
+        System.out.println("Vinkki löytyi järjestelmästä.\nPäivitä vinkki (tyhjä kenttä = pysyy entisenä)\n");
+
+        System.out.println("Vanha otsikko: " + haettu.getNimi() + ", Uusi otsikko: ");
+        String uusiOtsikko = io.nextLine();
+        System.out.println("Vanha tekijä: " + haettu.getTekija() + ", Uusi tekijä: ");
+        String uusiTekija = io.nextLine();
+        System.out.println("On tarkastettu: " + haettu.getTarkastettu() + ", Onko (k/e): ");
+        String uusiTarkastettu = io.nextLine();
+        
+        haettu.setNimi(uusiOtsikko);
+        haettu.setTekija(uusiTekija);
+        if (uusiTarkastettu.equals("k")) {
+            haettu.setTarkastettu(1);
+        } else if (uusiTarkastettu.equals("e")) {
+            haettu.setTarkastettu(0);
+        }
+
+        switch (haettu.getTyyppi()) {
+            case Kirja:
+                haettu = paivitaKirja((KirjaVinkki) haettu);
+                break;
+            case Blog:
+                haettu = paivitaBlogi((BlogiVinkki) haettu);
+                break;
+            case Artikkeli:
+                haettu = paivitaArtikkeli((ArtikkeliVinkki) haettu);
+                break;
+            default:
+                break;
+        }
+
+        dao.update(haettu.getId(), haettu);
+        io.printLine("Päivitettiin vinkki \"" + haettu.getNimi() + "\".");
+
+    }
+
+    private Vinkki paivitaKirja(KirjaVinkki kv) {
+        System.out.println("Vanha ISBN: " + kv.getISBN() + ", Uusi ISBN: ");
+        String uusiIsbn = io.nextLine();
+        kv.setISBN(uusiIsbn);
+        return kv;
+    }
+
+    private Vinkki paivitaBlogi(BlogiVinkki bv) {
+        System.out.println("Vanha URL: " + bv.getUrl()+ ", Uusi URL: ");
+        String uusiUrl = io.nextLine();
+        bv.setUrl(uusiUrl);
+        return bv;
+    }
+
+    private Vinkki paivitaArtikkeli(ArtikkeliVinkki av) {
+        System.out.println("Vanha julkaisija: " + av.getJulkaisija() + ", Uusi julkaisija: ");
+        String uusiJulkaisija = io.nextLine();
+        av.setJulkaisija(uusiJulkaisija);
+        return av;
+    }
+
+    private Vinkki haeVinkkiOtsikolla(String haku) {
         List<Vinkki> vinkit = dao.getAll();
         for (int i = 0; i < vinkit.size(); i++) {
             Vinkki v = vinkit.get(i);
             if (v.getNimi().toLowerCase().trim().equals(haku)) {
-                haettu = v;
-                break;
+                return v;
             }
         }
-
-        if (haettu != null) {
-            haettu.setTarkastettu(1);
-            dao.update(haettu.getId(), haettu);
-            io.printLine("Vinkki " + haku + " merkittiin luetuksi.");
-        } else {
-            io.printLine("Vinkki " + haku + " ei löytynyt järjestelmästä.");
-        }
+        return null;
     }
 }
