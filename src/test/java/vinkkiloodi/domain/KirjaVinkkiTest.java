@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
  *
  * @author mina
  */
-public class KirjavinkkiTest {
+public class KirjaVinkkiTest {
 
     private KirjaVinkki kirjaPieniKonstruktori;
     private KirjaVinkki kirjaSuuriKonstruktori;
@@ -23,7 +23,6 @@ public class KirjavinkkiTest {
         otsikko = "Great Book";
         luettu = 1;
         isbn = "978-951-98548-9-2";
-        
 
         kirjaPieniKonstruktori = new KirjaVinkki(kirjoittaja, otsikko);
         kirjaSuuriKonstruktori = new KirjaVinkki(kirjoittaja, otsikko, luettu, isbn);
@@ -65,10 +64,15 @@ public class KirjavinkkiTest {
     public void SuuriKonstruktoriLuoIsbn() {
         assertEquals(isbn, kirjaSuuriKonstruktori.getISBN());
     }
-    
+
     @Test
     public void SuuriKonstruktoriLuoLuetun() {
         assertEquals(luettu, kirjaSuuriKonstruktori.getTarkastettu());
+    }
+
+    @Test
+    public void KonstruktoriLuoOikeallaTyypilla() {
+        assertEquals(Tyyppi.Kirja, kirjaPieniKonstruktori.getTyyppi());
     }
 
     @Test
