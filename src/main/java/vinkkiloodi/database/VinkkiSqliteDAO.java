@@ -79,6 +79,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         statement.execute();
         
         statement.close();
+        conn.close();
     }
     
     public int tyyppiToInt(Tyyppi tyyppi) {
