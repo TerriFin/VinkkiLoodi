@@ -2,6 +2,7 @@ package vinkkiloodi.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class Vinkki {
 
@@ -25,11 +26,11 @@ public abstract class Vinkki {
     public int getId() {
         return id;
     }
-    
+
     public Tyyppi getTyyppi() {
         return Tyyppi.None;
     }
-    
+
     public String getTekija() {
         return tekija;
     }
@@ -86,22 +87,73 @@ public abstract class Vinkki {
         this.esitietokurssit.add(nimi);
     }
 
-    public void addRelatedCourse(String nimi) {
+    public void addLiittyvakurssi(String nimi) {
         this.liittyvatKurssit.add(nimi);
     }
 
     public void addTag(String tag) {
-        this.liittyvatKurssit.add(tag);
+        this.tagit.add(tag);
+    }
+
+    private String listaToString(List<String> lista) {
+        return lista.stream().collect(Collectors.joining(", "));
+    }
+
+    private String tekijaToString() {
+        String s = "";
+        if (!getTekija().equals("")) {
+            s = "Tekijä: " + getTekija() + "\n";
+        }
+        return s;
+    }
+
+    private String nimiToString() {
+        String s = "";
+        if (!getNimi().equals("")) {
+            s = "Nimi: " + getNimi() + "\n";
+        }
+        return s;
+    }
+
+    private String tarkastettuToString() {
+        if (getTarkastettu() == 0) {
+            return "Tarkastettu: Ei\n";
+        } else {
+            return "Tarkastettu: Kyllä\n";
+        }
+    }
+
+    private String tagitToString() {
+        String s = "";
+        if (!getTagit().isEmpty()) {
+            s = "Tagit: " + listaToString(getTagit()) + "\n";
+        }
+        return s;
+    }
+
+    private String esitietokurssitToString() {
+        String s = "";
+        if (!getEsitietokurssit().isEmpty()) {
+            s = "Esitietokurssit: " + listaToString(getEsitietokurssit()) + "\n";
+        }
+        return s;
+    }
+
+    private String liittyvatKurssitToString() {
+        String s = "";
+        if (!getLiittyvatKurssit().isEmpty()) {
+            s = "Liittyvät kurssit: " + listaToString(getLiittyvatKurssit()) + "\n";
+        }
+        return s;
     }
 
     @Override
     public String toString() {
-        String tarkistettuVinkki = "";
-        if (tarkastettu == 0) {
-            tarkistettuVinkki = "ei ole tarkistettu";
-        } else {
-            tarkistettuVinkki = "on tarkistettu";
-        }
-        return getTyyppi() + ": '" + nimi + "', " + tekija + ", " + tarkistettuVinkki + ", tagit: " + tagit;
+        return tekijaToString()
+                + nimiToString()
+                + tarkastettuToString()
+                + tagitToString()
+                + esitietokurssitToString()
+                + liittyvatKurssitToString();
     }
 }

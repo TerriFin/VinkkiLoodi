@@ -432,6 +432,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         }
     }
 
+    @Override
     public List<Vinkki> getKirjaByTekija(String tekija) {
         List<Vinkki> vinkit = new ArrayList<>();
         Connection conn;
@@ -459,6 +460,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         return vinkit;
     }
 
+    @Override
     public List<Vinkki> getBlogiByTekija(String tekija) {
         List<Vinkki> vinkit = new ArrayList<>();
         Connection conn;
@@ -485,6 +487,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         return vinkit;
     }
 
+    @Override
     public List<Vinkki> getArtikkeliByTekija(String tekija) {
         List<Vinkki> vinkit = new ArrayList<>();
         Connection conn;
@@ -513,12 +516,13 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
     }
 
+    @Override
     public List<Vinkki> getByTekija(String tekija) {
         List<Vinkki> vinkit = new ArrayList<>();
         vinkit.addAll(getKirjaByTekija(tekija));
         vinkit.addAll(getBlogiByTekija(tekija));
         vinkit.addAll(getArtikkeliByTekija(tekija));
-        
+
         return vinkit;
     }
 }
