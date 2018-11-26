@@ -22,9 +22,8 @@ public class BlogiVinkkiTest {
         nimi = "Hieno Blogi";
         luettu = 0;
         url = "testurl·eiole";
-        
 
-       blogi = new BlogiVinkki(tekija, nimi, url, luettu);
+        blogi = new BlogiVinkki(tekija, nimi, url, luettu);
     }
 
     @Test
@@ -36,24 +35,21 @@ public class BlogiVinkkiTest {
     public void KonstruktoriLuoOtsikolla() {
         assertEquals(nimi, blogi.getNimi());
     }
-    
-    
-        @Test
+
+    @Test
     public void KonstruktoriLuoOikeallaTyypilla() {
         assertEquals(Tyyppi.Blog, blogi.getTyyppi());
     }
-
 
     @Test
     public void KonstruktoriLuoUrlilla() {
         assertEquals(url, blogi.getUrl());
     }
 
-
     @Test
     public void UrlVoidaanPaivittaa() {
         blogi.setUrl("uusiurl.ei");
-        
+
         assertEquals("uusiurl.ei", blogi.getUrl());
     }
 
