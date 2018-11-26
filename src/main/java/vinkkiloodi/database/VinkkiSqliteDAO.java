@@ -39,6 +39,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         } catch (ClassNotFoundException e) {
             System.out.println("JDBC driver not found!");
         }
+        
         conn = DriverManager.getConnection("jdbc:sqlite:" + db);
 
         return conn;
@@ -342,7 +343,10 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                     default:
                         break;
                 }
-
+                
+                tulokset.close();
+                conn.close();
+                
                 return vinkki;
             }
         } catch (SQLException ex) {
