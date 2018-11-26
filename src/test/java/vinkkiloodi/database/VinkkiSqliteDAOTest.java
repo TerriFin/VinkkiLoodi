@@ -34,7 +34,7 @@ public class VinkkiSqliteDAOTest {
         } catch (SQLException ex) {
             Logger.getLogger(VinkkiSqliteDAOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         File db = new File("test.db");
 
         if (db.exists()) {
