@@ -70,7 +70,18 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
         conn.close();
     }
-
+    
+    public void dropDeadAndDie() throws SQLException {
+        Connection conn = getConnection();
+        
+        PreparedStatement statement = conn.prepareStatement("DROP TABLE Kirjavinkki; DROP TABLE Blogivinkki; DROP TABLE Artikkelivinkki; DROP TABLE Vinkki;");
+        
+        statement.execute();
+        
+        statement.close();
+        conn.close();
+    }
+    
     public int tyyppiToInt(Tyyppi tyyppi) {
         switch (tyyppi) {
             case Kirja:

@@ -29,6 +29,12 @@ public class VinkkiSqliteDAOTest {
 
     @After
     public void tearDown() {
+        try {
+            dao.dropDeadAndDie();
+        } catch (SQLException ex) {
+            Logger.getLogger(VinkkiSqliteDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         File db = new File("test.db");
 
         if (db.exists()) {
