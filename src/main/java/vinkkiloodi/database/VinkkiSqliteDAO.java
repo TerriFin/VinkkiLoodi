@@ -329,7 +329,11 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             while (tulokset.next()) {
                 Tyyppi tyyppi = intToTyyppi(tulokset.getInt("type"));
                 Vinkki vinkki = null;
-
+                
+                tulokset.close();
+                haku.close();
+                conn.close();
+                
                 switch (tyyppi) {
                     case Kirja:
                         vinkki = getKirja(id);
@@ -343,9 +347,6 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                     default:
                         break;
                 }
-                
-                tulokset.close();
-                conn.close();
                 
                 return vinkki;
             }
@@ -455,6 +456,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                 vinkit.add(vinkki);
             }
             haku.close();
+            tulokset.close();
             conn.close();
 
         } catch (SQLException ex) {
@@ -482,6 +484,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                 vinkit.add(vinkki);
             }
             haku.close();
+            tulokset.close();
             conn.close();
 
         } catch (SQLException ex) {
@@ -509,7 +512,9 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                         tulokset.getString("published_in"), tulokset.getInt("checked_out"));
                 vinkit.add(vinkki);
             }
+            
             haku.close();
+            tulokset.close();
             conn.close();
 
         } catch (SQLException ex) {
