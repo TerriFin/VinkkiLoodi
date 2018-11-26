@@ -207,8 +207,8 @@ public class VinkkiSqliteDAOTest {
         ArtikkeliVinkki vinkki = new ArtikkeliVinkki("ArtikkeliOtsikko", "ArtikkeliKirjoittaja", "Julkaisija", 0);
 
         dao.add(vinkki);
-
-        assert (alkuKoko < dao.getAll().size());
+        
+        assertTrue(alkuKoko < dao.getAll().size());
     }
 
     @Test

@@ -39,7 +39,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         } catch (ClassNotFoundException e) {
             System.out.println("JDBC driver not found!");
         }
-        
+
         conn = DriverManager.getConnection("jdbc:sqlite:" + db);
 
         return conn;
@@ -70,18 +70,18 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
         conn.close();
     }
-    
+
     public void dropDeadAndDie() throws SQLException {
         Connection conn = getConnection();
-        
+
         PreparedStatement statement = conn.prepareStatement("DROP TABLE Kirjavinkki; DROP TABLE Blogivinkki; DROP TABLE Artikkelivinkki; DROP TABLE Vinkki;");
-        
+
         statement.execute();
-        
+
         statement.close();
         conn.close();
     }
-    
+
     public int tyyppiToInt(Tyyppi tyyppi) {
         switch (tyyppi) {
             case Kirja:
@@ -206,24 +206,21 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         }
     }
 
-    private KirjaVinkki getKirja(int id) {
+    private KirjaVinkki getKirja(int id, Connection conn) {
         try {
-            Connection conn = getConnection();
-
             PreparedStatement haku = conn.prepareStatement("SELECT * FROM Kirjavinkki WHERE id = ?");
             haku.setInt(1, id);
             ResultSet tulokset = haku.executeQuery();
 
-            while (tulokset.next()) {
-                KirjaVinkki vinkki = new KirjaVinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getInt("checked_out"), "");
-                vinkki.setId(id);
+            tulokset.next();
 
-                tulokset.close();
-                haku.close();
-                conn.close();
+            KirjaVinkki vinkki = new KirjaVinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getInt("checked_out"), "");
+            vinkki.setId(id);
 
-                return vinkki;
-            }
+            tulokset.close();
+            haku.close();
+
+            return vinkki;
         } catch (SQLException e) {
 
         }
@@ -231,24 +228,20 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         return null;
     }
 
-    private BlogiVinkki getBlogi(int id) {
+    private BlogiVinkki getBlogi(int id, Connection conn) {
         try {
-            Connection conn = getConnection();
-
             PreparedStatement haku = conn.prepareStatement("SELECT * FROM Blogivinkki WHERE id = ?");
             haku.setInt(1, id);
             ResultSet tulokset = haku.executeQuery();
 
-            while (tulokset.next()) {
-                BlogiVinkki vinkki = new BlogiVinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getString("url"), tulokset.getInt("checked_out"));
-                vinkki.setId(id);
+            tulokset.next();
+            BlogiVinkki vinkki = new BlogiVinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getString("url"), tulokset.getInt("checked_out"));
+            vinkki.setId(id);
 
-                tulokset.close();
-                haku.close();
-                conn.close();
+            tulokset.close();
+            haku.close();
 
-                return vinkki;
-            }
+            return vinkki;
         } catch (SQLException e) {
 
         }
@@ -256,24 +249,20 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         return null;
     }
 
-    private ArtikkeliVinkki getArtikkeli(int id) {
+    private ArtikkeliVinkki getArtikkeli(int id, Connection conn) {
         try {
-            Connection conn = getConnection();
-
             PreparedStatement haku = conn.prepareStatement("SELECT * FROM Artikkelivinkki WHERE id = ?");
             haku.setInt(1, id);
             ResultSet tulokset = haku.executeQuery();
 
-            while (tulokset.next()) {
-                ArtikkeliVinkki vinkki = new ArtikkeliVinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getString("published_in"), tulokset.getInt("checked_out"));
-                vinkki.setId(id);
+            tulokset.next();
+            ArtikkeliVinkki vinkki = new ArtikkeliVinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getString("published_in"), tulokset.getInt("checked_out"));
+            vinkki.setId(id);
 
-                tulokset.close();
-                haku.close();
-                conn.close();
+            tulokset.close();
+            haku.close();
 
-                return vinkki;
-            }
+            return vinkki;
         } catch (SQLException e) {
 
         }
@@ -298,13 +287,13 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
                 switch (tyyppi) {
                     case Kirja:
-                        vinkki = getKirja(id);
+                        vinkki = getKirja(id, conn);
                         break;
                     case Blog:
-                        vinkki = getBlogi(id);
+                        vinkki = getBlogi(id, conn);
                         break;
                     case Artikkeli:
-                        vinkki = getArtikkeli(id);
+                        vinkki = getArtikkeli(id, conn);
                         break;
                     default:
                         break;
@@ -337,30 +326,29 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             haku.setInt(1, id);
             ResultSet tulokset = haku.executeQuery();
 
-            while (tulokset.next()) {
-                Tyyppi tyyppi = intToTyyppi(tulokset.getInt("type"));
-                Vinkki vinkki = null;
-                
-                tulokset.close();
-                haku.close();
-                conn.close();
-                
-                switch (tyyppi) {
-                    case Kirja:
-                        vinkki = getKirja(id);
-                        break;
-                    case Blog:
-                        vinkki = getBlogi(id);
-                        break;
-                    case Artikkeli:
-                        vinkki = getArtikkeli(id);
-                        break;
-                    default:
-                        break;
-                }
-                
-                return vinkki;
+            tulokset.next();
+            Tyyppi tyyppi = intToTyyppi(tulokset.getInt("type"));
+            Vinkki vinkki = null;
+
+            tulokset.close();
+            haku.close();
+
+            switch (tyyppi) {
+                case Kirja:
+                    vinkki = getKirja(id, conn);
+                    break;
+                case Blog:
+                    vinkki = getBlogi(id, conn);
+                    break;
+                case Artikkeli:
+                    vinkki = getArtikkeli(id, conn);
+                    break;
+                default:
+                    break;
             }
+
+            conn.close();
+            return vinkki;
         } catch (SQLException ex) {
             Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -523,7 +511,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                         tulokset.getString("published_in"), tulokset.getInt("checked_out"));
                 vinkit.add(vinkki);
             }
-            
+
             haku.close();
             tulokset.close();
             conn.close();

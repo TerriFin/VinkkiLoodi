@@ -116,7 +116,8 @@ public class KomentoriviUI {
         String url = io.nextLine();
 
         dao.add(new BlogiVinkki(nimi, otsikko, url, 0));
-
+        
+        io.printLine("Vinkki lisätty!");
     }
 
     private void lisaaArtikkeliVinkki() {
@@ -129,7 +130,8 @@ public class KomentoriviUI {
         String julkaisija = io.nextLine();
 
         dao.add(new ArtikkeliVinkki(nimi, otsikko, julkaisija, 0));
-
+        
+        io.printLine("Vinkki lisätty!");
     }
 
     private void listaaKaikki() {
