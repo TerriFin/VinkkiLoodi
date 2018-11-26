@@ -19,13 +19,13 @@ public class InMemoryDAO implements VinkkiDAO {
 
     @Override
     public void add(Vinkki vinkki) {
-        this.vinkkiDB.add(vinkki);
+        vinkkiDB.add(vinkki);
         vinkki.setId(vinkkiDB.indexOf(vinkki));
     }
 
     @Override
     public List<Vinkki> getAll() {
-        return this.vinkkiDB;
+        return vinkkiDB;
     }
 
     @Override

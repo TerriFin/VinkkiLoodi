@@ -34,7 +34,9 @@ public class KomentoriviUI {
             io.printLine("\nMitä haluat tehdä?"
                     + "\n1 - Lisää vinkki"
                     + "\n2 - Listaa vinkit"
-                    + "\n3 - Päivitä vinkki"
+                    + "\n3 - Nopea haku"
+                    + "\n4 - Tarkka haku"
+                    + "\n5 - Päivitä vinkki"
                     + "\nX - Sammuta ohjelma\n");
 
             String komento = io.nextLine();
@@ -46,6 +48,10 @@ public class KomentoriviUI {
             } else if (komento.equals("2")) {
                 listaaKaikki();
             } else if (komento.equals("3")) {
+                
+            } else if (komento.equals("4")) {
+                
+            } else if (komento.equals("5")) {
                 paivitaVinkki();
             } else {
                 io.printLine("\nVirheellinen komento.");
@@ -102,9 +108,9 @@ public class KomentoriviUI {
 
     private void lisaaBlogiVinkki() {
         io.printLine("\nLisää blogpost\n-----------\n");
-        io.printLine("Kirjoittajan nimi: ");
+        io.printLine("Tekijän nimi: ");
         String nimi = io.nextLine();
-        io.printLine("Otsikko: ");
+        io.printLine("Blogin nimi: ");
         String otsikko = io.nextLine();
         io.printLine("URL-osoite:");
         String url = io.nextLine();
