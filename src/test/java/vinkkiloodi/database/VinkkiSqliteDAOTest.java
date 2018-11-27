@@ -1,14 +1,15 @@
 package vinkkiloodi.database;
 
-import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import vinkkiloodi.domain.ArtikkeliVinkki;
 import vinkkiloodi.domain.BlogiVinkki;
 import vinkkiloodi.domain.KirjaVinkki;
@@ -18,16 +19,19 @@ public class VinkkiSqliteDAOTest {
 
     private VinkkiSqliteDAO dao;
 
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
+
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         try {
-            dao = new VinkkiSqliteDAO("test.db");
+            dao = new VinkkiSqliteDAO(folder.newFile("test.db").getPath());
         } catch (SQLException ex) {
             Logger.getLogger(VinkkiSqliteDAOTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    @After
+    /*@After
     public void tearDown() {
         try {
             dao.dropDeadAndDie();
@@ -40,8 +44,7 @@ public class VinkkiSqliteDAOTest {
         if (db.exists()) {
             db.delete();
         }
-    }
-
+    }*/
     @Test
     public void sqliteDAOMuodostaaTietokantaYhteyden() {
         try {
@@ -207,7 +210,7 @@ public class VinkkiSqliteDAOTest {
         ArtikkeliVinkki vinkki = new ArtikkeliVinkki("ArtikkeliOtsikko", "ArtikkeliKirjoittaja", "Julkaisija", 0);
 
         dao.add(vinkki);
-        
+
         assertTrue(alkuKoko < dao.getAll().size());
     }
 
