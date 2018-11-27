@@ -55,6 +55,34 @@ public class KomentoriviUITest {
         input.add(julkaisija);
 
     }
+    
+    private void paivitaTestiKirja(String haku, String otsikko, String kirjoittaja, String tarkastettu, String ISBN) {
+        input.add("5");
+        input.add(haku);
+        input.add(otsikko);
+        input.add(kirjoittaja);
+        input.add(tarkastettu);
+        input.add(ISBN);
+    }
+
+    private void paivitaTestiBlogi(String haku, String otsikko, String kirjoittaja, String tarkastettu, String url) {
+        input.add("5");
+        input.add(haku);
+        input.add(otsikko);
+        input.add(kirjoittaja);
+        input.add(tarkastettu);
+        input.add(url);
+    }
+
+    private void paivitaTestiArtikkeli(String haku, String otsikko, String kirjoittaja, String tarkastettu, String julkaisija) {
+        input.add("5");
+        input.add(haku);
+        input.add(otsikko);
+        input.add(kirjoittaja);
+        input.add(tarkastettu);
+        input.add(julkaisija);
+
+    }
 
     private void listaaVinkit() {
         input.add("2");
@@ -101,5 +129,62 @@ public class KomentoriviUITest {
         aloitaOhjelma();
 
         assertTrue(vinkkejaEnnen < dao.getAll().size());
+    }
+    
+    @Test
+    public void voiListataVinkit() {
+        lisaaTestiArtikkeli("kirjoittaja", "artikkeli", "testiLehti");
+        listaaVinkit();
+        lopetaOhjelma();
+
+        aloitaOhjelma();
+    }
+    
+    @Test
+    public void voiPaivittaaArtikkeliVinkin() {
+        lisaaTestiArtikkeli("kirjoittaja", "artikkeli", "testiLehti");
+        paivitaTestiArtikkeli("artikkeli", "uusiArtikkeli", "uusiKirjoittaja", "k", "uusiLehti");
+        
+        aloitaOhjelma();
+    }
+    
+    @Test
+    public void voiPaivittaaBlogiVinkin() {
+        lisaaTestiBlogi("kirjoittaja", "blogiposti", "https://olematontestiurl.ei");
+        paivitaTestiBlogi("blogiposti", "uusiBlogi", "uusiKirjoittaja", "e", "uusiUrl");
+        
+        aloitaOhjelma();
+    }
+    
+    @Test
+    public void voiPaivittaaKirjaVinkin() {
+        lisaaTestiKirja("kirjoittaja", "kirja", "12345");
+        paivitaTestiKirja("kirja", "uusiKirja", "uusiKirjoittaja", "k", "987653");
+        
+        aloitaOhjelma();
+    }
+    
+    @Test
+    public void eiPaivitaVinkkiaJosEiLoydy() {
+        lisaaTestiKirja("kirjoittaja", "kirja", "12345");
+        paivitaTestiKirja("vaarahakusana", "uusiKirja", "uusiKirjoittaja", "k", "987653");
+        
+        aloitaOhjelma();
+    }
+    
+    @Test
+    public void voiPoistuaLisaaValikosta() {
+        
+        int vinkkejaEnnen = dao.getAll().size();
+        
+        input.add("1");
+        input.add("x");
+        input.add("kirjoittaja");
+        input.add("kirja");
+        input.add("12345");
+
+        aloitaOhjelma();
+
+        assertTrue(vinkkejaEnnen == dao.getAll().size());
     }
 }
