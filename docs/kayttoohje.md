@@ -4,7 +4,7 @@ Tällä ohjelmalla voidaan lisätä lukuvinkkejä järjestelmään, listata lis�
 
 ## Asennus
 
-TODO
+Lataa projekti Githubista ja käynnistä ohjelma komennolla _gradle run_.
 
 ## Ohjelman käyttö
 
