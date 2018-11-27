@@ -90,6 +90,56 @@ public class InMemoryDAO implements VinkkiDAO {
     }
 
     @Override
+    public List<Vinkki> getKirjaByNimi(String nimi) {
+        List<Vinkki> vinkit = new ArrayList<>();
+
+        for (Vinkki v : vinkkiDB) {
+            if (v.getTyyppi() == Tyyppi.Kirja && v.getNimi().equals(nimi)) {
+                vinkit.add(v);
+            }
+        }
+
+        return vinkit;
+    }
+
+    @Override
+    public List<Vinkki> getBlogiByNimi(String nimi) {
+        List<Vinkki> vinkit = new ArrayList<>();
+
+        for (Vinkki v : vinkkiDB) {
+            if (v.getTyyppi() == Tyyppi.Blog && v.getNimi().equals(nimi)) {
+                vinkit.add(v);
+            }
+        }
+
+        return vinkit;
+    }
+
+    @Override
+    public List<Vinkki> getArtikkeliByNimi(String nimi) {
+        List<Vinkki> vinkit = new ArrayList<>();
+
+        for (Vinkki v : vinkkiDB) {
+            if (v.getTyyppi() == Tyyppi.Artikkeli && v.getNimi().equals(nimi)) {
+                vinkit.add(v);
+            }
+        }
+
+        return vinkit;
+    }
+
+    @Override
+    public List<Vinkki> getByNimi(String nimi) {
+        List<Vinkki> vinkit = new ArrayList<>();
+
+        vinkit.addAll(getKirjaByNimi(nimi));
+        vinkit.addAll(getBlogiByNimi(nimi));
+        vinkit.addAll(getArtikkeliByNimi(nimi));
+
+        return vinkit;
+    }
+
+    @Override
     public void update(int id, Vinkki vinkki) {
         Vinkki v = getById(id);
 

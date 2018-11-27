@@ -24,4 +24,12 @@ public interface VinkkiDAO {
     public List<Vinkki> getArtikkeliByTekija(String tekija);
 
     public List<Vinkki> getByTekija(String tekija);
+
+    public List<Vinkki> getKirjaByNimi(String tekija);
+
+    public List<Vinkki> getBlogiByNimi(String tekija);
+
+    public List<Vinkki> getArtikkeliByNimi(String tekija);
+
+    public List<Vinkki> getByNimi(String tekija);
 }

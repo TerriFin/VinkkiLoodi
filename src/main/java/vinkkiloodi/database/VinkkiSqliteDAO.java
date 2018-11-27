@@ -71,16 +71,6 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         conn.close();
     }
 
-    public void dropDeadAndDie() throws SQLException {
-        Connection conn = getConnection();
-
-        PreparedStatement statement = conn.prepareStatement("DROP TABLE Kirjavinkki; DROP TABLE Blogivinkki; DROP TABLE Artikkelivinkki; DROP TABLE Vinkki;");
-
-        statement.execute();
-
-        statement.close();
-        conn.close();
-    }
 
     public int tyyppiToInt(Tyyppi tyyppi) {
         switch (tyyppi) {
@@ -530,6 +520,104 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         vinkit.addAll(getKirjaByTekija(tekija));
         vinkit.addAll(getBlogiByTekija(tekija));
         vinkit.addAll(getArtikkeliByTekija(tekija));
+
+        return vinkit;
+    }
+
+    @Override
+    public List<Vinkki> getKirjaByNimi(String nimi) {
+        List<Vinkki> vinkit = new ArrayList<>();
+        Connection conn;
+
+        try {
+            conn = getConnection();
+            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Kirjavinkki WHERE title = ?");
+
+            haku.setString(1, nimi);
+            ResultSet tulokset = haku.executeQuery();
+
+            while (tulokset.next()) {
+                Vinkki vinkki;
+                vinkki = new KirjaVinkki(tulokset.getString("author"), tulokset.getString("title"),
+                        tulokset.getInt("checked_out"), tulokset.getString("isbn"));
+                vinkit.add(vinkki);
+            }
+            haku.close();
+            tulokset.close();
+            conn.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return vinkit;
+    }
+
+    @Override
+    public List<Vinkki> getBlogiByNimi(String nimi) {
+        List<Vinkki> vinkit = new ArrayList<>();
+        Connection conn;
+        try {
+            conn = getConnection();
+            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Blogivinkki WHERE title = ?");
+
+            haku.setString(1, nimi);
+            ResultSet tulokset = haku.executeQuery();
+
+            while (tulokset.next()) {
+                Vinkki vinkki;
+                vinkki = new BlogiVinkki(tulokset.getString("author"), tulokset.getString("title"),
+                        tulokset.getString("url"), tulokset.getInt("checked_out"));
+                vinkit.add(vinkki);
+            }
+            haku.close();
+            tulokset.close();
+            conn.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return vinkit;
+    }
+
+    @Override
+    public List<Vinkki> getArtikkeliByNimi(String nimi) {
+        List<Vinkki> vinkit = new ArrayList<>();
+        Connection conn;
+
+        try {
+            conn = getConnection();
+            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Artikkelivinkki WHERE title = ?");
+
+            haku.setString(1, nimi);
+            ResultSet tulokset = haku.executeQuery();
+
+            while (tulokset.next()) {
+                Vinkki vinkki;
+                vinkki = new ArtikkeliVinkki(tulokset.getString("author"), tulokset.getString("title"),
+                        tulokset.getString("published_in"), tulokset.getInt("checked_out"));
+                vinkit.add(vinkki);
+            }
+
+            haku.close();
+            tulokset.close();
+            conn.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return vinkit;
+
+    }
+
+    @Override
+    public List<Vinkki> getByNimi(String nimi) {
+        List<Vinkki> vinkit = new ArrayList<>();
+        vinkit.addAll(getKirjaByNimi(nimi));
+        vinkit.addAll(getBlogiByNimi(nimi));
+        vinkit.addAll(getArtikkeliByNimi(nimi));
 
         return vinkit;
     }

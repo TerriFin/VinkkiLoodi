@@ -369,7 +369,44 @@ public class KomentoriviUI {
     }
 
     private void printtaaTarkkaNimiHaku(int vinkkiTyyppi) {
-        io.printLine("EI OLE TOTEUTETTU");
-        // Toteuta tämä kun daosta saatavilla
+        io.printLine("\nMikä Nimi?: ");
+        String hakuSana = io.nextLine();
+
+        List<Vinkki> vinkit;
+        switch (vinkkiTyyppi) {
+            case 1:
+                vinkit = dao.getKirjaByNimi(hakuSana);
+                if (vinkit.isEmpty()) {
+                    io.printLine("Vinkkejä ei löytynyt!");
+                } else {
+                    for (Vinkki kirjaVinkki : vinkit) {
+                        io.printLine("\n" + kirjaVinkki.toString());
+                    }
+                }
+                break;
+            case 2:
+                vinkit = dao.getBlogiByNimi(hakuSana);
+                if (vinkit.isEmpty()) {
+                    io.printLine("Vinkkejä ei löytynyt!");
+                } else {
+                    for (Vinkki blogiVinkki : vinkit) {
+                        io.printLine("\n" + blogiVinkki.toString());
+                    }
+                }
+                break;
+            case 3:
+                vinkit = dao.getArtikkeliByNimi
+        (hakuSana);
+                if (vinkit.isEmpty()) {
+                    io.printLine("Vinkkejä ei löytynyt!");
+                } else {
+                    for (Vinkki artikkeliVinkki : vinkit) {
+                        io.printLine("\n" + artikkeliVinkki.toString());
+                    }
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

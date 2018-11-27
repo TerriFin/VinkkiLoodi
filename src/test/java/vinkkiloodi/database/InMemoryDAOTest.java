@@ -167,4 +167,51 @@ public class InMemoryDAOTest {
 
         assertEquals(3, haku.size());
     }
+
+    @Test
+    public void kirjaLoytyyNimella() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkiinimi", 0, "12345678");
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getKirjaByNimi("Uniikkiinimi");
+
+        assertEquals(1, haku.size());
+    }
+
+    @Test
+    public void BlogiLoytyyNimella() {
+
+        Vinkki vinkki = new BlogiVinkki("testi", "Uniikkiinimi", "hienptestnurl.net", 0);
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getBlogiByNimi("Uniikkiinimi");
+
+        assertEquals(1, haku.size());
+    }
+
+    @Test
+    public void ArtikkeliLoytyyNimella() {
+
+        Vinkki vinkki = new ArtikkeliVinkki("testi", "Uniikkiinimi", "julkaisija", 0);
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getArtikkeliByNimi("Uniikkiinimi");
+
+        assertEquals(1, haku.size());
+    }
+
+    @Test
+    public void VinkitLoytyvatNimella() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkiinimi", 0, "12345678");
+        Vinkki vinkki2 = new BlogiVinkki("testi", "Uniikkiinimi", "www.url.ei", 0);
+        Vinkki vinkki3 = new ArtikkeliVinkki("testi", "Uniikkiinimi", "julkaisija", 0);
+
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+
+        List<Vinkki> haku = dao.getByNimi("Uniikkiinimi");
+
+        assertEquals(3, haku.size());
+    }
 }
