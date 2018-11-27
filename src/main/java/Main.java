@@ -1,7 +1,7 @@
 
 import java.sql.SQLException;
 import java.util.Scanner;
-import vinkkiloodi.database.InMemoryDAO;
+//import vinkkiloodi.database.InMemoryDAO;
 import vinkkiloodi.database.VinkkiSqliteDAO;
 import vinkkiloodi.io.IO;
 import vinkkiloodi.io.KomentoriviIO;

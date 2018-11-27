@@ -48,9 +48,9 @@ public class KomentoriviUI {
             } else if (komento.equals("2")) {
                 listaaKaikki();
             } else if (komento.equals("3")) {
-                
+                nopeaHaku();
             } else if (komento.equals("4")) {
-                
+                tarkkaHaku();
             } else if (komento.equals("5")) {
                 paivitaVinkki();
             } else {
@@ -116,7 +116,7 @@ public class KomentoriviUI {
         String url = io.nextLine();
 
         dao.add(new BlogiVinkki(nimi, otsikko, url, 0));
-        
+
         io.printLine("Vinkki lisätty!");
     }
 
@@ -130,7 +130,7 @@ public class KomentoriviUI {
         String julkaisija = io.nextLine();
 
         dao.add(new ArtikkeliVinkki(nimi, otsikko, julkaisija, 0));
-        
+
         io.printLine("Vinkki lisätty!");
     }
 
@@ -156,15 +156,15 @@ public class KomentoriviUI {
             return;
         }
 
-        System.out.println("Vinkki löytyi järjestelmästä.\nPäivitä vinkki (tyhjä kenttä = pysyy entisenä)\n");
+        io.printLine("Vinkki löytyi järjestelmästä.\nPäivitä vinkki (tyhjä kenttä = pysyy entisenä)\n");
 
-        System.out.println("Vanha otsikko: " + haettu.getNimi() + ", Uusi otsikko: ");
+        io.printLine("Vanha otsikko: " + haettu.getNimi() + ", Uusi otsikko: ");
         String uusiOtsikko = io.nextLine();
-        System.out.println("Vanha tekijä: " + haettu.getTekija() + ", Uusi tekijä: ");
+        io.printLine("Vanha tekijä: " + haettu.getTekija() + ", Uusi tekijä: ");
         String uusiTekija = io.nextLine();
-        System.out.println("On tarkastettu: " + haettu.getTarkastettu() + ", Onko (k/e): ");
+        io.printLine("On tarkastettu: " + haettu.getTarkastettu() + ", Onko (k/e): ");
         String uusiTarkastettu = io.nextLine();
-        
+
         haettu.setNimi(uusiOtsikko);
         haettu.setTekija(uusiTekija);
         if (uusiTarkastettu.equals("k")) {
@@ -193,21 +193,21 @@ public class KomentoriviUI {
     }
 
     private Vinkki paivitaKirja(KirjaVinkki kv) {
-        System.out.println("Vanha ISBN: " + kv.getISBN() + ", Uusi ISBN: ");
+        io.printLine("Vanha ISBN: " + kv.getISBN() + ", Uusi ISBN: ");
         String uusiIsbn = io.nextLine();
         kv.setISBN(uusiIsbn);
         return kv;
     }
 
     private Vinkki paivitaBlogi(BlogiVinkki bv) {
-        System.out.println("Vanha URL: " + bv.getUrl()+ ", Uusi URL: ");
+        io.printLine("Vanha URL: " + bv.getUrl() + ", Uusi URL: ");
         String uusiUrl = io.nextLine();
         bv.setUrl(uusiUrl);
         return bv;
     }
 
     private Vinkki paivitaArtikkeli(ArtikkeliVinkki av) {
-        System.out.println("Vanha julkaisija: " + av.getJulkaisija() + ", Uusi julkaisija: ");
+        io.printLine("Vanha julkaisija: " + av.getJulkaisija() + ", Uusi julkaisija: ");
         String uusiJulkaisija = io.nextLine();
         av.setJulkaisija(uusiJulkaisija);
         return av;
@@ -222,5 +222,148 @@ public class KomentoriviUI {
             }
         }
         return null;
+    }
+
+    private void nopeaHaku() {
+        io.printLine("\nNopea haku\n-----------\n");
+        io.printLine("Anna hakusana: ");
+        String hakusana = io.nextLine();
+        // Toteuta nopea haku tänne
+    }
+
+    private void tarkkaHaku() {
+        io.printLine("\nTarkka haku\n-----------\n");
+        io.printLine("\nMitä haet?: "
+                + "\n1 - Kirja"
+                + "\n2 - Blogipostaus"
+                + "\n3 - Artikkeli"
+                + "\n4 - tekijä"
+                + "\nX - Peruuta\n");
+
+        while (true) {
+            String komento = io.nextLine().toLowerCase();
+
+            if (komento.equals("1")) {
+                kysyJaPrinttaaKirjaTarkka();
+                break;
+            } else if (komento.equals("2")) {
+                kysyJaPrinttaaBlogiTarkka();
+                break;
+            } else if (komento.equals("3")) {
+                kysyJaPrinttaaArtikkeliTarkka();
+                break;
+            } else if (komento.equals("4")) {
+                haeKaikkiTekijalla();
+                break;
+            } else if (komento.equals("x")) {
+                break;
+            } else {
+                io.printLine("\nVirheellinen komento.");
+            }
+        }
+
+    }
+
+    private void haeKaikkiTekijalla() {
+        io.printLine("\nMikä tekijä?: ");
+        String hakuSana = io.nextLine();
+
+        List<Vinkki> vinkit = dao.getByTekija(hakuSana);
+
+        if (vinkit.isEmpty()) {
+            io.printLine("Vinkkejä ei löytynyt!");
+        } else {
+            for (Vinkki kirjaVinkki : vinkit) {
+                io.printLine("\n" + kirjaVinkki.toString());
+            }
+        }
+    }
+
+    private void kysyJaPrinttaaKirjaTarkka() {
+        io.printLine("\nHaet kirjaa: "
+                + "\n1 - Tekijän kautta"
+                + "\n2 - Nimen kautta"
+                + "\n");
+        String komento = io.nextLine().toLowerCase();
+
+        if (komento.equals("1")) {
+            printtaaTarkkaTekijaHaku(1);
+        } else if (komento.equals("2")) {
+            printtaaTarkkaNimiHaku(1);
+        }
+    }
+
+    private void kysyJaPrinttaaBlogiTarkka() {
+        io.printLine("\nHaet blogia: "
+                + "\n1 - Tekijän kautta"
+                + "\n2 - Nimen kautta"
+                + "\n");
+        String komento = io.nextLine().toLowerCase();
+
+        if (komento.equals("1")) {
+            printtaaTarkkaTekijaHaku(2);
+        } else if (komento.equals("2")) {
+            printtaaTarkkaNimiHaku(2);
+        }
+    }
+
+    private void kysyJaPrinttaaArtikkeliTarkka() {
+        io.printLine("\nHaet artikkelia: "
+                + "\n1 - Tekijän kautta"
+                + "\n2 - Nimen kautta"
+                + "\n");
+        String komento = io.nextLine().toLowerCase();
+
+        if (komento.equals("1")) {
+            printtaaTarkkaTekijaHaku(3);
+        } else if (komento.equals("2")) {
+            printtaaTarkkaNimiHaku(3);
+        }
+    }
+
+    private void printtaaTarkkaTekijaHaku(int vinkkiTyyppi) {
+        io.printLine("\nMikä tekijä?: ");
+        String hakuSana = io.nextLine();
+
+        List<Vinkki> vinkit;
+        switch (vinkkiTyyppi) {
+            case 1:
+                vinkit = dao.getKirjaByTekija(hakuSana);
+                if (vinkit.isEmpty()) {
+                    io.printLine("Vinkkejä ei löytynyt!");
+                } else {
+                    for (Vinkki kirjaVinkki : vinkit) {
+                        io.printLine("\n" + kirjaVinkki.toString());
+                    }
+                }
+                break;
+            case 2:
+                vinkit = dao.getBlogiByTekija(hakuSana);
+                if (vinkit.isEmpty()) {
+                    io.printLine("Vinkkejä ei löytynyt!");
+                } else {
+                    for (Vinkki blogiVinkki : vinkit) {
+                        io.printLine("\n" + blogiVinkki.toString());
+                    }
+                }
+                break;
+            case 3:
+                vinkit = dao.getArtikkeliByTekija(hakuSana);
+                if (vinkit.isEmpty()) {
+                    io.printLine("Vinkkejä ei löytynyt!");
+                } else {
+                    for (Vinkki artikkeliVinkki : vinkit) {
+                        io.printLine("\n" + artikkeliVinkki.toString());
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void printtaaTarkkaNimiHaku(int vinkkiTyyppi) {
+        io.printLine("EI OLE TOTEUTETTU");
+        // Toteuta tämä kun daosta saatavilla
     }
 }
