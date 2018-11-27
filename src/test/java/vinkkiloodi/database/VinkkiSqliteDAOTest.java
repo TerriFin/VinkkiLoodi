@@ -40,7 +40,7 @@ public class VinkkiSqliteDAOTest {
         }
 
         File db = new File("test.db");
-
+        
         if (db.exists()) {
             db.delete();
         }

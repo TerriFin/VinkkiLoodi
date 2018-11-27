@@ -158,11 +158,17 @@ public class KomentoriviUI {
 
         io.printLine("Vinkki löytyi järjestelmästä.\nPäivitä vinkki (tyhjä kenttä = pysyy entisenä)\n");
 
-        io.printLine("Vanha otsikko: " + haettu.getNimi() + ", Uusi otsikko: ");
+        System.out.println("Nykyinen otsikko: " + haettu.getNimi() + ", Uusi otsikko: ");
         String uusiOtsikko = io.nextLine();
-        io.printLine("Vanha tekijä: " + haettu.getTekija() + ", Uusi tekijä: ");
+        System.out.println("Nykyinen tekijä: " + haettu.getTekija() + ", Uusi tekijä: ");
         String uusiTekija = io.nextLine();
-        io.printLine("On tarkastettu: " + haettu.getTarkastettu() + ", Onko (k/e): ");
+        String tarkastettu = "";
+        if (haettu.getTarkastettu() == 0) {
+            tarkastettu = "Ei";
+        } else {
+            tarkastettu = "Kyllä";
+        }
+        System.out.println("On tarkastettu: " + tarkastettu + ", Onko (k/e): ");
         String uusiTarkastettu = io.nextLine();
 
         haettu.setNimi(uusiOtsikko);
