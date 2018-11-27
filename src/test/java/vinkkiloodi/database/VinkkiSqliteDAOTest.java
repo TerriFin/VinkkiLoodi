@@ -199,6 +199,51 @@ public class VinkkiSqliteDAOTest {
 
         assert (paivitetty.getNimi().equals("Uusi"));
     }
+    
+    @Test
+    public void bloginKirjoittajaPaivittyy() {
+        BlogiVinkki vinkki = new BlogiVinkki("BlogiOtsikko", "BlogiKirjoittaja", "www.blogi.osoite", 0);
+
+        dao.add(vinkki);
+
+        BlogiVinkki paivitys = new BlogiVinkki("Uusi", "Uusi", "Uusi", 0);
+
+        dao.update(vinkki.getId(), paivitys);
+
+        BlogiVinkki paivitetty = (BlogiVinkki) dao.getById(vinkki.getId());
+
+        assert (paivitetty.getTekija().equals("Uusi"));
+    }
+    
+    @Test
+    public void bloginURLPaivittyy() {
+        BlogiVinkki vinkki = new BlogiVinkki("BlogiOtsikko", "BlogiKirjoittaja", "www.blogi.osoite", 0);
+
+        dao.add(vinkki);
+
+        BlogiVinkki paivitys = new BlogiVinkki("Uusi", "Uusi", "Uusi", 0);
+
+        dao.update(vinkki.getId(), paivitys);
+
+        BlogiVinkki paivitetty = (BlogiVinkki) dao.getById(vinkki.getId());
+
+        assert (paivitetty.getUrl().equals("Uusi"));
+    }
+
+    @Test
+    public void bloginTarkistettuPaivittyy() {
+        BlogiVinkki vinkki = new BlogiVinkki("BlogiOtsikko", "BlogiKirjoittaja", "www.blogi.osoite", 0);
+
+        dao.add(vinkki);
+
+        BlogiVinkki paivitys = new BlogiVinkki("Uusi", "Uusi", "Uusi", 1);
+
+        dao.update(vinkki.getId(), paivitys);
+
+        BlogiVinkki paivitetty = (BlogiVinkki) dao.getById(vinkki.getId());
+
+        assertEquals (paivitetty.getTarkastettu(), 1);
+    }
 
     @Test
     public void artikkelinLisaysLisaaTietokantaan() {
@@ -244,6 +289,51 @@ public class VinkkiSqliteDAOTest {
         ArtikkeliVinkki paivitetty = (ArtikkeliVinkki) dao.getById(vinkki.getId());
 
         assert (paivitetty.getNimi().equals("Uusi"));
+    }
+
+    @Test
+    public void artikkelinTekijaPaivittyy() {
+        ArtikkeliVinkki vinkki = new ArtikkeliVinkki("ArtikkeliOtsikko", "ArtikkeliKirjoittaja", "Julkaisija", 0);
+
+        dao.add(vinkki);
+
+        ArtikkeliVinkki paivitys = new ArtikkeliVinkki("Uusi", "Uusi", "Uusi", 0);
+
+        dao.update(vinkki.getId(), paivitys);
+
+        ArtikkeliVinkki paivitetty = (ArtikkeliVinkki) dao.getById(vinkki.getId());
+
+        assert (paivitetty.getTekija().equals("Uusi"));
+    }
+    
+    @Test
+    public void artikkelinJulkaisijaPaivittyy() {
+        ArtikkeliVinkki vinkki = new ArtikkeliVinkki("ArtikkeliOtsikko", "ArtikkeliKirjoittaja", "Julkaisija", 0);
+
+        dao.add(vinkki);
+
+        ArtikkeliVinkki paivitys = new ArtikkeliVinkki("Uusi", "Uusi", "Uusi", 0);
+
+        dao.update(vinkki.getId(), paivitys);
+
+        ArtikkeliVinkki paivitetty = (ArtikkeliVinkki) dao.getById(vinkki.getId());
+
+        assert (paivitetty.getJulkaisija().equals("Uusi"));
+    }
+    
+    @Test
+    public void artikkelinTarkistusPaivittyy() {
+        ArtikkeliVinkki vinkki = new ArtikkeliVinkki("ArtikkeliOtsikko", "ArtikkeliKirjoittaja", "Julkaisija", 0);
+
+        dao.add(vinkki);
+
+        ArtikkeliVinkki paivitys = new ArtikkeliVinkki("Uusi", "Uusi", "Uusi", 1);
+
+        dao.update(vinkki.getId(), paivitys);
+
+        ArtikkeliVinkki paivitetty = (ArtikkeliVinkki) dao.getById(vinkki.getId());
+
+        assertEquals (paivitetty.getTarkastettu(), 1);
     }
 
     @Test
