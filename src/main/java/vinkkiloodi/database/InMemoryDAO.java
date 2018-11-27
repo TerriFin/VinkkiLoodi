@@ -39,7 +39,6 @@ public class InMemoryDAO implements VinkkiDAO {
         return null;
     }
 
-    @Override
     public List<Vinkki> getKirjaByTekija(String tekija) {
         List<Vinkki> vinkit = new ArrayList<>();
 
@@ -52,7 +51,6 @@ public class InMemoryDAO implements VinkkiDAO {
         return vinkit;
     }
 
-    @Override
     public List<Vinkki> getBlogiByTekija(String tekija) {
         List<Vinkki> vinkit = new ArrayList<>();
 
@@ -65,7 +63,6 @@ public class InMemoryDAO implements VinkkiDAO {
         return vinkit;
     }
 
-    @Override
     public List<Vinkki> getArtikkeliByTekija(String tekija) {
         List<Vinkki> vinkit = new ArrayList<>();
 
@@ -89,7 +86,6 @@ public class InMemoryDAO implements VinkkiDAO {
         return vinkit;
     }
 
-    @Override
     public List<Vinkki> getKirjaByNimi(String nimi) {
         List<Vinkki> vinkit = new ArrayList<>();
 
@@ -102,7 +98,6 @@ public class InMemoryDAO implements VinkkiDAO {
         return vinkit;
     }
 
-    @Override
     public List<Vinkki> getBlogiByNimi(String nimi) {
         List<Vinkki> vinkit = new ArrayList<>();
 
@@ -115,7 +110,6 @@ public class InMemoryDAO implements VinkkiDAO {
         return vinkit;
     }
 
-    @Override
     public List<Vinkki> getArtikkeliByNimi(String nimi) {
         List<Vinkki> vinkit = new ArrayList<>();
 
@@ -150,6 +144,31 @@ public class InMemoryDAO implements VinkkiDAO {
         v.setTekija(vinkki.getTekija());
         v.setNimi(vinkki.getNimi());
         v.setTarkastettu(vinkki.getTarkastettu());
+    }
+
+    @Override
+    public List<Vinkki> getKaikkiKirjat() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Vinkki> getKaikkiBlogit() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Vinkki> getKaikkiArtikkelit() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Vinkki> getKaikkiTarkastamattomat() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Vinkki> getKaikkitarkastetut() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

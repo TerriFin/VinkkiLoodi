@@ -16,20 +16,18 @@ public interface VinkkiDAO {
     public Vinkki getById(int id);
 
     public void update(int id, Vinkki vinkki);
-
-    public List<Vinkki> getKirjaByTekija(String tekija);
-
-    public List<Vinkki> getBlogiByTekija(String tekija);
-
-    public List<Vinkki> getArtikkeliByTekija(String tekija);
+    
+    public List<Vinkki> getKaikkiKirjat();
+    
+    public List<Vinkki> getKaikkiBlogit();
+    
+    public List<Vinkki> getKaikkiArtikkelit();
 
     public List<Vinkki> getByTekija(String tekija);
 
-    public List<Vinkki> getKirjaByNimi(String tekija);
-
-    public List<Vinkki> getBlogiByNimi(String tekija);
-
-    public List<Vinkki> getArtikkeliByNimi(String tekija);
-
     public List<Vinkki> getByNimi(String tekija);
+    
+    public List<Vinkki> getKaikkiTarkastamattomat();
+    
+    public List<Vinkki> getKaikkitarkastetut();
 }

@@ -240,26 +240,38 @@ public class KomentoriviUI {
     private void tarkkaHaku() {
         io.printLine("\nTarkka haku\n-----------\n");
         io.printLine("\nMitä haet?: "
-                + "\n1 - Kirja"
-                + "\n2 - Blogipostaus"
-                + "\n3 - Artikkeli"
-                + "\n4 - tekijä"
+                + "\n1 - Kirjoja"
+                + "\n2 - Blogeja"
+                + "\n3 - Artikkeleita"
+                + "\n4 - Tekijän vinkit"
+                + "\n5 - Vinkit nimellä"
+                + "\n6 - Tarkastettamattomia vinkkejä"
+                + "\n7 - Tarkastettuja vinkkejä"
                 + "\nX - Peruuta\n");
 
         while (true) {
             String komento = io.nextLine().toLowerCase();
 
             if (komento.equals("1")) {
-                kysyJaPrinttaaKirjaTarkka();
+                printtaaKaikkiKirjat();
                 break;
             } else if (komento.equals("2")) {
-                kysyJaPrinttaaBlogiTarkka();
+                printtaaKaikkiBlogit();
                 break;
             } else if (komento.equals("3")) {
-                kysyJaPrinttaaArtikkeliTarkka();
+                printtaaKaikkiArtikkelit();
                 break;
             } else if (komento.equals("4")) {
-                haeKaikkiTekijalla();
+                printtaaKaikkiTekijalla();
+                break;
+            } else if (komento.equals("5")) {
+                printtaaKaikkiNimella();
+                break;
+            } else if (komento.equals("6")) {
+                printtaaKaikkiTarkastamattomat();
+                break;
+            } else if (komento.equals("7")) {
+                printtaaKaikkiTarkastetut();
                 break;
             } else if (komento.equals("x")) {
                 break;
@@ -267,10 +279,33 @@ public class KomentoriviUI {
                 io.printLine("\nVirheellinen komento.");
             }
         }
-
     }
 
-    private void haeKaikkiTekijalla() {
+    private void printtaaKaikkiKirjat() {
+        List<Vinkki> kirjat = dao.getKaikkiKirjat();
+
+        for (Vinkki vinkki : kirjat) {
+            io.printLine("\n" + vinkki.toString());
+        }
+    }
+
+    private void printtaaKaikkiBlogit() {
+        List<Vinkki> blogit = dao.getKaikkiBlogit();
+
+        for (Vinkki vinkki : blogit) {
+            io.printLine("\n" + vinkki.toString());
+        }
+    }
+
+    private void printtaaKaikkiArtikkelit() {
+        List<Vinkki> artikkelit = dao.getKaikkiArtikkelit();
+
+        for (Vinkki vinkki : artikkelit) {
+            io.printLine("\n" + vinkki.toString());
+        }
+    }
+
+    private void printtaaKaikkiTekijalla() {
         io.printLine("\nMikä tekijä?: ");
         String hakuSana = io.nextLine();
 
@@ -285,128 +320,35 @@ public class KomentoriviUI {
         }
     }
 
-    private void kysyJaPrinttaaKirjaTarkka() {
-        io.printLine("\nHaet kirjaa: "
-                + "\n1 - Tekijän kautta"
-                + "\n2 - Nimen kautta"
-                + "\n");
-        String komento = io.nextLine().toLowerCase();
-
-        if (komento.equals("1")) {
-            printtaaTarkkaTekijaHaku(1);
-        } else if (komento.equals("2")) {
-            printtaaTarkkaNimiHaku(1);
-        }
-    }
-
-    private void kysyJaPrinttaaBlogiTarkka() {
-        io.printLine("\nHaet blogia: "
-                + "\n1 - Tekijän kautta"
-                + "\n2 - Nimen kautta"
-                + "\n");
-        String komento = io.nextLine().toLowerCase();
-
-        if (komento.equals("1")) {
-            printtaaTarkkaTekijaHaku(2);
-        } else if (komento.equals("2")) {
-            printtaaTarkkaNimiHaku(2);
-        }
-    }
-
-    private void kysyJaPrinttaaArtikkeliTarkka() {
-        io.printLine("\nHaet artikkelia: "
-                + "\n1 - Tekijän kautta"
-                + "\n2 - Nimen kautta"
-                + "\n");
-        String komento = io.nextLine().toLowerCase();
-
-        if (komento.equals("1")) {
-            printtaaTarkkaTekijaHaku(3);
-        } else if (komento.equals("2")) {
-            printtaaTarkkaNimiHaku(3);
-        }
-    }
-
-    private void printtaaTarkkaTekijaHaku(int vinkkiTyyppi) {
-        io.printLine("\nMikä tekijä?: ");
+    private void printtaaKaikkiNimella() {
+        io.printLine("\nMikä nimi?: ");
         String hakuSana = io.nextLine();
 
-        List<Vinkki> vinkit;
-        switch (vinkkiTyyppi) {
-            case 1:
-                vinkit = dao.getKirjaByTekija(hakuSana);
-                if (vinkit.isEmpty()) {
-                    io.printLine("Vinkkejä ei löytynyt!");
-                } else {
-                    for (Vinkki kirjaVinkki : vinkit) {
-                        io.printLine("\n" + kirjaVinkki.toString());
-                    }
-                }
-                break;
-            case 2:
-                vinkit = dao.getBlogiByTekija(hakuSana);
-                if (vinkit.isEmpty()) {
-                    io.printLine("Vinkkejä ei löytynyt!");
-                } else {
-                    for (Vinkki blogiVinkki : vinkit) {
-                        io.printLine("\n" + blogiVinkki.toString());
-                    }
-                }
-                break;
-            case 3:
-                vinkit = dao.getArtikkeliByTekija(hakuSana);
-                if (vinkit.isEmpty()) {
-                    io.printLine("Vinkkejä ei löytynyt!");
-                } else {
-                    for (Vinkki artikkeliVinkki : vinkit) {
-                        io.printLine("\n" + artikkeliVinkki.toString());
-                    }
-                }
-                break;
-            default:
-                break;
+        List<Vinkki> vinkit = dao.getByNimi(hakuSana);
+
+        if (vinkit.isEmpty()) {
+            io.printLine("Vinkkejä ei löytynyt!");
+        } else {
+            for (Vinkki kirjaVinkki : vinkit) {
+                io.printLine("\n" + kirjaVinkki.toString());
+            }
         }
     }
 
-    private void printtaaTarkkaNimiHaku(int vinkkiTyyppi) {
-        io.printLine("\nMikä Nimi?: ");
-        String hakuSana = io.nextLine();
+    private void printtaaKaikkiTarkastamattomat() {
+        List<Vinkki> tarkastamattomat = dao.getKaikkiTarkastamattomat();
 
-        List<Vinkki> vinkit;
-        switch (vinkkiTyyppi) {
-            case 1:
-                vinkit = dao.getKirjaByNimi(hakuSana);
-                if (vinkit.isEmpty()) {
-                    io.printLine("Vinkkejä ei löytynyt!");
-                } else {
-                    for (Vinkki kirjaVinkki : vinkit) {
-                        io.printLine("\n" + kirjaVinkki.toString());
-                    }
-                }
-                break;
-            case 2:
-                vinkit = dao.getBlogiByNimi(hakuSana);
-                if (vinkit.isEmpty()) {
-                    io.printLine("Vinkkejä ei löytynyt!");
-                } else {
-                    for (Vinkki blogiVinkki : vinkit) {
-                        io.printLine("\n" + blogiVinkki.toString());
-                    }
-                }
-                break;
-            case 3:
-                vinkit = dao.getArtikkeliByNimi
-        (hakuSana);
-                if (vinkit.isEmpty()) {
-                    io.printLine("Vinkkejä ei löytynyt!");
-                } else {
-                    for (Vinkki artikkeliVinkki : vinkit) {
-                        io.printLine("\n" + artikkeliVinkki.toString());
-                    }
-                }
-                break;
-            default:
-                break;
+        for (Vinkki vinkki : tarkastamattomat) {
+            io.printLine("\n" + vinkki.toString());
         }
     }
+
+    private void printtaaKaikkiTarkastetut() {
+        List<Vinkki> tarkastetut = dao.getKaikkitarkastetut();
+
+        for (Vinkki vinkki : tarkastetut) {
+            io.printLine("\n" + vinkki.toString());
+        }
+    }
+
 }
