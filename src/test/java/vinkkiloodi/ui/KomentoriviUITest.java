@@ -56,6 +56,14 @@ public class KomentoriviUITest {
 
     }
 
+    private void listaaVinkit() {
+        input.add("2");
+    }
+
+    private void lopetaOhjelma() {
+        input.add("x");
+    }
+
     private void aloitaOhjelma() {
         input.add("x");
         ui = new KomentoriviUI(new StubIO(input), dao);
