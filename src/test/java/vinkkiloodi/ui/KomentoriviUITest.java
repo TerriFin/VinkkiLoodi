@@ -149,8 +149,8 @@ public class KomentoriviUITest {
         aloitaOhjelma();
         List<Vinkki> vanhat = dao.getByNimi("artikkeli");
         List<Vinkki> uudet = dao.getByNimi("uusiArtikkeli");
-        assertEquals(vanhat.size(), 1);
-        assertEquals(uudet.size(), 0);
+        assertEquals(vanhat.size(), 0);
+        assertEquals(uudet.size(), 1);
     }
     
     @Test
@@ -161,8 +161,8 @@ public class KomentoriviUITest {
         aloitaOhjelma();
         List<Vinkki> vanhat = dao.getByNimi("blogiposti");
         List<Vinkki> uudet = dao.getByNimi("uusiBlogi");
-        assertEquals(vanhat.size(), 1);
-        assertEquals(uudet.size(), 0);
+        assertEquals(vanhat.size(), 0);
+        assertEquals(uudet.size(), 1);
     }
     
     @Test
