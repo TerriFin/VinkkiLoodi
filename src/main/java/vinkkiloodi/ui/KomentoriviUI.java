@@ -37,11 +37,12 @@ public class KomentoriviUI {
                     + "\n3 - Nopea haku"
                     + "\n4 - Tarkka haku"
                     + "\n5 - Päivitä vinkki"
+                    + "\n6 - Listaa pikakomennot"
                     + "\nX - Sammuta ohjelma\n");
 
             String komento = io.nextLine();
 
-            if (komento.toLowerCase().equals("x")) {
+            if (komento.toLowerCase().trim().equals("x")) {
                 break;
             } else if (komento.equals("1")) {
                 lisaa();
@@ -53,6 +54,14 @@ public class KomentoriviUI {
                 tarkkaHaku();
             } else if (komento.equals("5")) {
                 paivitaVinkki();
+            } else if (komento.equals("6")) {
+                listaaPikakomennot();
+            } else if (komento.toLowerCase().trim().equals("lk")) {
+                lisaaKirjaVinkki();
+            } else if (komento.toLowerCase().trim().equals("la")) {
+                lisaaArtikkeliVinkki();
+            } else if (komento.toLowerCase().trim().equals("lb")) {
+                lisaaBlogiVinkki();
             } else {
                 io.printLine("\nVirheellinen komento.");
             }
@@ -78,7 +87,7 @@ public class KomentoriviUI {
             } else if (komento.equals("3")) {
                 lisaaArtikkeliVinkki();
                 break;
-            } else if (komento.equals("x")) {
+            } else if (komento.toLowerCase().trim().equals("x")) {
                 break;
             } else {
                 io.printLine("\nVirheellinen komento.");
@@ -137,8 +146,8 @@ public class KomentoriviUI {
     private void listaaKaikki() {
         io.printLine("\nKaikki vinkit\n------------\n");
         List<Vinkki> vinkit = dao.getAll();
-        for (int i = 0; i < vinkit.size(); i++) {
-            io.printLine(vinkit.get(i).toString());
+        for (Vinkki vinkki : vinkit) {
+            io.printLine(vinkki.toString());
         }
     }
 
@@ -349,6 +358,16 @@ public class KomentoriviUI {
         for (Vinkki vinkki : tarkastetut) {
             io.printLine("\n" + vinkki.toString());
         }
+    }
+
+    private void listaaPikakomennot() {
+        System.out.println("\nPikakomennot\n-----------");
+        System.out.println("\nLisää vinkki:");
+        System.out.println("\'lk\' = lisää kirjavinkki");
+        System.out.println("\'la\' = lisää artikkelivinkki");
+        System.out.println("\'lb\' = lisää blogivinkki");
+        System.out.println("\nHaku:");
+        System.out.println("\'s\' + hakusana = hae vinkkejä hakusanalla");
     }
 
 }
