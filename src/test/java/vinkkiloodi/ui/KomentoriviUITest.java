@@ -12,6 +12,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import vinkkiloodi.database.InMemoryDAO;
 import vinkkiloodi.database.VinkkiDAO;
+import vinkkiloodi.domain.Vinkki;
 import vinkkiloodi.io.StubIO;
 
 /**
@@ -146,6 +147,10 @@ public class KomentoriviUITest {
         paivitaTestiArtikkeli("artikkeli", "uusiArtikkeli", "uusiKirjoittaja", "k", "uusiLehti");
         
         aloitaOhjelma();
+        List<Vinkki> vanhat = dao.getByNimi("artikkeli");
+        List<Vinkki> uudet = dao.getByNimi("uusiArtikkeli");
+        assertEquals(vanhat.size(), 1);
+        assertEquals(uudet.size(), 0);
     }
     
     @Test
@@ -154,6 +159,10 @@ public class KomentoriviUITest {
         paivitaTestiBlogi("blogiposti", "uusiBlogi", "uusiKirjoittaja", "e", "uusiUrl");
         
         aloitaOhjelma();
+        List<Vinkki> vanhat = dao.getByNimi("blogiposti");
+        List<Vinkki> uudet = dao.getByNimi("uusiBlogi");
+        assertEquals(vanhat.size(), 1);
+        assertEquals(uudet.size(), 0);
     }
     
     @Test
@@ -162,6 +171,10 @@ public class KomentoriviUITest {
         paivitaTestiKirja("kirja", "uusiKirja", "uusiKirjoittaja", "k", "987653");
         
         aloitaOhjelma();
+        List<Vinkki> vanhat = dao.getByNimi("kirja");
+        List<Vinkki> uudet = dao.getByNimi("uusiKirja");
+        assertEquals(vanhat.size(), 0);
+        assertEquals(uudet.size(), 1);
     }
     
     @Test
@@ -170,6 +183,10 @@ public class KomentoriviUITest {
         paivitaTestiKirja("vaarahakusana", "uusiKirja", "uusiKirjoittaja", "k", "987653");
         
         aloitaOhjelma();
+        List<Vinkki> vanhat = dao.getByNimi("kirja");
+        List<Vinkki> uudet = dao.getByNimi("uusiKirja");
+        assertEquals(vanhat.size(), 1);
+        assertEquals(uudet.size(), 0);
     }
     
     @Test
@@ -186,5 +203,50 @@ public class KomentoriviUITest {
         aloitaOhjelma();
 
         assertTrue(vinkkejaEnnen == dao.getAll().size());
+    }
+    
+    @Test
+    public void voiLisataKirjojaPikakomennolla() {
+        
+        int vinkkejaEnnen = dao.getAll().size();
+        
+        input.add("lk");
+        input.add("kirjoittaja");
+        input.add("kirja");
+        input.add("12345");
+
+        aloitaOhjelma();
+
+        assertTrue(vinkkejaEnnen < dao.getAll().size());
+    }
+    
+    @Test
+    public void voiLisataArtikkeleitaPikakomennolla() {
+        
+        int vinkkejaEnnen = dao.getAll().size();
+        
+        input.add("la");
+        input.add("kirjoittaja");
+        input.add("artikkeli");
+        input.add("julkaisija1");
+
+        aloitaOhjelma();
+
+        assertTrue(vinkkejaEnnen < dao.getAll().size());
+    }
+    
+    @Test
+    public void voiLisataBlogejaPikakomennolla() {
+        
+        int vinkkejaEnnen = dao.getAll().size();
+        
+        input.add("lb");
+        input.add("bloggaaja");
+        input.add("blogi");
+        input.add("www.blogi.fi");
+
+        aloitaOhjelma();
+
+        assertTrue(vinkkejaEnnen < dao.getAll().size());
     }
 }
