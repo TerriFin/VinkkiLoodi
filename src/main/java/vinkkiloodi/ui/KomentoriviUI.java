@@ -62,6 +62,8 @@ public class KomentoriviUI {
                 lisaaArtikkeliVinkki();
             } else if (komento.toLowerCase().trim().equals("lb")) {
                 lisaaBlogiVinkki();
+            } else if (komento.toLowerCase().trim().startsWith("s ")) {
+                nopeaHaku(komento.trim().substring(2).trim().toLowerCase());
             } else {
                 io.printLine("\nVirheellinen komento.");
             }
@@ -243,6 +245,12 @@ public class KomentoriviUI {
         io.printLine("\nNopea haku\n-----------\n");
         io.printLine("Anna hakusana: ");
         String hakusana = io.nextLine();
+        // Toteuta nopea haku tänne
+    }
+    
+    private void nopeaHaku(String hakusana) {
+        io.printLine("\nNopea haku\n-----------\n");
+        io.printLine("Hakusana: \"" + hakusana + "\"");
         // Toteuta nopea haku tänne
     }
 

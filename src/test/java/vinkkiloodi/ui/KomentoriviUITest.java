@@ -5,6 +5,8 @@
  */
 package vinkkiloodi.ui;
 
+//import java.io.ByteArrayOutputStream;
+//import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
@@ -249,4 +251,23 @@ public class KomentoriviUITest {
 
         assertTrue(vinkkejaEnnen < dao.getAll().size());
     }
+    
+//    @Test
+//    public void paaseeNopeaanHakuunValikonKautta() {
+//    }
+//    
+//    @Test
+//    public void paaseeNopeaanHakuunPikakomennolla() {
+//        // Ei vielä toimi.
+////        
+////        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+////        System.setOut(new PrintStream(outContent));
+////        
+////        input.add("s hakusana123");
+////
+////        aloitaOhjelma();
+////        System.out.println("Outcontent: " + outContent.toString());
+////        assertEquals("\nNopea haku\n-----------\n\n"
+////                + "Hakusana: \"hakusana123\"", outContent.toString());
+//    }
 }
