@@ -30,4 +30,6 @@ public interface VinkkiDAO {
     public List<Vinkki> getKaikkiTarkastamattomat();
     
     public List<Vinkki> getKaikkitarkastetut();
+    
+    public List<Vinkki> megaHaku(String hakusana);
 }

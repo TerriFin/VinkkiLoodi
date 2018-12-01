@@ -7,6 +7,7 @@ import org.junit.Test;
 import vinkkiloodi.domain.ArtikkeliVinkki;
 import vinkkiloodi.domain.BlogiVinkki;
 import vinkkiloodi.domain.KirjaVinkki;
+import vinkkiloodi.domain.Tyyppi;
 import vinkkiloodi.domain.Vinkki;
 
 public class InMemoryDAOTest {
@@ -213,5 +214,148 @@ public class InMemoryDAOTest {
         List<Vinkki> haku = dao.getByNimi("Uniikkiinimi");
 
         assertEquals(3, haku.size());
+    }
+    
+    @Test
+    public void VinkitLoytyvatMegaHaulla() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
+        Vinkki vinkki2 = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        Vinkki vinkki3 = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
+
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+
+        List<Vinkki> haku = dao.megaHaku("Uniikkinimi");
+
+        assertEquals(3, haku.size());
+    }
+    
+    @Test
+    public void VinkitLoytyvatMegaHaullaPrefix() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
+        Vinkki vinkki2 = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        Vinkki vinkki3 = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
+
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+
+        List<Vinkki> haku = dao.megaHaku("Uniikki");
+
+        assertEquals(3, haku.size());
+    }
+    
+    @Test
+    public void kaikkiKirjaVinkitLoytyvat() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
+        Vinkki vinkki2 = new KirjaVinkki("testi2", "Uniikkinimi2", 0, "12345679");
+        Vinkki vinkki3 = new KirjaVinkki("testi3", "Uniikkinimi3", 0, "12345680");
+        
+        Vinkki vinkkiBlogi = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        Vinkki vinkkiArtikkeli = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
+        
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+        dao.add(vinkkiBlogi);
+        dao.add(vinkkiArtikkeli);
+        
+        List<Vinkki> haku = dao.getKaikkiKirjat();
+        
+        for (Vinkki v : haku) {
+            if (v.getTyyppi() != Tyyppi.Kirja) {
+                assert(false);
+            }
+        }
+        
+        assert(haku.size() == 3);
+    }
+    
+    @Test
+    public void kaikkiBlogiVinkitLoytyvat() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
+        Vinkki vinkki2 = new KirjaVinkki("testi2", "Uniikkinimi2", 0, "12345679");
+        Vinkki vinkki3 = new KirjaVinkki("testi3", "Uniikkinimi3", 0, "12345680");
+        
+        Vinkki vinkkiBlogi = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        Vinkki vinkkiArtikkeli = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
+        Vinkki vinkkiArtikkeli2 = new ArtikkeliVinkki("testi1", "Uniikkinimi2", "julkaisija1", 0);
+        
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+        dao.add(vinkkiBlogi);
+        dao.add(vinkkiArtikkeli);
+        dao.add(vinkkiArtikkeli2);
+        
+        List<Vinkki> haku = dao.getKaikkiBlogit();
+        
+        for (Vinkki v : haku) {
+            if (v.getTyyppi() != Tyyppi.Blog) {
+                assert(false);
+            }
+        }
+        
+        assert(haku.size() == 1);
+    }
+    
+    @Test
+    public void kaikkiArtikkeliVinkitLoytyvat() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
+        Vinkki vinkki2 = new KirjaVinkki("testi2", "Uniikkinimi2", 0, "12345679");
+        Vinkki vinkki3 = new KirjaVinkki("testi3", "Uniikkinimi3", 0, "12345680");
+        
+        Vinkki vinkkiBlogi = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        Vinkki vinkkiArtikkeli = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
+        Vinkki vinkkiArtikkeli2 = new ArtikkeliVinkki("testi1", "Uniikkinimi2", "julkaisija1", 0);
+        
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+        dao.add(vinkkiBlogi);
+        dao.add(vinkkiArtikkeli);
+        dao.add(vinkkiArtikkeli2);
+        
+        List<Vinkki> haku = dao.getKaikkiArtikkelit();
+        
+        for (Vinkki v : haku) {
+            if (v.getTyyppi() != Tyyppi.Artikkeli) {
+                assert(false);
+            }
+        }
+        
+        assert(haku.size() == 2);
+    }
+    
+    @Test
+    public void tarkastamatonVinkkiLoytyy() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 1, "12345678");
+        Vinkki vinkki2 = new KirjaVinkki("testi2", "Uniikkinimi2", 1, "14345678");
+        
+        Vinkki vinkkiBlogi = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkkiBlogi);
+        
+        List<Vinkki> haku = dao.getKaikkiTarkastamattomat();
+        
+        assert(haku.size() == 1);
+    }
+    
+    @Test
+    public void tarkastettuVinkkiLoytyy() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 1, "12345678");
+        
+        Vinkki vinkkiBlogi = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        Vinkki vinkkiBlogi2 = new BlogiVinkki("testi2", "Uniikkinimi2", "www.url.joo", 0);
+        
+        dao.add(vinkki);
+        dao.add(vinkkiBlogi);
+        
+        List<Vinkki> haku = dao.getKaikkitarkastetut();
+        
+        assert(haku.size() == 1);
     }
 }

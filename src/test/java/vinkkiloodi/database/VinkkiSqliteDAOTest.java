@@ -563,6 +563,36 @@ public class VinkkiSqliteDAOTest {
     }
     
     @Test
+    public void VinkitLoytyvatMegaHaulla() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
+        Vinkki vinkki2 = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        Vinkki vinkki3 = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
+
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+
+        List<Vinkki> haku = dao.megaHaku("Uniikkinimi");
+
+        assertEquals(3, haku.size());
+    }
+    
+    @Test
+    public void VinkitLoytyvatMegaHaullaPrefix() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
+        Vinkki vinkki2 = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        Vinkki vinkki3 = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
+
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+
+        List<Vinkki> haku = dao.megaHaku("Uniikki");
+
+        assertEquals(3, haku.size());
+    }
+    
+    @Test
     public void kaikkiKirjaVinkitLoytyvat() {
         Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
         Vinkki vinkki2 = new KirjaVinkki("testi2", "Uniikkinimi2", 0, "12345679");

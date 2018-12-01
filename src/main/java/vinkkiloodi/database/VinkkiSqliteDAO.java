@@ -449,6 +449,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                 Vinkki vinkki;
                 vinkki = new KirjaVinkki(tulokset.getString("author"), tulokset.getString("title"),
                         tulokset.getInt("checked_out"), tulokset.getString("isbn"));
+                vinkki.setId(tulokset.getInt("id"));
                 vinkit.add(vinkki);
             }
             haku.close();
@@ -484,6 +485,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                 Vinkki vinkki;
                 vinkki = new BlogiVinkki(tulokset.getString("author"), tulokset.getString("title"),
                         tulokset.getString("url"), tulokset.getInt("checked_out"));
+                vinkki.setId(tulokset.getInt("id"));
                 vinkit.add(vinkki);
             }
             haku.close();
@@ -520,6 +522,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                 Vinkki vinkki;
                 vinkki = new ArtikkeliVinkki(tulokset.getString("author"), tulokset.getString("title"),
                         tulokset.getString("published_in"), tulokset.getInt("checked_out"));
+                vinkki.setId(tulokset.getInt("id"));
                 vinkit.add(vinkki);
             }
 
@@ -568,6 +571,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                 Vinkki vinkki;
                 vinkki = new KirjaVinkki(tulokset.getString("author"), tulokset.getString("title"),
                         tulokset.getInt("checked_out"), tulokset.getString("isbn"));
+                vinkki.setId(tulokset.getInt("id"));
                 vinkit.add(vinkki);
             }
             haku.close();
@@ -603,6 +607,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                 Vinkki vinkki;
                 vinkki = new BlogiVinkki(tulokset.getString("author"), tulokset.getString("title"),
                         tulokset.getString("url"), tulokset.getInt("checked_out"));
+                vinkki.setId(tulokset.getInt("id"));
                 vinkit.add(vinkki);
             }
             haku.close();
@@ -638,6 +643,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                 Vinkki vinkki;
                 vinkki = new ArtikkeliVinkki(tulokset.getString("author"), tulokset.getString("title"),
                         tulokset.getString("published_in"), tulokset.getInt("checked_out"));
+                vinkki.setId(tulokset.getInt("id"));
                 vinkit.add(vinkki);
             }
 
@@ -764,5 +770,32 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         }
         
         return tarkastamattomat;
+    }
+    
+    public boolean sisaltaaVinkin(List<Vinkki> vinkit, Vinkki vinkki) {
+        for (Vinkki v : vinkit) {
+            if (v.getId() == vinkki.getId()) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public void lisaaIlmanDuplikaatteja(List<Vinkki> vinkit, List<Vinkki> lisattavat) {
+        for (Vinkki v : lisattavat) {
+            if (!sisaltaaVinkin(vinkit, v)) {
+                vinkit.add(v);
+            }
+        }
+    }
+    
+    public List<Vinkki> megaHaku(String hakusana) {
+        List<Vinkki> tulokset = new ArrayList<>();
+        
+        lisaaIlmanDuplikaatteja(tulokset, this.getByNimi(hakusana));
+        lisaaIlmanDuplikaatteja(tulokset, this.getByTekija(hakusana));
+        
+        return tulokset;
     }
 }

@@ -132,7 +132,35 @@ public class InMemoryDAO implements VinkkiDAO {
 
         return vinkit;
     }
-
+    
+    public boolean sisaltaaVinkin(List<Vinkki> vinkit, Vinkki vinkki) {
+        for (Vinkki v : vinkit) {
+            if (v.getId() == vinkki.getId()) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public void lisaaIlmanDuplikaatteja(List<Vinkki> vinkit, List<Vinkki> lisattavat) {
+        for (Vinkki v : lisattavat) {
+            if (!sisaltaaVinkin(vinkit, v)) {
+                vinkit.add(v);
+            }
+        }
+    }
+    
+    @Override
+    public List<Vinkki> megaHaku(String hakusana) {
+        List<Vinkki> tulokset = new ArrayList<>();
+        
+        lisaaIlmanDuplikaatteja(tulokset, this.getByNimi(hakusana));
+        lisaaIlmanDuplikaatteja(tulokset, this.getByTekija(hakusana));
+        
+        return tulokset;
+    }
+    
     @Override
     public void update(int id, Vinkki vinkki) {
         Vinkki v = getById(id);
@@ -148,27 +176,67 @@ public class InMemoryDAO implements VinkkiDAO {
 
     @Override
     public List<Vinkki> getKaikkiKirjat() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Vinkki> vinkit = new ArrayList<>();
+        
+        for (Vinkki v : this.vinkkiDB) {
+            if (v.getTyyppi() == Tyyppi.Kirja) {
+                vinkit.add(v);
+            }
+        }
+        
+        return vinkit;
     }
 
     @Override
     public List<Vinkki> getKaikkiBlogit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Vinkki> vinkit = new ArrayList<>();
+        
+        for (Vinkki v : this.vinkkiDB) {
+            if (v.getTyyppi() == Tyyppi.Blog) {
+                vinkit.add(v);
+            }
+        }
+        
+        return vinkit;
     }
 
     @Override
     public List<Vinkki> getKaikkiArtikkelit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Vinkki> vinkit = new ArrayList<>();
+        
+        for (Vinkki v : this.vinkkiDB) {
+            if (v.getTyyppi() == Tyyppi.Artikkeli) {
+                vinkit.add(v);
+            }
+        }
+        
+        return vinkit;
     }
 
     @Override
     public List<Vinkki> getKaikkiTarkastamattomat() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Vinkki> vinkit = new ArrayList<>();
+        
+        for (Vinkki v : this.vinkkiDB) {
+            if (v.getTarkastettu() == 0) {
+                vinkit.add(v);
+            }
+        }
+        
+        return vinkit;
     }
 
     @Override
     public List<Vinkki> getKaikkitarkastetut() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Vinkki> vinkit = new ArrayList<>();
+        
+        for (Vinkki v : this.vinkkiDB) {
+            if (v.getTarkastettu() != 0) {
+                vinkit.add(v);
+            }
+        }
+        
+        return vinkit;
     }
 
 }

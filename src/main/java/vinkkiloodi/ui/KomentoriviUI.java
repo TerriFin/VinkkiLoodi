@@ -245,13 +245,19 @@ public class KomentoriviUI {
         io.printLine("\nNopea haku\n-----------\n");
         io.printLine("Anna hakusana: ");
         String hakusana = io.nextLine();
-        // Toteuta nopea haku tänne
+        
+        nopeaHaku(hakusana);
     }
     
     private void nopeaHaku(String hakusana) {
         io.printLine("\nNopea haku\n-----------\n");
         io.printLine("Hakusana: \"" + hakusana + "\"");
-        // Toteuta nopea haku tänne
+        
+        List<Vinkki> kirjat = dao.megaHaku(hakusana);
+
+        for (Vinkki vinkki : kirjat) {
+            io.printLine("\n" + vinkki.toString());
+        }
     }
 
     private void tarkkaHaku() {
