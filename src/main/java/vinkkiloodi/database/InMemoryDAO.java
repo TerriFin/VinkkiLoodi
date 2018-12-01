@@ -43,7 +43,7 @@ public class InMemoryDAO implements VinkkiDAO {
         List<Vinkki> vinkit = new ArrayList<>();
 
         for (Vinkki v : vinkkiDB) {
-            if (v.getTyyppi() == Tyyppi.Kirja && v.getTekija().equals(tekija)) {
+            if (v.getTyyppi() == Tyyppi.Kirja && v.getTekija().contains(tekija)) {
                 vinkit.add(v);
             }
         }
@@ -55,7 +55,7 @@ public class InMemoryDAO implements VinkkiDAO {
         List<Vinkki> vinkit = new ArrayList<>();
 
         for (Vinkki v : vinkkiDB) {
-            if (v.getTyyppi() == Tyyppi.Blog && v.getTekija().equals(tekija)) {
+            if (v.getTyyppi() == Tyyppi.Blog && v.getTekija().contains(tekija)) {
                 vinkit.add(v);
             }
         }
@@ -67,7 +67,7 @@ public class InMemoryDAO implements VinkkiDAO {
         List<Vinkki> vinkit = new ArrayList<>();
 
         for (Vinkki v : vinkkiDB) {
-            if (v.getTyyppi() == Tyyppi.Artikkeli && v.getTekija().equals(tekija)) {
+            if (v.getTyyppi() == Tyyppi.Artikkeli && v.getTekija().contains(tekija)) {
                 vinkit.add(v);
             }
         }
@@ -90,7 +90,7 @@ public class InMemoryDAO implements VinkkiDAO {
         List<Vinkki> vinkit = new ArrayList<>();
 
         for (Vinkki v : vinkkiDB) {
-            if (v.getTyyppi() == Tyyppi.Kirja && v.getNimi().equals(nimi)) {
+            if (v.getTyyppi() == Tyyppi.Kirja && v.getNimi().contains(nimi)) {
                 vinkit.add(v);
             }
         }
@@ -102,7 +102,7 @@ public class InMemoryDAO implements VinkkiDAO {
         List<Vinkki> vinkit = new ArrayList<>();
 
         for (Vinkki v : vinkkiDB) {
-            if (v.getTyyppi() == Tyyppi.Blog && v.getNimi().equals(nimi)) {
+            if (v.getTyyppi() == Tyyppi.Blog && v.getNimi().contains(nimi)) {
                 vinkit.add(v);
             }
         }
@@ -114,7 +114,7 @@ public class InMemoryDAO implements VinkkiDAO {
         List<Vinkki> vinkit = new ArrayList<>();
 
         for (Vinkki v : vinkkiDB) {
-            if (v.getTyyppi() == Tyyppi.Artikkeli && v.getNimi().equals(nimi)) {
+            if (v.getTyyppi() == Tyyppi.Artikkeli && v.getNimi().contains(nimi)) {
                 vinkit.add(v);
             }
         }

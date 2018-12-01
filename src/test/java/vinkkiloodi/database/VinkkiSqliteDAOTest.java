@@ -13,6 +13,7 @@ import org.junit.rules.TemporaryFolder;
 import vinkkiloodi.domain.ArtikkeliVinkki;
 import vinkkiloodi.domain.BlogiVinkki;
 import vinkkiloodi.domain.KirjaVinkki;
+import vinkkiloodi.domain.Tyyppi;
 import vinkkiloodi.domain.Vinkki;
 
 public class VinkkiSqliteDAOTest {
@@ -348,6 +349,26 @@ public class VinkkiSqliteDAOTest {
 
         assertEquals(1, haku.size());
     }
+    
+    @Test
+    public void kirjaLoytyyTekijallaPrefix() {
+        Vinkki vinkki = new KirjaVinkki("Uniikkitekija", "testi", 0, "12345678");
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getKirjaByTekija("Uniikki");
+
+        assertEquals(1, haku.size());
+    }
+    
+    @Test
+    public void kirjaLoytyyTekijallaSuffix() {
+        Vinkki vinkki = new KirjaVinkki("Uniikkitekija", "testi", 0, "12345678");
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getKirjaByTekija("tekija");
+
+        assertEquals(1, haku.size());
+    }
 
     @Test
     public void BlogiLoytyyTekijalla() {
@@ -359,6 +380,28 @@ public class VinkkiSqliteDAOTest {
 
         assertEquals(1, haku.size());
     }
+    
+    @Test
+    public void BlogiLoytyyTekijallaPrefix() {
+
+        Vinkki vinkki = new BlogiVinkki("Uniikkitekija", "testi", "hienptestnurl.net", 0);
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getBlogiByTekija("Uniikki");
+
+        assertEquals(1, haku.size());
+    }
+    
+    @Test
+    public void BlogiLoytyyTekijallaSuffix() {
+
+        Vinkki vinkki = new BlogiVinkki("Uniikkitekija", "testi", "hienptestnurl.net", 0);
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getBlogiByTekija("tekija");
+
+        assertEquals(1, haku.size());
+    }
 
     @Test
     public void ArtikkeliLoytyyTekijalla() {
@@ -367,6 +410,28 @@ public class VinkkiSqliteDAOTest {
         dao.add(vinkki);
 
         List<Vinkki> haku = dao.getArtikkeliByTekija("Uniikkitekija");
+
+        assertEquals(1, haku.size());
+    }
+    
+    @Test
+    public void ArtikkeliLoytyyTekijallaPrefix() {
+
+        Vinkki vinkki = new ArtikkeliVinkki("Uniikkitekija", "testi", "julkaisija", 0);
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getArtikkeliByTekija("Uniikki");
+
+        assertEquals(1, haku.size());
+    }
+    
+    @Test
+    public void ArtikkeliLoytyyTekijallaSuffix() {
+
+        Vinkki vinkki = new ArtikkeliVinkki("Uniikkitekija", "testi", "julkaisija", 0);
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getArtikkeliByTekija("tekija");
 
         assertEquals(1, haku.size());
     }
@@ -395,6 +460,26 @@ public class VinkkiSqliteDAOTest {
 
         assertEquals(1, haku.size());
     }
+    
+    @Test
+    public void kirjaLoytyyNimellaPrefix() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getKirjaByNimi("Uniikki");
+
+        assertEquals(1, haku.size());
+    }
+    
+    @Test
+    public void kirjaLoytyyNimellaSuffix() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getKirjaByNimi("Uniikki");
+
+        assertEquals(1, haku.size());
+    }
 
     @Test
     public void BlogiLoytyyNimella() {
@@ -406,6 +491,28 @@ public class VinkkiSqliteDAOTest {
 
         assertEquals(1, haku.size());
     }
+    
+    @Test
+    public void BlogiLoytyyNimellaPrefix() {
+
+        Vinkki vinkki = new BlogiVinkki("testi", "Uniikkinimi", "hienptestnurl.net", 0);
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getBlogiByNimi("Uniikki");
+
+        assertEquals(1, haku.size());
+    }
+    
+    @Test
+    public void BlogiLoytyyNimellaSuffix() {
+
+        Vinkki vinkki = new BlogiVinkki("testi", "Uniikkinimi", "hienptestnurl.net", 0);
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getBlogiByNimi("nimi");
+
+        assertEquals(1, haku.size());
+    }
 
     @Test
     public void ArtikkeliLoytyyNimella() {
@@ -414,6 +521,28 @@ public class VinkkiSqliteDAOTest {
         dao.add(vinkki);
 
         List<Vinkki> haku = dao.getArtikkeliByNimi("Uniikkinimi");
+
+        assertEquals(1, haku.size());
+    }
+    
+    @Test
+    public void ArtikkeliLoytyyNimellaPrefix() {
+
+        Vinkki vinkki = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getArtikkeliByNimi("Uniikki");
+
+        assertEquals(1, haku.size());
+    }
+    
+    @Test
+    public void ArtikkeliLoytyyNimellaSuffix() {
+
+        Vinkki vinkki = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
+        dao.add(vinkki);
+
+        List<Vinkki> haku = dao.getArtikkeliByNimi("nimi");
 
         assertEquals(1, haku.size());
     }
@@ -432,5 +561,117 @@ public class VinkkiSqliteDAOTest {
 
         assertEquals(3, haku.size());
     }
-
+    
+    @Test
+    public void kaikkiKirjaVinkitLoytyvat() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
+        Vinkki vinkki2 = new KirjaVinkki("testi2", "Uniikkinimi2", 0, "12345679");
+        Vinkki vinkki3 = new KirjaVinkki("testi3", "Uniikkinimi3", 0, "12345680");
+        
+        Vinkki vinkkiBlogi = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        Vinkki vinkkiArtikkeli = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
+        
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+        dao.add(vinkkiBlogi);
+        dao.add(vinkkiArtikkeli);
+        
+        List<Vinkki> haku = dao.getKaikkiKirjat();
+        
+        for (Vinkki v : haku) {
+            if (v.getTyyppi() != Tyyppi.Kirja) {
+                assert(false);
+            }
+        }
+        
+        assert(haku.size() == 3);
+    }
+    
+    @Test
+    public void kaikkiBlogiVinkitLoytyvat() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
+        Vinkki vinkki2 = new KirjaVinkki("testi2", "Uniikkinimi2", 0, "12345679");
+        Vinkki vinkki3 = new KirjaVinkki("testi3", "Uniikkinimi3", 0, "12345680");
+        
+        Vinkki vinkkiBlogi = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        Vinkki vinkkiArtikkeli = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
+        Vinkki vinkkiArtikkeli2 = new ArtikkeliVinkki("testi1", "Uniikkinimi2", "julkaisija1", 0);
+        
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+        dao.add(vinkkiBlogi);
+        dao.add(vinkkiArtikkeli);
+        dao.add(vinkkiArtikkeli2);
+        
+        List<Vinkki> haku = dao.getKaikkiBlogit();
+        
+        for (Vinkki v : haku) {
+            if (v.getTyyppi() != Tyyppi.Blog) {
+                assert(false);
+            }
+        }
+        
+        assert(haku.size() == 1);
+    }
+    
+    @Test
+    public void kaikkiArtikkeliVinkitLoytyvat() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
+        Vinkki vinkki2 = new KirjaVinkki("testi2", "Uniikkinimi2", 0, "12345679");
+        Vinkki vinkki3 = new KirjaVinkki("testi3", "Uniikkinimi3", 0, "12345680");
+        
+        Vinkki vinkkiBlogi = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        Vinkki vinkkiArtikkeli = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
+        Vinkki vinkkiArtikkeli2 = new ArtikkeliVinkki("testi1", "Uniikkinimi2", "julkaisija1", 0);
+        
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+        dao.add(vinkkiBlogi);
+        dao.add(vinkkiArtikkeli);
+        dao.add(vinkkiArtikkeli2);
+        
+        List<Vinkki> haku = dao.getKaikkiArtikkelit();
+        
+        for (Vinkki v : haku) {
+            if (v.getTyyppi() != Tyyppi.Artikkeli) {
+                assert(false);
+            }
+        }
+        
+        assert(haku.size() == 2);
+    }
+    
+    @Test
+    public void tarkastamatonVinkkiLoytyy() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 1, "12345678");
+        Vinkki vinkki2 = new KirjaVinkki("testi2", "Uniikkinimi2", 1, "14345678");
+        
+        Vinkki vinkkiBlogi = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkkiBlogi);
+        
+        List<Vinkki> haku = dao.getKaikkiTarkastamattomat();
+        
+        assert(haku.size() == 1);
+    }
+    
+    @Test
+    public void tarkastettuVinkkiLoytyy() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 1, "12345678");
+        
+        Vinkki vinkkiBlogi = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
+        Vinkki vinkkiBlogi2 = new BlogiVinkki("testi2", "Uniikkinimi2", "www.url.joo", 0);
+        
+        dao.add(vinkki);
+        dao.add(vinkkiBlogi);
+        
+        List<Vinkki> haku = dao.getKaikkitarkastetut();
+        
+        assert(haku.size() == 1);
+    }
 }

@@ -432,9 +432,17 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
         try {
             conn = getConnection();
-            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Kirjavinkki WHERE author = ?");
+            
+            String hakuString = "SELECT * FROM Kirjavinkki "
+                    + "WHERE author LIKE ? OR author LIKE ? OR author LIKE ? OR author LIKE ?";
+            
+            PreparedStatement haku = conn.prepareStatement(hakuString);
 
             haku.setString(1, tekija);
+            haku.setString(2, tekija + "%");
+            haku.setString(3, "%" + tekija);
+            haku.setString(4, "%" + tekija + "%");
+            
             ResultSet tulokset = haku.executeQuery();
 
             while (tulokset.next()) {
@@ -459,9 +467,17 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         Connection conn;
         try {
             conn = getConnection();
-            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Blogivinkki WHERE author = ?");
+            
+            String hakuString = "SELECT * FROM Blogivinkki "
+                    + "WHERE author LIKE ? OR author LIKE ? OR author LIKE ? OR author LIKE ?";
+            
+            PreparedStatement haku = conn.prepareStatement(hakuString);
 
             haku.setString(1, tekija);
+            haku.setString(2, tekija + "%");
+            haku.setString(3, "%" + tekija);
+            haku.setString(4, "%" + tekija + "%");
+            
             ResultSet tulokset = haku.executeQuery();
 
             while (tulokset.next()) {
@@ -487,9 +503,17 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
         try {
             conn = getConnection();
-            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Artikkelivinkki WHERE author = ?");
+            
+            String hakuString = "SELECT * FROM Artikkelivinkki "
+                    + "WHERE author LIKE ? OR author LIKE ? OR author LIKE ? OR author LIKE ?";
+            
+            PreparedStatement haku = conn.prepareStatement(hakuString);
 
             haku.setString(1, tekija);
+            haku.setString(2, tekija + "%");
+            haku.setString(3, "%" + tekija);
+            haku.setString(4, "%" + tekija + "%");
+            
             ResultSet tulokset = haku.executeQuery();
 
             while (tulokset.next()) {
@@ -527,9 +551,17 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
         try {
             conn = getConnection();
-            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Kirjavinkki WHERE title = ?");
+            
+            String hakuString = "SELECT * FROM Kirjavinkki "
+                    + "WHERE title LIKE ? OR title LIKE ? OR title LIKE ? OR title LIKE ?";
+            
+            PreparedStatement haku = conn.prepareStatement(hakuString);
 
             haku.setString(1, nimi);
+            haku.setString(2, nimi + "%");
+            haku.setString(3, "%" + nimi);
+            haku.setString(4, "%" + nimi + "%");
+
             ResultSet tulokset = haku.executeQuery();
 
             while (tulokset.next()) {
@@ -554,9 +586,17 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         Connection conn;
         try {
             conn = getConnection();
-            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Blogivinkki WHERE title = ?");
+            
+            String hakuString = "SELECT * FROM Blogivinkki "
+                    + "WHERE title LIKE ? OR title LIKE ? OR title LIKE ? OR title LIKE ?";
+            
+            PreparedStatement haku = conn.prepareStatement(hakuString);
 
             haku.setString(1, nimi);
+            haku.setString(2, nimi + "%");
+            haku.setString(3, "%" + nimi);
+            haku.setString(4, "%" + nimi + "%");
+            
             ResultSet tulokset = haku.executeQuery();
 
             while (tulokset.next()) {
@@ -582,9 +622,16 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
         try {
             conn = getConnection();
-            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Artikkelivinkki WHERE title = ?");
+            
+            String hakuString = "SELECT * FROM Artikkelivinkki "
+                    + "WHERE title LIKE ? OR title LIKE ? OR title LIKE ? OR title LIKE ?";
+            
+            PreparedStatement haku = conn.prepareStatement(hakuString);
 
             haku.setString(1, nimi);
+            haku.setString(2, nimi + "%");
+            haku.setString(3, "%" + nimi);
+            haku.setString(4, "%" + nimi + "%");
             ResultSet tulokset = haku.executeQuery();
 
             while (tulokset.next()) {
@@ -618,26 +665,104 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
     @Override
     public List<Vinkki> getKaikkiKirjat() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Vinkki> vinkit = new ArrayList<>();
+        Connection conn;
+        
+        try {
+            conn = getConnection();
+            
+            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Kirjavinkki");
+            
+            ResultSet tulokset = haku.executeQuery();
+            
+            while(tulokset.next()) {
+                KirjaVinkki vinkki = new KirjaVinkki(tulokset.getString("author"), tulokset.getString("title"),
+                        tulokset.getInt("checked_out"), tulokset.getString("isbn"));
+                vinkki.setId(tulokset.getInt("id"));
+                vinkit.add(vinkki);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return vinkit;
     }
 
     @Override
     public List<Vinkki> getKaikkiBlogit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Vinkki> vinkit = new ArrayList<>();
+        Connection conn;
+        
+        try {
+            conn = getConnection();
+            
+            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Blogivinkki");
+            
+            ResultSet tulokset = haku.executeQuery();
+            
+            while(tulokset.next()) {
+                BlogiVinkki vinkki = new BlogiVinkki(tulokset.getString("author"), tulokset.getString("title"),
+                        tulokset.getString("url"), tulokset.getInt("checked_out"));
+                vinkki.setId(tulokset.getInt("id"));
+                vinkit.add(vinkki);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return vinkit;
     }
 
     @Override
     public List<Vinkki> getKaikkiArtikkelit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Vinkki> vinkit = new ArrayList<>();
+        Connection conn;
+        
+        try {
+            conn = getConnection();
+            
+            PreparedStatement haku = conn.prepareStatement("SELECT * FROM Artikkelivinkki");
+            
+            ResultSet tulokset = haku.executeQuery();
+            
+            while(tulokset.next()) {
+                ArtikkeliVinkki vinkki = new ArtikkeliVinkki(tulokset.getString("author"), tulokset.getString("title"),
+                        tulokset.getString("published_in"), tulokset.getInt("checked_out"));
+                vinkki.setId(tulokset.getInt("id"));
+                vinkit.add(vinkki);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return vinkit;
     }
 
     @Override
     public List<Vinkki> getKaikkiTarkastamattomat() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Vinkki> vinkit = getAll();
+        List<Vinkki> tarkastamattomat = new ArrayList<>();
+        
+        for (Vinkki v : vinkit) {
+            if (v.getTarkastettu() == 0) {
+                tarkastamattomat.add(v);
+            }
+        }
+        
+        return tarkastamattomat;
     }
 
     @Override
     public List<Vinkki> getKaikkitarkastetut() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Vinkki> vinkit = getAll();
+        List<Vinkki> tarkastamattomat = new ArrayList<>();
+        
+        for (Vinkki v : vinkit) {
+            if (v.getTarkastettu() != 0) {
+                tarkastamattomat.add(v);
+            }
+        }
+        
+        return tarkastamattomat;
     }
 }
