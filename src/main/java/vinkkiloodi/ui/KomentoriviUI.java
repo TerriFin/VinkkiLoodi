@@ -75,6 +75,8 @@ public class KomentoriviUI {
                 printtaaKaikkiTarkastamattomat();
             } else if (komento.equals("kt")) {
                 printtaaKaikkiTarkastetut();
+            } else if (komento.startsWith("pv ")) {
+                paivitaVinkki(komento.substring(2).trim());
             } else if (komento.equals("par")) {
                 this.parser = new KomentoriviParserUI(io, dao);
                 parser.start();
@@ -173,8 +175,11 @@ public class KomentoriviUI {
         io.printLine("Syötä lukuvinkin otsikko: ");
         String haku = io.nextLine();
         haku = haku.toLowerCase().trim();
+        paivitaVinkki(haku);
+    }
 
-        // Alkeellinen hakutoiminnallisuus.
+    private void paivitaVinkki(String haku) {
+
         Vinkki haettu = haeVinkkiOtsikolla(haku);
 
         if (haettu == null) {
@@ -186,8 +191,10 @@ public class KomentoriviUI {
 
         System.out.println("Nykyinen otsikko: " + haettu.getNimi() + ", Uusi otsikko: ");
         String uusiOtsikko = io.nextLine();
+        
         System.out.println("Nykyinen tekijä: " + haettu.getTekija() + ", Uusi tekijä: ");
         String uusiTekija = io.nextLine();
+        
         String tarkastettu = "";
         if (haettu.getTarkastettu() == 0) {
             tarkastettu = "Ei";
@@ -196,9 +203,13 @@ public class KomentoriviUI {
         }
         System.out.println("On tarkastettu: " + tarkastettu + ", Onko (k/e): ");
         String uusiTarkastettu = io.nextLine();
-
-        haettu.setNimi(uusiOtsikko);
-        haettu.setTekija(uusiTekija);
+        
+        if (!uusiOtsikko.isEmpty())
+            haettu.setNimi(uusiOtsikko);
+        
+        if (!uusiTekija.isEmpty())
+            haettu.setTekija(uusiTekija);
+        
         if (uusiTarkastettu.equals("k")) {
             haettu.setTarkastettu(1);
         } else if (uusiTarkastettu.equals("e")) {
@@ -227,21 +238,24 @@ public class KomentoriviUI {
     private Vinkki paivitaKirja(KirjaVinkki kv) {
         io.printLine("Vanha ISBN: " + kv.getISBN() + ", Uusi ISBN: ");
         String uusiIsbn = io.nextLine();
-        kv.setISBN(uusiIsbn);
+        if (!uusiIsbn.isEmpty())
+            kv.setISBN(uusiIsbn);
         return kv;
     }
 
     private Vinkki paivitaBlogi(BlogiVinkki bv) {
         io.printLine("Vanha URL: " + bv.getUrl() + ", Uusi URL: ");
         String uusiUrl = io.nextLine();
-        bv.setUrl(uusiUrl);
+        if (!uusiUrl.isEmpty())
+            bv.setUrl(uusiUrl);
         return bv;
     }
 
     private Vinkki paivitaArtikkeli(ArtikkeliVinkki av) {
         io.printLine("Vanha julkaisija: " + av.getJulkaisija() + ", Uusi julkaisija: ");
         String uusiJulkaisija = io.nextLine();
-        av.setJulkaisija(uusiJulkaisija);
+        if (!uusiJulkaisija.isEmpty())
+            av.setJulkaisija(uusiJulkaisija);
         return av;
     }
 
@@ -348,7 +362,7 @@ public class KomentoriviUI {
         String hakuSana = io.nextLine();
         printtaaKaikkiTekijalla(hakuSana);
     }
-    
+
     private void printtaaKaikkiTekijalla(String hakuSana) {
         io.printLine("Haetaan tekijällä \"" + hakuSana + "\"...");
         List<Vinkki> vinkit = dao.getByTekija(hakuSana);
@@ -367,7 +381,7 @@ public class KomentoriviUI {
         String hakuSana = io.nextLine();
         printtaaKaikkiNimella(hakuSana);
     }
-    
+
     private void printtaaKaikkiNimella(String hakuSana) {
         io.printLine("Haetaan otsikolla \"" + hakuSana + "\"...");
         List<Vinkki> vinkit = dao.getByNimi(hakuSana);
@@ -403,6 +417,8 @@ public class KomentoriviUI {
                 + "\'lk\' = lisää kirjavinkki\n"
                 + "\'la\' = lisää artikkelivinkki\n"
                 + "\'lb\' = lisää blogivinkki\n"
+                + "Päivitä vinkkejä:\n"
+                + "\'pv\' + hakusana = päivitä vinkki otsikolla\n"
                 + "Hae vinkkejä:\n"
                 + "\'s\' + hakusana = hae vinkkejä hakusanalla\n"
                 + "\'so\' + hakusana = hae vinkkejä otsikolla\n"
