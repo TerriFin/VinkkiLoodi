@@ -28,7 +28,7 @@ Niin sanotussa päävalikossa on kahdeksan vaihtoehtoa:
 
 **6 - Listaa pikakomennot** Tässä näet kaikki käytettävissä olevat pikakomennot. Niitä syöttämällä päävalikosta voit tehdä tiettyjä asioita nopeasti ilman, että tarvitsee navigoida valikkojen kautta. Lista pikakomennoista ja niiden merkityksistä löytyy alla.
 
-**par - Avaa parseri**
+**par - Avaa parseri** Tällä komennolla pääset ns. "parseriin", minne voit kirjoittaa pidempiä, monisanaisia komentoja, joiden avulla voit suorittaa monimutkaisempia asioita yhdellä komennolla.
 
 **X - Sammuta ohjelma** Tällä komennolla sammutat ohjelman. Tiedot tallentuvat automaattisesti, eli sitä ei tarvitse erikseen tehdä.
 
