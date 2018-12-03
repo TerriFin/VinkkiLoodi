@@ -143,7 +143,6 @@ public class KomentoriviUITest {
     public void voiListataVinkit() {
         lisaaTestiArtikkeli("kirjoittaja", "artikkeli", "testiLehti");
         listaaVinkit();
-        syotaX();
         List<String> tuloste = aloitaOhjelmaJaPalautaTulostus();
         assertEquals(tuloste.get(tuloste.size()-2), "Tyyppi: Artikkeli\nTekijä: kirjoittaja\nNimi: artikkeli\nTarkastettu: Ei\nJulkaisija: testiLehti\n");
     }
@@ -420,6 +419,78 @@ public class KomentoriviUITest {
         lisaaTestiKirja("kirjoittaja", "kirja", "12345");
         lisaaTestiArtikkeli("2toimittaja", "2artikkeli", "2lehti");
         input.add("s kirja");
+        List<String> tuloste = aloitaOhjelmaJaPalautaTulostus();
+        assertEquals(tuloste.get(tuloste.size()-2), "\nTyyppi: Kirja\nTekijä:"
+                + " kirjoittaja\nNimi: kirja\nTarkastettu: Ei\nISBN: 12345\n");
+    }
+    
+    @Test
+    public void hakuTekijallaToimii() {
+        lisaaTestiArtikkeli("toimittaja", "artikkeli", "lehti");
+        lisaaTestiKirja("kirjoittaja", "kirja", "12345");
+        lisaaTestiArtikkeli("2toimittaja", "2artikkeli", "2lehti");
+        input.add("4");
+        input.add("4");
+        input.add("kirjoit");
+        List<String> tuloste = aloitaOhjelmaJaPalautaTulostus();
+        assertEquals(tuloste.get(tuloste.size()-2), "\nTyyppi: Kirja\nTekijä:"
+                + " kirjoittaja\nNimi: kirja\nTarkastettu: Ei\nISBN: 12345\n");
+    }
+    
+    @Test
+    public void hakuVaarallaTekijallaAntaaVirheilmoituksen() {
+        lisaaTestiArtikkeli("toimittaja", "artikkeli", "lehti");
+        lisaaTestiKirja("kirjoittaja", "kirja", "12345");
+        lisaaTestiArtikkeli("2toimittaja", "2artikkeli", "2lehti");
+        input.add("4");
+        input.add("4");
+        input.add("xdz");
+        List<String> tuloste = aloitaOhjelmaJaPalautaTulostus();
+        assertEquals(tuloste.get(tuloste.size()-2), "Vinkkejä ei löytynyt!");
+    }
+    
+    @Test
+    public void hakuTekijallaToimiiPikakomennolla() {
+        lisaaTestiArtikkeli("toimittaja", "artikkeli", "lehti");
+        lisaaTestiKirja("kirjoittaja", "kirja", "12345");
+        lisaaTestiArtikkeli("2toimittaja", "2artikkeli", "2lehti");
+        input.add("st kirjoit");
+        List<String> tuloste = aloitaOhjelmaJaPalautaTulostus();
+        assertEquals(tuloste.get(tuloste.size()-2), "\nTyyppi: Kirja\nTekijä:"
+                + " kirjoittaja\nNimi: kirja\nTarkastettu: Ei\nISBN: 12345\n");
+    }
+    
+    @Test
+    public void hakuOtsikollaToimii() {
+        lisaaTestiArtikkeli("toimittaja", "artikkeli", "lehti");
+        lisaaTestiKirja("kirjoittaja", "kirja", "12345");
+        lisaaTestiArtikkeli("2toimittaja", "2artikkeli", "2lehti");
+        input.add("4");
+        input.add("5");
+        input.add("kirj");
+        List<String> tuloste = aloitaOhjelmaJaPalautaTulostus();
+        assertEquals(tuloste.get(tuloste.size()-2), "\nTyyppi: Kirja\nTekijä:"
+                + " kirjoittaja\nNimi: kirja\nTarkastettu: Ei\nISBN: 12345\n");
+    }
+    
+    @Test
+    public void hakuVaarallaOtsikollaAntaaVirheilmoituksen() {
+        lisaaTestiArtikkeli("toimittaja", "artikkeli", "lehti");
+        lisaaTestiKirja("kirjoittaja", "kirja", "12345");
+        lisaaTestiArtikkeli("2toimittaja", "2artikkeli", "2lehti");
+        input.add("4");
+        input.add("5");
+        input.add("xdz");
+        List<String> tuloste = aloitaOhjelmaJaPalautaTulostus();
+        assertEquals(tuloste.get(tuloste.size()-2), "Vinkkejä ei löytynyt!");
+    }
+    
+    @Test
+    public void hakuOtsikollaToimiiPikakomennolla() {
+        lisaaTestiArtikkeli("toimittaja", "artikkeli", "lehti");
+        lisaaTestiKirja("kirjoittaja", "kirja", "12345");
+        lisaaTestiArtikkeli("2toimittaja", "2artikkeli", "2lehti");
+        input.add("so kirj");
         List<String> tuloste = aloitaOhjelmaJaPalautaTulostus();
         assertEquals(tuloste.get(tuloste.size()-2), "\nTyyppi: Kirja\nTekijä:"
                 + " kirjoittaja\nNimi: kirja\nTarkastettu: Ei\nISBN: 12345\n");
