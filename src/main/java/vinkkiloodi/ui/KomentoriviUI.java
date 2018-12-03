@@ -43,8 +43,9 @@ public class KomentoriviUI {
                     + "\nX - Sammuta ohjelma\n");
 
             String komento = io.nextLine();
+            komento = komento.toLowerCase().trim();
 
-            if (komento.toLowerCase().trim().equals("x")) {
+            if (komento.equals("x")) {
                 break;
             } else if (komento.equals("1")) {
                 lisaa();
@@ -58,15 +59,25 @@ public class KomentoriviUI {
                 paivitaVinkki();
             } else if (komento.equals("6")) {
                 listaaPikakomennot();
-            } else if (komento.toLowerCase().trim().equals("lk")) {
+            } else if (komento.equals("lk")) {
                 lisaaKirjaVinkki();
-            } else if (komento.toLowerCase().trim().equals("la")) {
+            } else if (komento.equals("la")) {
                 lisaaArtikkeliVinkki();
-            } else if (komento.toLowerCase().trim().equals("lb")) {
+            } else if (komento.equals("lb")) {
                 lisaaBlogiVinkki();
-            } else if (komento.toLowerCase().trim().startsWith("s ")) {
-                nopeaHaku(komento.trim().substring(2).trim().toLowerCase());
-            } else if (komento.toLowerCase().trim().equals("par")) {
+            } else if (komento.startsWith("s ")) {
+                nopeaHaku(komento.substring(2).trim());
+            } else if (komento.startsWith("so ")) {
+                printtaaKaikkiNimella(komento.substring(2).trim());
+            } else if (komento.startsWith("st ")) {
+                printtaaKaikkiTekijalla(komento.substring(2).trim());
+            } else if (komento.equals("et")) {
+                printtaaKaikkiTarkastamattomat();
+            } else if (komento.equals("kt")) {
+                printtaaKaikkiTarkastetut();
+            } else if (komento.startsWith("pv ")) {
+                paivitaVinkki(komento.substring(2).trim());
+            } else if (komento.equals("par")) {
                 this.parser = new KomentoriviParserUI(io, dao);
                 parser.start();
             } else {
@@ -84,6 +95,7 @@ public class KomentoriviUI {
                     + "\n3 - Artikkeli"
                     + "\nX - Peruuta\n");
             String komento = io.nextLine().toLowerCase();
+            komento = komento.toLowerCase().trim();
 
             if (komento.equals("1")) {
                 lisaaKirjaVinkki();
@@ -94,7 +106,7 @@ public class KomentoriviUI {
             } else if (komento.equals("3")) {
                 lisaaArtikkeliVinkki();
                 break;
-            } else if (komento.toLowerCase().trim().equals("x")) {
+            } else if (komento.equals("x")) {
                 break;
             } else {
                 io.printLine("\nVirheellinen komento.");
@@ -163,8 +175,11 @@ public class KomentoriviUI {
         io.printLine("Syötä lukuvinkin otsikko: ");
         String haku = io.nextLine();
         haku = haku.toLowerCase().trim();
+        paivitaVinkki(haku);
+    }
 
-        // Alkeellinen hakutoiminnallisuus.
+    private void paivitaVinkki(String haku) {
+
         Vinkki haettu = haeVinkkiOtsikolla(haku);
 
         if (haettu == null) {
@@ -176,8 +191,10 @@ public class KomentoriviUI {
 
         System.out.println("Nykyinen otsikko: " + haettu.getNimi() + ", Uusi otsikko: ");
         String uusiOtsikko = io.nextLine();
+        
         System.out.println("Nykyinen tekijä: " + haettu.getTekija() + ", Uusi tekijä: ");
         String uusiTekija = io.nextLine();
+        
         String tarkastettu = "";
         if (haettu.getTarkastettu() == 0) {
             tarkastettu = "Ei";
@@ -186,9 +203,13 @@ public class KomentoriviUI {
         }
         System.out.println("On tarkastettu: " + tarkastettu + ", Onko (k/e): ");
         String uusiTarkastettu = io.nextLine();
-
-        haettu.setNimi(uusiOtsikko);
-        haettu.setTekija(uusiTekija);
+        
+        if (!uusiOtsikko.isEmpty())
+            haettu.setNimi(uusiOtsikko);
+        
+        if (!uusiTekija.isEmpty())
+            haettu.setTekija(uusiTekija);
+        
         if (uusiTarkastettu.equals("k")) {
             haettu.setTarkastettu(1);
         } else if (uusiTarkastettu.equals("e")) {
@@ -217,21 +238,24 @@ public class KomentoriviUI {
     private Vinkki paivitaKirja(KirjaVinkki kv) {
         io.printLine("Vanha ISBN: " + kv.getISBN() + ", Uusi ISBN: ");
         String uusiIsbn = io.nextLine();
-        kv.setISBN(uusiIsbn);
+        if (!uusiIsbn.isEmpty())
+            kv.setISBN(uusiIsbn);
         return kv;
     }
 
     private Vinkki paivitaBlogi(BlogiVinkki bv) {
         io.printLine("Vanha URL: " + bv.getUrl() + ", Uusi URL: ");
         String uusiUrl = io.nextLine();
-        bv.setUrl(uusiUrl);
+        if (!uusiUrl.isEmpty())
+            bv.setUrl(uusiUrl);
         return bv;
     }
 
     private Vinkki paivitaArtikkeli(ArtikkeliVinkki av) {
         io.printLine("Vanha julkaisija: " + av.getJulkaisija() + ", Uusi julkaisija: ");
         String uusiJulkaisija = io.nextLine();
-        av.setJulkaisija(uusiJulkaisija);
+        if (!uusiJulkaisija.isEmpty())
+            av.setJulkaisija(uusiJulkaisija);
         return av;
     }
 
@@ -255,8 +279,7 @@ public class KomentoriviUI {
     }
 
     private void nopeaHaku(String hakusana) {
-        io.printLine("\nNopea haku\n-----------\n");
-        io.printLine("Hakusana: \"" + hakusana + "\"");
+        io.printLine("Haetaan hakusannalla \"" + hakusana + "\"...");
 
         List<Vinkki> kirjat = dao.megaHaku(hakusana);
 
@@ -271,14 +294,15 @@ public class KomentoriviUI {
                 + "\n1 - Kirjoja"
                 + "\n2 - Blogeja"
                 + "\n3 - Artikkeleita"
-                + "\n4 - Tekijän vinkit"
-                + "\n5 - Vinkit nimellä"
+                + "\n4 - Vinkit tekijällä"
+                + "\n5 - Vinkit otsikolla"
                 + "\n6 - Tarkastettamattomia vinkkejä"
                 + "\n7 - Tarkastettuja vinkkejä"
                 + "\nX - Peruuta\n");
 
         while (true) {
             String komento = io.nextLine().toLowerCase();
+            komento = komento.toLowerCase().trim();
 
             if (komento.equals("1")) {
                 printtaaKaikkiKirjat();
@@ -336,7 +360,11 @@ public class KomentoriviUI {
     private void printtaaKaikkiTekijalla() {
         io.printLine("\nMikä tekijä?: ");
         String hakuSana = io.nextLine();
+        printtaaKaikkiTekijalla(hakuSana);
+    }
 
+    private void printtaaKaikkiTekijalla(String hakuSana) {
+        io.printLine("Haetaan tekijällä \"" + hakuSana + "\"...");
         List<Vinkki> vinkit = dao.getByTekija(hakuSana);
 
         if (vinkit.isEmpty()) {
@@ -351,7 +379,11 @@ public class KomentoriviUI {
     private void printtaaKaikkiNimella() {
         io.printLine("\nMikä nimi?: ");
         String hakuSana = io.nextLine();
+        printtaaKaikkiNimella(hakuSana);
+    }
 
+    private void printtaaKaikkiNimella(String hakuSana) {
+        io.printLine("Haetaan otsikolla \"" + hakuSana + "\"...");
         List<Vinkki> vinkit = dao.getByNimi(hakuSana);
 
         if (vinkit.isEmpty()) {
@@ -380,13 +412,18 @@ public class KomentoriviUI {
     }
 
     private void listaaPikakomennot() {
-        System.out.println("\nPikakomennot\n-----------");
-        System.out.println("\nLisää vinkki:");
-        System.out.println("\'lk\' = lisää kirjavinkki");
-        System.out.println("\'la\' = lisää artikkelivinkki");
-        System.out.println("\'lb\' = lisää blogivinkki");
-        System.out.println("\nHaku:");
-        System.out.println("\'s\' + hakusana = hae vinkkejä hakusanalla");
+        System.out.println("\nPikakomennot (syötä ilman hipsuja)\n-----------\n"
+                + "Lisää vinkkejä:\n"
+                + "\'lk\' = lisää kirjavinkki\n"
+                + "\'la\' = lisää artikkelivinkki\n"
+                + "\'lb\' = lisää blogivinkki\n"
+                + "Päivitä vinkkejä:\n"
+                + "\'pv\' + hakusana = päivitä vinkki otsikolla\n"
+                + "Hae vinkkejä:\n"
+                + "\'s\' + hakusana = hae vinkkejä hakusanalla\n"
+                + "\'so\' + hakusana = hae vinkkejä otsikolla\n"
+                + "\'st\' + hakusana = hae vinkkejä tekijällä\n"
+                + "\'et\' = listaa tarkastamattomat vinkit (et = \"ei-tarkastetut\")\n"
+                + "\'kt\' = listaa tarkastetut vinkit (kt = \"kyllä-tarkastetut\")\n");
     }
-
 }
