@@ -38,24 +38,24 @@ Näitä syöttämällä päävalikkoon (ilman hipsuja) pääset nopeasti ohjelma
 
 **Lisää vinkkejä:**
 
-*'lk' = lisää kirjavinkki
+*'lk' = lisää kirjavinkki*
 
-*'la' = lisää artikkelivinkki
+*'la' = lisää artikkelivinkki*
 
-*'lb' = lisää blogivinkki
+*'lb' = lisää blogivinkki*
 
 **Päivitä vinkkejä:**
 
-*'pv' + hakusana = päivitä vinkki hakusanalla
+*'pv' + hakusana = päivitä vinkki hakusanalla*
 
 **Hae vinkkejä:**
 
-*'s' + hakusana = hae vinkkejä hakusanalla
+*'s' + hakusana = hae vinkkejä hakusanalla*
 
-*'so' + hakusana = hae vinkkejä otsikolla
+*'so' + hakusana = hae vinkkejä otsikolla*
 
-*'st' + hakusana = hae vinkkejä tekijällä
+*'st' + hakusana = hae vinkkejä tekijällä*
 
-*'et' = listaa tarkastamattomat vinkit (et = "ei-tarkastetut")
+*'et' = listaa tarkastamattomat vinkit (et = "ei-tarkastetut")*
 
-*'kt' = listaa tarkastetut vinkit (kt = "kyllä-tarkastetut")
+*'kt' = listaa tarkastetut vinkit (kt = "kyllä-tarkastetut")*
