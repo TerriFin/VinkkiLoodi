@@ -14,13 +14,19 @@ Ohjelmaa ohjataan komentorivikäyttöliittymällä, eli kaikki kommunikointi ohj
 
 ### Toiminnot
 
-Niin sanotussa päävalikossa on neljä vaihtoehtoa: 1, 2, 3 ja X.
+Niin sanotussa päävalikossa on seitsemän vaihtoehtoa: 1, 2, 3, 4, 5, 6 ja X.
 
 
 **1 - Lisää vinkki** Kuten käyttöliittymä viestii, "1"-komennolla pääsee lisäämään uuden lukuvinkin järjestelmään.
 
 **2 - Listaa vinkit** Tällä komennolla listaat kaikki lisätyt lukuvinkit.
 
-**3 - Merkitse vinkki luetuksi** Tällä komennolla voit merkitä lisätyn lukuvinkin luetuksi. Tämä tapahtuu syöttämällä lukuvinkin otsikon. Ei tarvitse välittää suurista tai pienistä kirjamista tai syötteen edeltävistä tai jälkeisistä välilyönneistä. Täytyy kuitenkin varmistaa, että jos otsikon sisäiset välilyönnit ovat mukana syötteessä, muuten järjestelmä ei tule tunnistamaan sitä.
+**3 - Nopea haku** Tällä komenolla voit yhdellä hakusanalla hakea vinkkejä tietokannasta.
+
+**4 - Tarkka haku** Tällä komennolla voit määritellä tarkempia hakuja, kuten hakea vinkkejä niiden tyypin ja statuksen mukaan.
+
+**5 - Merkitse vinkki luetuksi** Tällä komennolla voit merkitä lisätyn lukuvinkin luetuksi. Tämä tapahtuu syöttämällä lukuvinkin otsikon. Ei tarvitse välittää suurista tai pienistä kirjamista tai syötteen edeltävistä tai jälkeisistä välilyönneistä. Täytyy kuitenkin varmistaa, että jos otsikon sisäiset välilyönnit ovat mukana syötteessä, muuten järjestelmä ei tule tunnistamaan sitä.
+
+**6 - Listaa pikakomennot** Tämä komento listaa käytössä olevat pikakomennot, joilla pääset ohjelman toimintoihin käsiksi nopeasti.
 
 **X - Sammuta ohjelma** Tällä komennolla sammutat ohjelman. Tiedot tallentuvat automaattisesti, eli sitä ei tarvitse erikseen tehdä.
