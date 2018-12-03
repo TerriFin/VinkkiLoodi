@@ -17,6 +17,7 @@ public class KomentoriviUI {
 
     IO io;
     VinkkiDAO dao;
+    KomentoriviParserUI parser;
 
     public KomentoriviUI(IO io, VinkkiDAO dao) {
         this.io = io;
@@ -38,6 +39,7 @@ public class KomentoriviUI {
                     + "\n4 - Tarkka haku"
                     + "\n5 - Päivitä vinkki"
                     + "\n6 - Listaa pikakomennot"
+                    + "\npar - Avaa parser"
                     + "\nX - Sammuta ohjelma\n");
 
             String komento = io.nextLine();
@@ -64,6 +66,9 @@ public class KomentoriviUI {
                 lisaaBlogiVinkki();
             } else if (komento.toLowerCase().trim().startsWith("s ")) {
                 nopeaHaku(komento.trim().substring(2).trim().toLowerCase());
+            } else if (komento.toLowerCase().trim().equals("par")) {
+                this.parser = new KomentoriviParserUI(io, dao);
+                parser.start();
             } else {
                 io.printLine("\nVirheellinen komento.");
             }

@@ -58,7 +58,7 @@ public class KomentoriviUITest {
         input.add(julkaisija);
 
     }
-    
+
     private void paivitaTestiKirja(String haku, String otsikko, String kirjoittaja, String tarkastettu, String ISBN) {
         input.add("5");
         input.add(haku);
@@ -101,6 +101,14 @@ public class KomentoriviUITest {
         ui.start();
     }
 
+    private List<String> aloitaOhjelmaJaPalautaTulostus() {
+        input.add("x");
+        StubIO stubIO = new StubIO(input);
+        ui = new KomentoriviUI(stubIO, dao);
+        ui.start();
+        return stubIO.getOutput();
+    }
+
     @Test
     public void voiLisataKirjaVinkin() {
         lisaaTestiKirja("kirjoittaja", "kirja", "12345");
@@ -133,7 +141,7 @@ public class KomentoriviUITest {
 
         assertTrue(vinkkejaEnnen < dao.getAll().size());
     }
-    
+
     @Test
     public void voiListataVinkit() {
         lisaaTestiArtikkeli("kirjoittaja", "artikkeli", "testiLehti");
@@ -142,60 +150,60 @@ public class KomentoriviUITest {
 
         aloitaOhjelma();
     }
-    
+
     @Test
     public void voiPaivittaaArtikkeliVinkin() {
         lisaaTestiArtikkeli("kirjoittaja", "artikkeli", "testiLehti");
         paivitaTestiArtikkeli("artikkeli", "uusiArtikkeli", "uusiKirjoittaja", "k", "uusiLehti");
-        
+
         aloitaOhjelma();
         List<Vinkki> vanhat = dao.getByNimi("artikkeli");
         List<Vinkki> uudet = dao.getByNimi("uusiArtikkeli");
         assertEquals(vanhat.size(), 0);
         assertEquals(uudet.size(), 1);
     }
-    
+
     @Test
     public void voiPaivittaaBlogiVinkin() {
         lisaaTestiBlogi("kirjoittaja", "blogiposti", "https://olematontestiurl.ei");
         paivitaTestiBlogi("blogiposti", "uusiBlogi", "uusiKirjoittaja", "e", "uusiUrl");
-        
+
         aloitaOhjelma();
         List<Vinkki> vanhat = dao.getByNimi("blogiposti");
         List<Vinkki> uudet = dao.getByNimi("uusiBlogi");
         assertEquals(vanhat.size(), 0);
         assertEquals(uudet.size(), 1);
     }
-    
+
     @Test
     public void voiPaivittaaKirjaVinkin() {
         lisaaTestiKirja("kirjoittaja", "kirja", "12345");
         paivitaTestiKirja("kirja", "uusiKirja", "uusiKirjoittaja", "k", "987653");
-        
+
         aloitaOhjelma();
         List<Vinkki> vanhat = dao.getByNimi("kirja");
         List<Vinkki> uudet = dao.getByNimi("uusiKirja");
         assertEquals(vanhat.size(), 0);
         assertEquals(uudet.size(), 1);
     }
-    
+
     @Test
     public void eiPaivitaVinkkiaJosEiLoydy() {
         lisaaTestiKirja("kirjoittaja", "kirja", "12345");
         paivitaTestiKirja("vaarahakusana", "uusiKirja", "uusiKirjoittaja", "k", "987653");
-        
+
         aloitaOhjelma();
         List<Vinkki> vanhat = dao.getByNimi("kirja");
         List<Vinkki> uudet = dao.getByNimi("uusiKirja");
         assertEquals(vanhat.size(), 1);
         assertEquals(uudet.size(), 0);
     }
-    
+
     @Test
     public void voiPoistuaLisaaValikosta() {
-        
+
         int vinkkejaEnnen = dao.getAll().size();
-        
+
         input.add("1");
         input.add("x");
         input.add("kirjoittaja");
@@ -206,12 +214,12 @@ public class KomentoriviUITest {
 
         assertTrue(vinkkejaEnnen == dao.getAll().size());
     }
-    
+
     @Test
     public void voiLisataKirjojaPikakomennolla() {
-        
+
         int vinkkejaEnnen = dao.getAll().size();
-        
+
         input.add("lk");
         input.add("kirjoittaja");
         input.add("kirja");
@@ -221,12 +229,12 @@ public class KomentoriviUITest {
 
         assertTrue(vinkkejaEnnen < dao.getAll().size());
     }
-    
+
     @Test
     public void voiLisataArtikkeleitaPikakomennolla() {
-        
+
         int vinkkejaEnnen = dao.getAll().size();
-        
+
         input.add("la");
         input.add("kirjoittaja");
         input.add("artikkeli");
@@ -236,12 +244,12 @@ public class KomentoriviUITest {
 
         assertTrue(vinkkejaEnnen < dao.getAll().size());
     }
-    
+
     @Test
     public void voiLisataBlogejaPikakomennolla() {
-        
+
         int vinkkejaEnnen = dao.getAll().size();
-        
+
         input.add("lb");
         input.add("bloggaaja");
         input.add("blogi");
@@ -251,7 +259,36 @@ public class KomentoriviUITest {
 
         assertTrue(vinkkejaEnnen < dao.getAll().size());
     }
-    
+
+    @Test
+    public void vaihtaminenParserinJaKomentoriviIOValillaToimii() {
+        input.add("par");
+        input.add("x");
+        List<String> output = aloitaOhjelmaJaPalautaTulostus();
+
+        boolean kaynnistaaParserin = false;
+        boolean palaaKomentoriviIO = false;
+        int index = 0;
+
+        while (index < output.size()) {
+            if (output.get(index).startsWith("Tervetuloa käyttämään vinkkiloodi parseria!")) {
+                kaynnistaaParserin = true;
+                break;
+            }
+            index++;
+        }
+
+        while (index < output.size()) {
+            if (output.get(index).startsWith("\nMitä haluat tehdä?")) {
+                palaaKomentoriviIO = true;
+                break;
+            }
+            index++;
+        }
+
+        assertTrue(kaynnistaaParserin && palaaKomentoriviIO);
+    }
+
 //    @Test
 //    public void paaseeNopeaanHakuunValikonKautta() {
 //    }

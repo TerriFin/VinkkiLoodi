@@ -4,7 +4,7 @@ import java.util.Scanner;
 import vinkkiloodi.database.VinkkiSqliteDAO;
 import vinkkiloodi.io.IO;
 import vinkkiloodi.io.KomentoriviIO;
-import vinkkiloodi.ui.KomentoriviParserUI;
+import vinkkiloodi.ui.KomentoriviUI;
 
 /**
  *
@@ -21,9 +21,7 @@ public class Main {
         //InMemoryDAO dao = new InMemoryDAO();
         VinkkiSqliteDAO dao = new VinkkiSqliteDAO("tietokanta.db");
 
-        //KomentoriviUI ui = new KomentoriviUI(io, dao);
-        KomentoriviParserUI ui = new KomentoriviParserUI(io, dao);
+        KomentoriviUI ui = new KomentoriviUI(io, dao);
         ui.start();
     }
-
 }
