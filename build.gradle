@@ -32,7 +32,10 @@ dependencies {
     testCompile 'info.cukes:cucumber-junit:' + cucumberVersion
 }
 
-mainClassName = "Main"
+test {
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
+}
 
 mainClassName = "Main"
 
