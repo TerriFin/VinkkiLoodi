@@ -297,7 +297,7 @@ public class KomentoriviUITest {
         int index = 0;
 
         while (index < output.size()) {
-            if (output.get(index).startsWith("Tervetuloa käyttämään vinkkiloodi parseria!")) {
+            if (output.get(index).startsWith("\nTervetuloa käyttämään vinkkiloodi parseria!")) {
                 kaynnistaaParserin = true;
                 break;
             }
