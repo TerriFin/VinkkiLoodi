@@ -15,6 +15,7 @@ import static org.junit.Assert.*;
 import vinkkiloodi.database.VinkkiDAO;
 import vinkkiloodi.database.VinkkiSqliteDAO;
 import vinkkiloodi.database.VinkkiSqliteDAOTest;
+import vinkkiloodi.domain.KirjaVinkki;
 import vinkkiloodi.domain.Vinkki;
 import vinkkiloodi.io.StubIO;
 import vinkkiloodi.ui.KomentoriviUI;
@@ -27,11 +28,14 @@ public class Stepdefs {
 
     List<String> inputLines = new ArrayList<>();
     File db;
+    File folder;
 
     @Before
     public void setUp() throws IOException {
         try {
-            db = new File("testCucumber.db");
+            new File(".tmp").mkdirs();
+            folder = new File(".tmp");
+            db = new File(".tmp/tmptestCucumber.db");
             dao = new VinkkiSqliteDAO(db.getAbsolutePath());
         } catch (SQLException ex) {
             Logger.getLogger(VinkkiSqliteDAOTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -41,6 +45,8 @@ public class Stepdefs {
     @After
     public void tearDown() throws IOException {
         db.delete();
+        folder.delete();
+
     }
 
     @Given("^command Lisää vinkki is selected$")
@@ -53,6 +59,16 @@ public class Stepdefs {
     public void command_Kirja_is() throws Throwable {
         inputLines.add("1");
     }
+    
+    
+    @Given("^esimerkkikirjavinkki otsikolla \"([^\"]*)\" on tallennettu tietokantaan$")
+    public void esimerkkikirjavinkki_otsikolla_on_tallennettu_tietokantaan(String arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        dao.add(new KirjaVinkki(arg1, "testiotsikko"));
+    }
+
+
+
 
     @When("^writer \"([^\"]*)\" title \"([^\"]*)\" and ISBN \"([^\"]*)\" are entered$")
     public void writer_title_and_ISBN_are_entered(String writer, String title, String ISBN) throws Throwable {
@@ -68,12 +84,16 @@ public class Stepdefs {
         inputLines.add("2");
     }
 
+    @When("^komento Listaa vinkit on valittu$")
+    public void komento_Listaa_vinkit_on_valittu() throws Throwable {
+        inputLines.add("2");
+    }
+
     @Then("^system responds with \"([^\"]*)\"$")
     public void system_will_respond_with(String expectedOutput) throws Throwable {
         aloita();
         assert (io.getOutput().contains(expectedOutput));
     }
-
 
     @Then("^system saves the Vinkki titled \"([^\"]*)\"$")
     public void system_saves_the_Vinkki_titled(String arg1) throws Throwable {
@@ -81,6 +101,11 @@ public class Stepdefs {
         aloita();
         List<Vinkki> jalkeen = dao.getByNimi(arg1);
         assertEquals(ennen.size() + 1, jalkeen.size());
+    }
+
+    @Then("^esimerkkikirjavinkki näytetään käyttäjälle$")
+    public void esimerkkikirjavinkki_näytetään_käyttäjälle() throws Throwable {
+
     }
 
     private void aloita() {
