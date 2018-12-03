@@ -15,7 +15,6 @@ import static org.junit.Assert.*;
 import vinkkiloodi.database.VinkkiDAO;
 import vinkkiloodi.database.VinkkiSqliteDAO;
 import vinkkiloodi.database.VinkkiSqliteDAOTest;
-import vinkkiloodi.domain.KirjaVinkki;
 import vinkkiloodi.domain.Vinkki;
 import vinkkiloodi.io.StubIO;
 import vinkkiloodi.ui.KomentoriviUI;
@@ -59,16 +58,37 @@ public class Stepdefs {
     public void command_Kirja_is() throws Throwable {
         inputLines.add("1");
     }
-    
-    
-    @Given("^esimerkkikirjavinkki otsikolla \"([^\"]*)\" on tallennettu tietokantaan$")
-    public void esimerkkikirjavinkki_otsikolla_on_tallennettu_tietokantaan(String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        dao.add(new KirjaVinkki(arg1, "testiotsikko"));
+
+    @Given("^esimerkkikirjavinkki on tallennettu tietokantaan$")
+    public void esimerkkikirjavinkki_on_tallennettu_tietokantaan() throws Throwable {
+        inputLines.add("1");
+        inputLines.add("1");
+        inputLines.add("testitekija");
+        inputLines.add("testiotsikko");
+        inputLines.add("12323");
+
     }
 
+    @Given("^esimerkkiblogivinkki on tallennettu tietokantaan$")
+    public void esimerkkiblogivinkki_on_tallennettu_tietokantaan() throws Throwable {
+        inputLines.add("1");
+        inputLines.add("2");
+        inputLines.add("testitekija");
+        inputLines.add("testiotsikko");
+        inputLines.add("testurl");
 
+    }
 
+    @Given("^esimerkkiartikkelivinkki on tallennettu tietokantaan$")
+    public void esimerkkiartikkelivinkki_on_tallennettu_tietokantaan() throws Throwable {
+
+        inputLines.add("1");
+        inputLines.add("3");
+        inputLines.add("testitekija");
+        inputLines.add("testiotsikko");
+        inputLines.add("testjulkasija");
+
+    }
 
     @When("^writer \"([^\"]*)\" title \"([^\"]*)\" and ISBN \"([^\"]*)\" are entered$")
     public void writer_title_and_ISBN_are_entered(String writer, String title, String ISBN) throws Throwable {
@@ -105,7 +125,41 @@ public class Stepdefs {
 
     @Then("^esimerkkikirjavinkki näytetään käyttäjälle$")
     public void esimerkkikirjavinkki_näytetään_käyttäjälle() throws Throwable {
+        List<Vinkki> ennen = dao.getAll();
+        aloita();
+        List<Vinkki> jalkeen = dao.getAll();
+        assertEquals(ennen.size() + 1, jalkeen.size());
+    }
 
+    @Then("^esimerkkiblogivinkki näytetään käyttäjälle$")
+    public void esimerkkiblogivinkki_näytetään_käyttäjälle() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        List<Vinkki> ennen = dao.getAll();
+        aloita();
+        List<Vinkki> jalkeen = dao.getAll();
+        assertEquals(ennen.size() + 1, jalkeen.size());
+    }
+
+    @Then("^esimerkkiartikkelivinkki näytetään käyttäjälle$")
+    public void esimerkkiartikkelivinkki_näytetään_käyttäjälle() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+
+    }
+
+    @Then("^esimerkkikirjavinkki ja esimerkkiblogivinkki näytetään käyttäjälle$")
+    public void esimerkkikirjavinkki_ja_esimerkkiblogivinkki_näytetään_käyttäjälle() throws Throwable {
+        List<Vinkki> ennen = dao.getAll();
+        aloita();
+        List<Vinkki> jalkeen = dao.getAll();
+        assertEquals(ennen.size() + 2, jalkeen.size());
+    }
+
+    @Then("^esimerkkikirjavinkki, esimerkkiblogivinkki ja esimerkkiartikkelivinkki  näytetään käyttäjälle$")
+    public void esimerkkikirjavinkki_esimerkkiblogivinkki_ja_esimerkkiartikkelivinkki_näytetään_käyttäjälle() throws Throwable {
+        List<Vinkki> ennen = dao.getAll();
+        aloita();
+        List<Vinkki> jalkeen = dao.getAll();
+        assertEquals(ennen.size() + 3, jalkeen.size());
     }
 
     private void aloita() {
