@@ -23,8 +23,8 @@ public class KomentoriviParserUI {
                 + "\nLisää tähän tieto siitä miten rakennetaan komentoja"
                 + "\n"
                 + "\nX - Sulje parser\n");
-                
-                return io.nextLine();
+
+        return io.nextLine();
     }
 
     public void start() {
