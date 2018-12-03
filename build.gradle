@@ -32,6 +32,10 @@ dependencies {
     testCompile 'info.cukes:cucumber-junit:' + cucumberVersion
 }
 
+test {
+    testLogging.showStandardStreams = true
+}
+
 mainClassName = "Main"
 
 test {
