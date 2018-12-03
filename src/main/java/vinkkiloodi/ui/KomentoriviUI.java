@@ -189,10 +189,10 @@ public class KomentoriviUI {
 
         io.printLine("Vinkki löytyi järjestelmästä.\nPäivitä vinkki (tyhjä kenttä = pysyy entisenä)\n");
 
-        System.out.println("Nykyinen otsikko: " + haettu.getNimi() + ", Uusi otsikko: ");
+        io.printLine("Nykyinen otsikko: " + haettu.getNimi() + ", Uusi otsikko: ");
         String uusiOtsikko = io.nextLine();
         
-        System.out.println("Nykyinen tekijä: " + haettu.getTekija() + ", Uusi tekijä: ");
+        io.printLine("Nykyinen tekijä: " + haettu.getTekija() + ", Uusi tekijä: ");
         String uusiTekija = io.nextLine();
         
         String tarkastettu = "";
@@ -201,7 +201,7 @@ public class KomentoriviUI {
         } else {
             tarkastettu = "Kyllä";
         }
-        System.out.println("On tarkastettu: " + tarkastettu + ", Onko (k/e): ");
+        io.printLine("On tarkastettu: " + tarkastettu + ", Onko (k/e): ");
         String uusiTarkastettu = io.nextLine();
         
         if (!uusiOtsikko.isEmpty())
@@ -412,7 +412,7 @@ public class KomentoriviUI {
     }
 
     private void listaaPikakomennot() {
-        System.out.println("\nPikakomennot (syötä ilman hipsuja)\n-----------\n"
+        io.printLine("\nPikakomennot (syötä ilman hipsuja)\n-----------\n"
                 + "Lisää vinkkejä:\n"
                 + "\'lk\' = lisää kirjavinkki\n"
                 + "\'la\' = lisää artikkelivinkki\n"
