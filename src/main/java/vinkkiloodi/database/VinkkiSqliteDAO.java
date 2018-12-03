@@ -71,7 +71,6 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         conn.close();
     }
 
-
     public int tyyppiToInt(Tyyppi tyyppi) {
         switch (tyyppi) {
             case Kirja:
@@ -316,9 +315,13 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             haku.setInt(1, id);
             ResultSet tulokset = haku.executeQuery();
 
-            tulokset.next();
-            Tyyppi tyyppi = intToTyyppi(tulokset.getInt("type"));
+            Tyyppi tyyppi = Tyyppi.None;
             Vinkki vinkki = null;
+
+            if (tulokset.next()) {
+                tyyppi = intToTyyppi(tulokset.getInt("type"));
+
+            }
 
             tulokset.close();
             haku.close();
@@ -432,17 +435,17 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
         try {
             conn = getConnection();
-            
+
             String hakuString = "SELECT * FROM Kirjavinkki "
                     + "WHERE author LIKE ? OR author LIKE ? OR author LIKE ? OR author LIKE ?";
-            
+
             PreparedStatement haku = conn.prepareStatement(hakuString);
 
             haku.setString(1, tekija);
             haku.setString(2, tekija + "%");
             haku.setString(3, "%" + tekija);
             haku.setString(4, "%" + tekija + "%");
-            
+
             ResultSet tulokset = haku.executeQuery();
 
             while (tulokset.next()) {
@@ -468,17 +471,17 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         Connection conn;
         try {
             conn = getConnection();
-            
+
             String hakuString = "SELECT * FROM Blogivinkki "
                     + "WHERE author LIKE ? OR author LIKE ? OR author LIKE ? OR author LIKE ?";
-            
+
             PreparedStatement haku = conn.prepareStatement(hakuString);
 
             haku.setString(1, tekija);
             haku.setString(2, tekija + "%");
             haku.setString(3, "%" + tekija);
             haku.setString(4, "%" + tekija + "%");
-            
+
             ResultSet tulokset = haku.executeQuery();
 
             while (tulokset.next()) {
@@ -505,17 +508,17 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
         try {
             conn = getConnection();
-            
+
             String hakuString = "SELECT * FROM Artikkelivinkki "
                     + "WHERE author LIKE ? OR author LIKE ? OR author LIKE ? OR author LIKE ?";
-            
+
             PreparedStatement haku = conn.prepareStatement(hakuString);
 
             haku.setString(1, tekija);
             haku.setString(2, tekija + "%");
             haku.setString(3, "%" + tekija);
             haku.setString(4, "%" + tekija + "%");
-            
+
             ResultSet tulokset = haku.executeQuery();
 
             while (tulokset.next()) {
@@ -554,10 +557,10 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
         try {
             conn = getConnection();
-            
+
             String hakuString = "SELECT * FROM Kirjavinkki "
                     + "WHERE title LIKE ? OR title LIKE ? OR title LIKE ? OR title LIKE ?";
-            
+
             PreparedStatement haku = conn.prepareStatement(hakuString);
 
             haku.setString(1, nimi);
@@ -590,17 +593,17 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         Connection conn;
         try {
             conn = getConnection();
-            
+
             String hakuString = "SELECT * FROM Blogivinkki "
                     + "WHERE title LIKE ? OR title LIKE ? OR title LIKE ? OR title LIKE ?";
-            
+
             PreparedStatement haku = conn.prepareStatement(hakuString);
 
             haku.setString(1, nimi);
             haku.setString(2, nimi + "%");
             haku.setString(3, "%" + nimi);
             haku.setString(4, "%" + nimi + "%");
-            
+
             ResultSet tulokset = haku.executeQuery();
 
             while (tulokset.next()) {
@@ -627,10 +630,10 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
         try {
             conn = getConnection();
-            
+
             String hakuString = "SELECT * FROM Artikkelivinkki "
                     + "WHERE title LIKE ? OR title LIKE ? OR title LIKE ? OR title LIKE ?";
-            
+
             PreparedStatement haku = conn.prepareStatement(hakuString);
 
             haku.setString(1, nimi);
@@ -673,15 +676,15 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
     public List<Vinkki> getKaikkiKirjat() {
         List<Vinkki> vinkit = new ArrayList<>();
         Connection conn;
-        
+
         try {
             conn = getConnection();
-            
+
             PreparedStatement haku = conn.prepareStatement("SELECT * FROM Kirjavinkki");
-            
+
             ResultSet tulokset = haku.executeQuery();
-            
-            while(tulokset.next()) {
+
+            while (tulokset.next()) {
                 KirjaVinkki vinkki = new KirjaVinkki(tulokset.getString("author"), tulokset.getString("title"),
                         tulokset.getInt("checked_out"), tulokset.getString("isbn"));
                 vinkki.setId(tulokset.getInt("id"));
@@ -690,7 +693,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         } catch (SQLException ex) {
             Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return vinkit;
     }
 
@@ -698,15 +701,15 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
     public List<Vinkki> getKaikkiBlogit() {
         List<Vinkki> vinkit = new ArrayList<>();
         Connection conn;
-        
+
         try {
             conn = getConnection();
-            
+
             PreparedStatement haku = conn.prepareStatement("SELECT * FROM Blogivinkki");
-            
+
             ResultSet tulokset = haku.executeQuery();
-            
-            while(tulokset.next()) {
+
+            while (tulokset.next()) {
                 BlogiVinkki vinkki = new BlogiVinkki(tulokset.getString("author"), tulokset.getString("title"),
                         tulokset.getString("url"), tulokset.getInt("checked_out"));
                 vinkki.setId(tulokset.getInt("id"));
@@ -715,7 +718,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         } catch (SQLException ex) {
             Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return vinkit;
     }
 
@@ -723,15 +726,15 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
     public List<Vinkki> getKaikkiArtikkelit() {
         List<Vinkki> vinkit = new ArrayList<>();
         Connection conn;
-        
+
         try {
             conn = getConnection();
-            
+
             PreparedStatement haku = conn.prepareStatement("SELECT * FROM Artikkelivinkki");
-            
+
             ResultSet tulokset = haku.executeQuery();
-            
-            while(tulokset.next()) {
+
+            while (tulokset.next()) {
                 ArtikkeliVinkki vinkki = new ArtikkeliVinkki(tulokset.getString("author"), tulokset.getString("title"),
                         tulokset.getString("published_in"), tulokset.getInt("checked_out"));
                 vinkki.setId(tulokset.getInt("id"));
@@ -740,7 +743,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         } catch (SQLException ex) {
             Logger.getLogger(VinkkiSqliteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return vinkit;
     }
 
@@ -748,13 +751,13 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
     public List<Vinkki> getKaikkiTarkastamattomat() {
         List<Vinkki> vinkit = getAll();
         List<Vinkki> tarkastamattomat = new ArrayList<>();
-        
+
         for (Vinkki v : vinkit) {
             if (v.getTarkastettu() == 0) {
                 tarkastamattomat.add(v);
             }
         }
-        
+
         return tarkastamattomat;
     }
 
@@ -762,26 +765,26 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
     public List<Vinkki> getKaikkitarkastetut() {
         List<Vinkki> vinkit = getAll();
         List<Vinkki> tarkastamattomat = new ArrayList<>();
-        
+
         for (Vinkki v : vinkit) {
             if (v.getTarkastettu() != 0) {
                 tarkastamattomat.add(v);
             }
         }
-        
+
         return tarkastamattomat;
     }
-    
+
     public boolean sisaltaaVinkin(List<Vinkki> vinkit, Vinkki vinkki) {
         for (Vinkki v : vinkit) {
             if (v.getId() == vinkki.getId()) {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     public void lisaaIlmanDuplikaatteja(List<Vinkki> vinkit, List<Vinkki> lisattavat) {
         for (Vinkki v : lisattavat) {
             if (!sisaltaaVinkin(vinkit, v)) {
@@ -789,13 +792,13 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             }
         }
     }
-    
+
     public List<Vinkki> megaHaku(String hakusana) {
         List<Vinkki> tulokset = new ArrayList<>();
-        
+
         lisaaIlmanDuplikaatteja(tulokset, this.getByNimi(hakusana));
         lisaaIlmanDuplikaatteja(tulokset, this.getByTekija(hakusana));
-        
+
         return tulokset;
     }
 }
