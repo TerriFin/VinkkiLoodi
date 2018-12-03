@@ -5,7 +5,6 @@ import vinkkiloodi.database.VinkkiSqliteDAO;
 import vinkkiloodi.io.IO;
 import vinkkiloodi.io.KomentoriviIO;
 import vinkkiloodi.ui.KomentoriviParserUI;
-import vinkkiloodi.ui.KomentoriviUI;
 
 /**
  *
