@@ -18,11 +18,11 @@ public class KomentoriviParserUI {
     }
     
     private String NaytaOhjeetJaKysyKomennot() {
-        io.printLine("Tervetuloa käyttämään vinkkiloodi parseria!"
+        io.printLine("\nTervetuloa käyttämään vinkkiloodi parseria!"
                 + "\nLisää tähän tieto siitä miten rakennetaan komentoja"
                 + "\n");
         
-        return io.nextLine().toLowerCase();
+        return io.nextLine();
     }
     
     public void start() {
