@@ -139,13 +139,13 @@ public class ParserLogic {
         return io.nextLine().toLowerCase();
     }
 
-    public void printtaaSulkuVaroitus() {
+    private void printtaaSulkuVaroitus() {
         io.printLine("\nAntamassasi komennossa sulkuja ei käytetä oikein."
                 + "\nTarkista että suljet sulut ja että ylipäätänsä käytät niitä."
                 + "\nKorjaa virhe ja yritä uudelleen.");
     }
 
-    public String pyydäUusiaAttribuutteja(String tarvitutAttribuutit) {
+    private String pyydäUusiaAttribuutteja(String tarvitutAttribuutit) {
         io.printLine("Antamassasi attribuutit ovat joko väärässä muodossa tai lainausmerkit ovat väärin"
                 + "\n"
                 + "\nLaita uudet attribuutit muodossa: " + tarvitutAttribuutit
@@ -191,7 +191,7 @@ public class ParserLogic {
             if (komento.equals("k") || komento.equals("kirja")) {
                 kasitteleKirjanLisays();
                 break;
-            } else if (komento.equals("b") || komento.equals("blogi")) {
+            } else if (komento.equals("b") || komento.equals("blogi") || komento.equals("blog")) {
                 kasitteleBloginLisays();
                 break;
             } else if (komento.equals("a") || komento.equals("artikkeli")) {
