@@ -4,7 +4,7 @@ Tällä ohjelmalla voidaan lisätä lukuvinkkejä järjestelmään, listata lis�
 
 ## Asennus
 
-Lataa projekti Githubista ja käynnistä ohjelma komennolla _gradle run_.
+Lataa ohjelman julkaisu [Githubista](https://github.com/TerriFin/VinkkiLoodi/releases) ja käynnistä ohjelma komennolla _java -jar VinkkiLoodi-all.jar_.
 
 ## Ohjelman käyttö
 
