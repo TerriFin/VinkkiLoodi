@@ -81,13 +81,20 @@ public class Stepdefs {
 
     @Given("^esimerkkiartikkelivinkki on tallennettu tietokantaan$")
     public void esimerkkiartikkelivinkki_on_tallennettu_tietokantaan() throws Throwable {
-
         inputLines.add("1");
         inputLines.add("3");
         inputLines.add("testitekija");
         inputLines.add("testiotsikko");
         inputLines.add("testjulkasija");
+    }
 
+    @Given("^eri niminen toinen kirjavinkki on tallennettu tietokantaan$")
+    public void tallenna_toinen_kirjavinkki_eri_nimella() throws Throwable {
+        inputLines.add("1");
+        inputLines.add("1");
+        inputLines.add("toinen tekija");
+        inputLines.add("toinen otsikko");
+        inputLines.add("98765");
     }
 
     @When("^writer \"([^\"]*)\" title \"([^\"]*)\" and ISBN \"([^\"]*)\" are entered$")
@@ -113,7 +120,12 @@ public class Stepdefs {
     public void komento_Listaa_vinkit_on_valittu() throws Throwable {
         inputLines.add("2");
     }
-    
+
+    @When("^komento Nopea haku on valittu$")
+    public void komento_Nopea_haku_on_valittu() throws Throwable {
+        inputLines.add("3");
+    }
+
     @When("^esimerkkikirjavinkin otsikko on syötetty$")
     public void esimerkkiblogivinkin_otsikko_syotetty() throws Throwable {
         inputLines.add("testiotsikko");
@@ -123,7 +135,7 @@ public class Stepdefs {
     public void esimerkkikirjavinkin_otsikko_syotetty() throws Throwable {
         inputLines.add("testiotsikko");
     }
-    
+
     @When("^esimerkkiartikkelivinkin otsikko on syötetty$")
     public void esimerkkiartikkelivinkin_otsikko_syotetty() throws Throwable {
         inputLines.add("testiotsikko");
@@ -138,7 +150,7 @@ public class Stepdefs {
     public void tyhja_rivi_syotetty() throws Throwable {
         inputLines.add("");
     }
-    
+
     @When("^merkitään lukemattomaksi$")
     public void merkitaan_lukemattomaksi() throws Throwable {
         inputLines.add("e");
@@ -147,7 +159,7 @@ public class Stepdefs {
     @Then("^tuloste sisältää \"([^\"]*)\"$")
     public void tuloste_sisaltaa(String sana) throws Throwable {
         aloita();
-        assert(outputista_loytyy_sana(sana));
+        assert (outputista_loytyy_sana(sana));
     }
 
     @Then("^system responds with \"([^\"]*)\"$")
@@ -203,10 +215,50 @@ public class Stepdefs {
         assertEquals(ennen.size() + 3, jalkeen.size());
     }
 
+    @Then("^tuloste sisältää haetun esimerkkikirjavinkin$")
+    public void tuloste_sisaltaa_haetun_esimerkkikirjavinkin() throws Throwable {
+        aloita();
+        assert (outputista_loytyy_sana("12323"));
+    }
+
+    @Then("^tuloste sisältää haetun esimerkkiblogivinkin$")
+    public void tuloste_sisaltaa_haetun_esimerkkiblogivinkin() throws Throwable {
+        aloita();
+        assert (outputista_loytyy_sana("testurl"));
+    }
+
+    @Then("^tuloste sisältää haetun esimerkkiartikkelivinkin$")
+    public void tuloste_sisaltaa_haetun_esimerkkiartikkelivinkin() throws Throwable {
+        aloita();
+        assert (outputista_loytyy_sana("testjulkasija"));
+    }
+
+    @Then("^tuloste ei sisällä esimerkkivinkkejä$")
+    public void tuloste_ei_sisalla_esimerkkivinkkeja() throws Throwable {
+        aloita();
+        assert (!outputista_loytyy_sana("12323")
+                && !outputista_loytyy_sana("testjulkasija")
+                && !outputista_loytyy_sana("testurl"));
+    }
+
+    @Then("^tuloste ei sisällä toista kirjavinkkiä$")
+    public void tuloste_ei_sisalla_toista_kirjavinkkia() throws Throwable {
+        aloita();
+        assert (!outputista_loytyy_sana("98765"));
+    }
+
+    @Then("^tuloste sisältää kaikki vinkit$")
+    public void tuloste_sisaltaa_kaikki_vinkit() throws Throwable {
+        aloita();
+        assert (outputista_loytyy_sana("12323")
+                && outputista_loytyy_sana("testjulkasija")
+                && outputista_loytyy_sana("testurl"));
+    }
+
     private boolean outputista_loytyy_sana(String sana) {
         List<String> tuloste = io.getOutput();
         for (String s : tuloste) {
-            if(s.contains(sana)) {
+            if (s.contains(sana)) {
                 return true;
             }
         }
