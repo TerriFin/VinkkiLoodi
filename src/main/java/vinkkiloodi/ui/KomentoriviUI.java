@@ -138,7 +138,7 @@ public class KomentoriviUI {
         io.printLine("\nLisää blogpost\n-----------\n");
         io.printLine("Tekijän nimi: ");
         String nimi = io.nextLine();
-        io.printLine("Blogin nimi: ");
+        io.printLine("Blogpostauksen nimi: ");
         String otsikko = io.nextLine();
         io.printLine("URL-osoite:");
         String url = io.nextLine();
