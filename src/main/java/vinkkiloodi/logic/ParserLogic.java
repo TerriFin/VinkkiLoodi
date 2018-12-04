@@ -6,6 +6,7 @@ import vinkkiloodi.database.VinkkiDAO;
 import vinkkiloodi.domain.ArtikkeliVinkki;
 import vinkkiloodi.domain.BlogiVinkki;
 import vinkkiloodi.domain.KirjaVinkki;
+import vinkkiloodi.domain.Tyyppi;
 import vinkkiloodi.domain.Vinkki;
 import vinkkiloodi.io.IO;
 
@@ -25,32 +26,63 @@ public class ParserLogic {
         this.dao = dao;
     }
 
-    private void lisaaKomentoihinUudetKomennot(String uudetKomennot) {
+    private boolean onkoSulkujaSamaMaara(String input) {
+        int vasenSulkuja = 0;
+        int oikeaSulkuja = 0;
+
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == '(') {
+                vasenSulkuja++;
+            } else if (input.charAt(i) == ')') {
+                oikeaSulkuja++;
+            }
+        }
+
+        return vasenSulkuja == oikeaSulkuja;
+    }
+
+    private boolean lisaaKomentoihinUudetKomennot(String uudetKomennot) {
         komennot = new ArrayList<>();
         kohta = 0;
+
+        if (!onkoSulkujaSamaMaara(uudetKomennot)) {
+            return false;
+        }
 
         String[] komennotLeikattuina = uudetKomennot.split(" ");
         for (int i = 0; i < komennotLeikattuina.length; i++) {
             if (komennotLeikattuina[i].charAt(0) == '(') {
-                lisaaSulkujenSisalto(komennotLeikattuina, i);
+                if (!lisaaSulkujenSisalto(komennotLeikattuina, i)) {
+                    return false;
+                }
+
                 break;
             } else {
                 komennot.add(komennotLeikattuina[i].toLowerCase());
             }
         }
+
+        return true;
     }
 
-    private void lisaaSulkujenSisalto(String[] komennotLeikattuina, int sulkuAlku) {
-        String sulkujenSisalto = "";
-        for (int i = sulkuAlku; i < komennotLeikattuina.length; i++) {
-            if (komennotLeikattuina[i].charAt(komennotLeikattuina[i].length() - 1) == ')') {
-                sulkujenSisalto += komennotLeikattuina[i];
-            } else {
-                sulkujenSisalto += komennotLeikattuina[i] + " ";
+    private boolean lisaaSulkujenSisalto(String[] komennotLeikattuina, int sulkuAlku) {
+        try {
+            boolean loydettyLoppu = false;
+            String sulkujenSisalto = "";
+            for (int i = sulkuAlku; i < komennotLeikattuina.length; i++) {
+                if (komennotLeikattuina[i].charAt(komennotLeikattuina[i].length() - 1) == ')') {
+                    sulkujenSisalto += komennotLeikattuina[i];
+                    loydettyLoppu = true;
+                } else {
+                    sulkujenSisalto += komennotLeikattuina[i] + " ";
+                }
             }
-        }
 
-        komennot.add(sulkujenSisalto);
+            komennot.add(sulkujenSisalto);
+            return loydettyLoppu;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private int annaAttribuuttiKomennonLainausmerkkienLkm(String komento) {
@@ -89,6 +121,10 @@ public class ParserLogic {
         return attribuutit;
     }
 
+    private boolean eiOleSulullaAlkava(String komento) {
+        return komento.charAt(0) != '(';
+    }
+
     private String getSeuraavaKomento() {
         return komennot.get(kohta++);
     }
@@ -103,8 +139,27 @@ public class ParserLogic {
         return io.nextLine().toLowerCase();
     }
 
+    public void printtaaSulkuVaroitus() {
+        io.printLine("\nAntamassasi komennossa sulkuja ei käytetä oikein."
+                + "\nTarkista että suljet sulut ja että ylipäätänsä käytät niitä."
+                + "\nKorjaa virhe ja yritä uudelleen.");
+    }
+
+    public String pyydäUusiaAttribuutteja(String tarvitutAttribuutit) {
+        io.printLine("Antamassasi attribuutit ovat joko väärässä muodossa tai lainausmerkit ovat väärin"
+                + "\n"
+                + "\nLaita uudet attribuutit muodossa: " + tarvitutAttribuutit
+                + "\n");
+
+        return io.nextLine();
+    }
+
     public void kasitteleKomennot(String uudetKomennot) {
-        lisaaKomentoihinUudetKomennot(uudetKomennot);
+        if (!lisaaKomentoihinUudetKomennot(uudetKomennot)) {
+            printtaaSulkuVaroitus();
+            return;
+        }
+
         String komento = getSeuraavaKomento();
 
         while (true) {
@@ -151,45 +206,54 @@ public class ParserLogic {
     private void kasitteleKirjanLisays() {
         String komento = getSeuraavaKomento();
 
-        int lainausMerkkiLkm = annaAttribuuttiKomennonLainausmerkkienLkm(komento);
-        if (lainausMerkkiLkm % 2 == 0) {
-            String[] attribuutit = annaAttribuutitAtribuuttiKomennosta(komento, lainausMerkkiLkm);
+        while (true) {
+            int lainausMerkkiLkm = annaAttribuuttiKomennonLainausmerkkienLkm(komento);
+            if (lainausMerkkiLkm == 6) {
+                String[] attribuutit = annaAttribuutitAtribuuttiKomennosta(komento, lainausMerkkiLkm);
 
-            dao.add(new KirjaVinkki(attribuutit[0], attribuutit[1], 0, attribuutit[2]));
+                dao.add(new KirjaVinkki(attribuutit[0], attribuutit[1], 0, attribuutit[2]));
 
-            io.printLine("\nUusi kirja '" + attribuutit[1] + "' lisätty!");
-        } else {
-            System.out.println("KYSY OIKEITA KIRJAN TIETOJA");
+                io.printLine("\nUusi kirja '" + attribuutit[1] + "' lisätty!");
+                break;
+            } else {
+                komento = pyydäUusiaAttribuutteja("(\"Tekijä\" \"Kirjan nimi\" \"ISBN\")");
+            }
         }
     }
 
     private void kasitteleBloginLisays() {
         String komento = getSeuraavaKomento();
 
-        int lainausMerkkiLkm = annaAttribuuttiKomennonLainausmerkkienLkm(komento);
-        if (lainausMerkkiLkm % 2 == 0) {
-            String[] attribuutit = annaAttribuutitAtribuuttiKomennosta(komento, lainausMerkkiLkm);
+        while (true) {
+            int lainausMerkkiLkm = annaAttribuuttiKomennonLainausmerkkienLkm(komento);
+            if (lainausMerkkiLkm == 6) {
+                String[] attribuutit = annaAttribuutitAtribuuttiKomennosta(komento, lainausMerkkiLkm);
 
-            dao.add(new BlogiVinkki(attribuutit[0], attribuutit[1], attribuutit[2], 0));
+                dao.add(new BlogiVinkki(attribuutit[0], attribuutit[1], attribuutit[2], 0));
 
-            io.printLine("\nUusi blogi '" + attribuutit[1] + "' lisätty!");
-        } else {
-            System.out.println("KYSY OIKEITA BLOGIN TIETOJA");
+                io.printLine("\nUusi blogi '" + attribuutit[1] + "' lisätty!");
+                break;
+            } else {
+                komento = pyydäUusiaAttribuutteja("(\"Tekijä\" \"Blogin nimi\" \"URL\")");
+            }
         }
     }
 
     private void kasitteleArtikkelinLisays() {
         String komento = getSeuraavaKomento();
 
-        int lainausMerkkiLkm = annaAttribuuttiKomennonLainausmerkkienLkm(komento);
-        if (lainausMerkkiLkm % 2 == 0) {
-            String[] attribuutit = annaAttribuutitAtribuuttiKomennosta(komento, lainausMerkkiLkm);
+        while (true) {
+            int lainausMerkkiLkm = annaAttribuuttiKomennonLainausmerkkienLkm(komento);
+            if (lainausMerkkiLkm == 6) {
+                String[] attribuutit = annaAttribuutitAtribuuttiKomennosta(komento, lainausMerkkiLkm);
 
-            dao.add(new ArtikkeliVinkki(attribuutit[0], attribuutit[1], attribuutit[2], 0));
+                dao.add(new ArtikkeliVinkki(attribuutit[0], attribuutit[1], attribuutit[2], 0));
 
-            io.printLine("\nUusi artikkeli '" + attribuutit[1] + "' lisätty!");
-        } else {
-            System.out.println("KYSY OIKEITA ARTIKKELIN TIETOJA");
+                io.printLine("\nUusi artikkeli '" + attribuutit[1] + "' lisätty!");
+                break;
+            } else {
+                komento = pyydäUusiaAttribuutteja("(\"Tekijä\" \"Blogin nimi\" \"Julkaisija\")");
+            }
         }
     }
 
@@ -245,15 +309,93 @@ public class ParserLogic {
 
     private void kasittelePaivitys() {
         String komento = getSeuraavaKomento();
+        String hakusana = "";
 
-        Vinkki haettu = haeVinkkiOtsikolla(komento);
+        while (eiOleSulullaAlkava(komento)) {
+            hakusana += komento;
+            komento = getSeuraavaKomento();
+        }
+
+        Vinkki haettu = haeVinkkiOtsikolla(hakusana);
 
         if (haettu == null) {
-            io.printLine("Ei löytynyt vinkkiä hakusanalla \"" + komento + "\".");
+            io.printLine("Ei löytynyt vinkkiä hakusanalla \"" + hakusana + "\".");
             return;
         }
-        
-        System.out.println("Löytyi");
+
+        if (haettu.getTyyppi() == Tyyppi.Kirja) {
+            paivitaKirja(komento, (KirjaVinkki) haettu);
+        } else if (haettu.getTyyppi() == Tyyppi.Blog) {
+            paivitaBlogi(komento, (BlogiVinkki) haettu);
+        } else {
+            paivitaArtikkeli(komento, (ArtikkeliVinkki) haettu);
+        }
+    }
+
+    private void paivitaKirja(String komento, KirjaVinkki paivitettava) {
+        while (true) {
+            int lainausMerkkiLkm = annaAttribuuttiKomennonLainausmerkkienLkm(komento);
+            if (lainausMerkkiLkm == 8) {
+                String[] attribuutit = annaAttribuutitAtribuuttiKomennosta(komento, lainausMerkkiLkm);
+
+                paivitettava.setTekija(attribuutit[0]);
+                paivitettava.setNimi(attribuutit[1]);
+                paivitettava.setISBN(attribuutit[2]);
+                paivitettava.setTarkastettu(tarkistaOnkoSyoteTarkastanut(attribuutit[3]));
+
+                dao.update(paivitettava.getId(), paivitettava);
+
+                io.printLine("Kirja " + attribuutit[1] + " onnistuneesti päivitetty!"
+                        + "\n");
+                break;
+            } else {
+                komento = pyydäUusiaAttribuutteja("(\"Tekijä\" \"Nimi\" \"ISBN\" \"Tarkistettu/Tarkastamaton\")");
+            }
+        }
+    }
+
+    private void paivitaBlogi(String komento, BlogiVinkki paivitettava) {
+        while (true) {
+            int lainausMerkkiLkm = annaAttribuuttiKomennonLainausmerkkienLkm(komento);
+            if (lainausMerkkiLkm == 8) {
+                String[] attribuutit = annaAttribuutitAtribuuttiKomennosta(komento, lainausMerkkiLkm);
+
+                paivitettava.setTekija(attribuutit[0]);
+                paivitettava.setNimi(attribuutit[1]);
+                paivitettava.setUrl(attribuutit[2]);
+                paivitettava.setTarkastettu(tarkistaOnkoSyoteTarkastanut(attribuutit[3]));
+
+                dao.update(paivitettava.getId(), paivitettava);
+
+                io.printLine("Blogi " + attribuutit[1] + " onnistuneesti päivitetty!"
+                        + "\n");
+                break;
+            } else {
+                komento = pyydäUusiaAttribuutteja("(\"Tekijä\" \"Nimi\" \"URL\" \"Tarkistettu/Tarkastamaton\")");
+            }
+        }
+    }
+
+    private void paivitaArtikkeli(String komento, ArtikkeliVinkki paivitettava) {
+        while (true) {
+            int lainausMerkkiLkm = annaAttribuuttiKomennonLainausmerkkienLkm(komento);
+            if (lainausMerkkiLkm == 8) {
+                String[] attribuutit = annaAttribuutitAtribuuttiKomennosta(komento, lainausMerkkiLkm);
+
+                paivitettava.setTekija(attribuutit[0]);
+                paivitettava.setNimi(attribuutit[1]);
+                paivitettava.setJulkaisija(attribuutit[2]);
+                paivitettava.setTarkastettu(tarkistaOnkoSyoteTarkastanut(attribuutit[3]));
+
+                dao.update(paivitettava.getId(), paivitettava);
+
+                io.printLine("Artikkeli " + attribuutit[1] + " onnistuneesti päivitetty!"
+                        + "\n");
+                break;
+            } else {
+                komento = pyydäUusiaAttribuutteja("(\"Tekijä\" \"Nimi\" \"Julkaisija\" \"Tarkistettu/Tarkastamaton\")");
+            }
+        }
     }
 
     private Vinkki haeVinkkiOtsikolla(String haku) {
@@ -262,11 +404,36 @@ public class ParserLogic {
         List<Vinkki> vinkit = dao.getAll();
         for (int i = 0; i < vinkit.size(); i++) {
             Vinkki v = vinkit.get(i);
-            if (v.getNimi().toLowerCase().trim().equals(haku)) {
+            String vinkkiNimi = poistaValilyonnit(v.getNimi().toLowerCase().trim());
+            if (vinkkiNimi.equals(haku)) {
                 return v;
             }
         }
         return null;
+    }
+
+    private String poistaValilyonnit(String syote) {
+        String palaute = "";
+
+        for (int i = 0; i < syote.length(); i++) {
+            if (syote.charAt(i) != ' ') {
+                palaute += syote.charAt(i);
+            }
+        }
+
+        return palaute;
+    }
+
+    private int tarkistaOnkoSyoteTarkastanut(String syote) {
+        syote = syote.toLowerCase().trim();
+
+        if (syote.equals("1") || syote.equals("true") || syote.equals("tarkistettu")) {
+            return 1;
+        } else if (syote.equals("0") || syote.equals("false") || syote.equals("tarkastamaton") || syote.equals("eitarkastettu")) {
+            return 0;
+        }
+
+        return -1;
     }
 
     private void printtaaKaikkiVinkit(List<Vinkki> vinkit) {
