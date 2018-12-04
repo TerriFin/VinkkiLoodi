@@ -2,15 +2,11 @@ package vinkkiloodi.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import vinkkiloodi.database.InMemoryDAO;
 import vinkkiloodi.database.VinkkiDAO;
-import vinkkiloodi.io.IO;
 import vinkkiloodi.io.StubIO;
 
 /**
