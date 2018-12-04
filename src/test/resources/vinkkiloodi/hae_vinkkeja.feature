@@ -40,3 +40,66 @@ Feature: Käyttäjä voi hakea tallennettuja vinkkejä Nopealla ja Tarkalla haul
     When komento Nopea haku on valittu
     And esimerkkikirjavinkin otsikko on syötetty
     Then tuloste sisältää kaikki vinkit
+
+  Scenario: Tarkka haku löytää esimerkkikirjavinkin
+    Given esimerkkikirjavinkki on tallennettu tietokantaan
+    When komento Tarkka haku on valittu
+    And valitaan tulostettavaksi kirjoja
+    Then tuloste sisältää haetun esimerkkikirjavinkin
+
+  Scenario: Tarkka haku löytää esimerkkiblogivinkin
+    Given esimerkkiblogivinkki on tallennettu tietokantaan
+    When komento Tarkka haku on valittu
+    And valitaan tulostettavaksi blogeja
+    Then tuloste sisältää haetun esimerkkiblogivinkin
+
+  Scenario: Tarkka haku löytää esimerkkiartikkelivinkin
+    Given esimerkkiartikkelivinkki on tallennettu tietokantaan
+    When komento Tarkka haku on valittu
+    And valitaan tulostettavaksi artikkeleita
+    Then tuloste sisältää haetun esimerkkiartikkelivinkin
+
+  Scenario: Tarkka haku löytää molemmat kirjavinkit
+    Given esimerkkikirjavinkki on tallennettu tietokantaan
+    And eri niminen toinen kirjavinkki on tallennettu tietokantaan
+    When komento Tarkka haku on valittu
+    And valitaan tulostettavaksi kirjoja
+    Then tuloste sisältää molemmat kirjavinkit
+
+  Scenario: Tarkka haku ei tulosta kirjaa jota ei haeta(Tekijä haku)
+    Given esimerkkikirjavinkki on tallennettu tietokantaan
+    And eri niminen toinen kirjavinkki on tallennettu tietokantaan
+    When komento Tarkka haku on valittu
+    And haetaan vinkit tekijällä
+    And esimerkkikirjavinkin tekijä on syötetty
+    Then tuloste ei sisällä toista kirjavinkkiä
+
+  Scenario: Tarkka haku ei tulosta kirjaa jota ei haeta(Otsikko haku)
+    Given esimerkkikirjavinkki on tallennettu tietokantaan
+    And eri niminen toinen kirjavinkki on tallennettu tietokantaan
+    When komento Tarkka haku on valittu
+    And haetaan vinkit otsikolla
+    And esimerkkikirjavinkin otsikko on syötetty
+    Then tuloste ei sisällä toista kirjavinkkiä
+
+  Scenario: Tarkastamattomien tulostaminen tulostaa tarkastamattomia vinkkejä
+    Given esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And esimerkkiblogivinkki on tallennettu tietokantaan
+    When komento Tarkka haku on valittu
+    And valitaan tulostettavaksi tarkastamattomia vinkkejä
+    Then tuloste sisältää haetun esimerkkiartikkelivinkin
+    And tuloste sisältää haetun esimerkkiblogivinkin
+
+  Scenario: Tarkan haun lukemattomien vinkkien tulostus ei tulosta luettuja
+    Given esimerkkikirjavinkki on tallennettu tietokantaan
+    And eri niminen toinen kirjavinkki on tallennettu tietokantaan
+    And toinen kirja merkitään tarkastetuksi
+    When komento Tarkka haku on valittu
+    And valitaan tulostettavaksi tarkastamattomia vinkkejä
+    Then tuloste ei sisällä toista kirjavinkkiä
+
+  Scenario: Tarkalla haulla voi tulostaa tarkastetut vinkit eikä tarkastamattomia tulosteta
+    Given esimerkkikirjavinkki on tallennettu tietokantaan
+    And eri niminen toinen kirjavinkki on tallennettu tietokantaan
+    And toinen kirja merkitään tarkastetuksi
+    Then tuloste ei sisällä esimerkkivinkkejä

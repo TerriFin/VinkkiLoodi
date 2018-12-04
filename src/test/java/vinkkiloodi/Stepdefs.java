@@ -96,6 +96,16 @@ public class Stepdefs {
         inputLines.add("toinen otsikko");
         inputLines.add("98765");
     }
+    
+    @Given("^toinen kirja merkitään tarkastetuksi$")
+    public void merkitse_toinen_kirja_tarkastetuksi() throws Throwable {
+        inputLines.add("5");
+        inputLines.add("toinen otsikko");
+        inputLines.add("");
+        inputLines.add("");
+        inputLines.add("k");
+        inputLines.add("");
+    }
 
     @When("^writer \"([^\"]*)\" title \"([^\"]*)\" and ISBN \"([^\"]*)\" are entered$")
     public void writer_title_and_ISBN_are_entered(String writer, String title, String ISBN) throws Throwable {
@@ -121,11 +131,17 @@ public class Stepdefs {
         inputLines.add("2");
     }
 
+    @When("^komento Tarkka haku on valittu$")
+    public void komento_Tarkka_haku_on_valittu() throws Throwable {
+        inputLines.add("4");
+    }
+
     @When("^komento Nopea haku on valittu$")
     public void komento_Nopea_haku_on_valittu() throws Throwable {
         inputLines.add("3");
     }
 
+    // Esimerkkivinkkien otsikkojen syöttö
     @When("^esimerkkikirjavinkin otsikko on syötetty$")
     public void esimerkkiblogivinkin_otsikko_syotetty() throws Throwable {
         inputLines.add("testiotsikko");
@@ -139,6 +155,12 @@ public class Stepdefs {
     @When("^esimerkkiartikkelivinkin otsikko on syötetty$")
     public void esimerkkiartikkelivinkin_otsikko_syotetty() throws Throwable {
         inputLines.add("testiotsikko");
+    }
+
+    // Esimerkkivinkkien tekijöiden syöttö
+    @When("^esimerkkikirjavinkin tekijä on syötetty$")
+    public void esimerkkikirjavinkin_tekija_syotetty() throws Throwable {
+        inputLines.add("testitekijä");
     }
 
     @When("^\"([^\"]*)\" on syötetty$")
@@ -156,6 +178,43 @@ public class Stepdefs {
         inputLines.add("e");
     }
 
+    // Tarkan haun valinnat
+    @When("^valitaan tulostettavaksi kirjoja$")
+    public void tarkka_valinta_1() throws Throwable {
+        inputLines.add("1");
+    }
+
+    @When("^valitaan tulostettavaksi blogeja$")
+    public void tarkka_valinta_2() throws Throwable {
+        inputLines.add("2");
+    }
+
+    @When("^valitaan tulostettavaksi artikkeleita$")
+    public void tarkka_valinta_3() throws Throwable {
+        inputLines.add("3");
+    }
+
+    @When("^haetaan vinkit tekijällä$")
+    public void tarkka_valinta_4() throws Throwable {
+        inputLines.add("4");
+    }
+
+    @When("^haetaan vinkit otsikolla$")
+    public void tarkka_valinta_5() throws Throwable {
+        inputLines.add("5");
+    }
+
+    @When("^valitaan tulostettavaksi tarkastamattomia vinkkejä$")
+    public void tarkka_valinta_6() throws Throwable {
+        inputLines.add("6");
+    }
+
+    @When("^valitaan tulostettavaksi tarkastettuja vinkkejä$")
+    public void tarkka_valinta_7() throws Throwable {
+        inputLines.add("7");
+    }
+
+    // Then
     @Then("^tuloste sisältää \"([^\"]*)\"$")
     public void tuloste_sisaltaa(String sana) throws Throwable {
         aloita();
@@ -231,6 +290,13 @@ public class Stepdefs {
     public void tuloste_sisaltaa_haetun_esimerkkiartikkelivinkin() throws Throwable {
         aloita();
         assert (outputista_loytyy_sana("testjulkasija"));
+    }
+
+    @Then("^tuloste sisältää molemmat kirjavinkit")
+    public void tuloste_sisaltaa_molemmat_kirjavinkit() throws Throwable {
+        aloita();
+        assert (outputista_loytyy_sana("12323")
+                && outputista_loytyy_sana("98765"));
     }
 
     @Then("^tuloste ei sisällä esimerkkivinkkejä$")
