@@ -104,9 +104,50 @@ public class Stepdefs {
         inputLines.add("2");
     }
 
+    @When("^komento Päivitä vinkki on valittu$")
+    public void komento_Paivita_vinkki_on_valittu() throws Throwable {
+        inputLines.add("5");
+    }
+
     @When("^komento Listaa vinkit on valittu$")
     public void komento_Listaa_vinkit_on_valittu() throws Throwable {
         inputLines.add("2");
+    }
+    
+    @When("^esimerkkikirjavinkin otsikko on syötetty$")
+    public void esimerkkiblogivinkin_otsikko_syotetty() throws Throwable {
+        inputLines.add("testiotsikko");
+    }
+
+    @When("^esimerkkiblogivinkin otsikko on syötetty$")
+    public void esimerkkikirjavinkin_otsikko_syotetty() throws Throwable {
+        inputLines.add("testiotsikko");
+    }
+    
+    @When("^esimerkkiartikkelivinkin otsikko on syötetty$")
+    public void esimerkkiartikkelivinkin_otsikko_syotetty() throws Throwable {
+        inputLines.add("testiotsikko");
+    }
+
+    @When("^\"([^\"]*)\" on syötetty$")
+    public void syota_sana(String sana) throws Throwable {
+        inputLines.add(sana);
+    }
+
+    @When("^tyhjä rivi on syötetty$")
+    public void tyhja_rivi_syotetty() throws Throwable {
+        inputLines.add("");
+    }
+    
+    @When("^merkitään lukemattomaksi$")
+    public void merkitaan_lukemattomaksi() throws Throwable {
+        inputLines.add("e");
+    }
+
+    @Then("^tuloste sisältää \"([^\"]*)\"$")
+    public void tuloste_sisaltaa(String sana) throws Throwable {
+        aloita();
+        assert(outputista_loytyy_sana(sana));
     }
 
     @Then("^system responds with \"([^\"]*)\"$")
@@ -160,6 +201,16 @@ public class Stepdefs {
         aloita();
         List<Vinkki> jalkeen = dao.getAll();
         assertEquals(ennen.size() + 3, jalkeen.size());
+    }
+
+    private boolean outputista_loytyy_sana(String sana) {
+        List<String> tuloste = io.getOutput();
+        for (String s : tuloste) {
+            if(s.contains(sana)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void aloita() {

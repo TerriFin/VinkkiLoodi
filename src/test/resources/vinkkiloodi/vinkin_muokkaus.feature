@@ -4,58 +4,64 @@ Feature: Käyttäjä voi muokata tallennettuja vinkkejä
         Given esimerkkikirjavinkki on tallennettu tietokantaan 
         When komento Päivitä vinkki on valittu
         And esimerkkikirjavinkin otsikko on syötetty
-        And "Uusi otsikko" on syötetty
+        And "Uusi testiotsikko" on syötetty
         And tyhjä rivi on syötetty
+        And merkitään lukemattomaksi
         And tyhjä rivi on syötetty
         And komento Listaa vinkit on valittu
-        Then tuloste sisältää "Uusi otsikko"
+        Then tuloste sisältää "Uusi testiotsikko"
 
     Scenario: Tallennetun Kirjavinkin tekijää voidaan muokata
         Given esimerkkikirjavinkki on tallennettu tietokantaan
         When komento Päivitä vinkki on valittu
         And esimerkkikirjavinkin otsikko on syötetty
-        And "Uusi otsikko" on syötetty
-        And "Uusi tekijä" on syötetty
+        And "Uusi testiotsikko" on syötetty
+        And "Uusi testitekija" on syötetty
+        And merkitään lukemattomaksi
         And tyhjä rivi on syötetty
         And komento Listaa vinkit on valittu
-        Then tuloste sisältää "Uusi tekijä"
+        Then tuloste sisältää "Uusi testitekija"
     
     Scenario: Tallennetun Blogivinkin nimeä voidaan muokata
         Given esimerkkiblogivinkki on tallennettu tietokantaan 
         When komento Päivitä vinkki on valittu
         And esimerkkiblogivinkin otsikko on syötetty
-        And "Uusi otsikko" on syötetty
+        And "Uusi testiotsikko" on syötetty
         And tyhjä rivi on syötetty
+        And merkitään lukemattomaksi
         And tyhjä rivi on syötetty
         And komento Listaa vinkit on valittu
-        Then tuloste sisältää "Uusi otsikko"
+        Then tuloste sisältää "Uusi testiotsikko"
 
     Scenario: Tallennetun Blogivinkin tekijää voidaan muokata
         Given esimerkkiblogivinkki on tallennettu tietokantaan
         When komento Päivitä vinkki on valittu
         And esimerkkiblogivinkin otsikko on syötetty
-        And "Uusi otsikko" on syötetty
-        And "Uusi tekijä" on syötetty
+        And "Uusi testiotsikko" on syötetty
+        And "Uusi testitekija" on syötetty
+        And merkitään lukemattomaksi
         And tyhjä rivi on syötetty
         And komento Listaa vinkit on valittu
-        Then tuloste sisältää "Uusi tekijä"
+        Then tuloste sisältää "Uusi testitekija"
 
      Scenario: Tallennetun Artikkelivinkin nimeä voidaan muokata
         Given esimerkkiartikkelivinkki on tallennettu tietokantaan 
         When komento Päivitä vinkki on valittu
         And esimerkkiartikkelivinkin otsikko on syötetty
-        And "Uusi otsikko" on syötetty
+        And "Uusi testiotsikko" on syötetty
         And tyhjä rivi on syötetty
+        And merkitään lukemattomaksi
         And tyhjä rivi on syötetty
         And komento Listaa vinkit on valittu
-        Then tuloste sisältää "Uusi otsikko"
+        Then tuloste sisältää "Uusi testiotsikko"
 
     Scenario: Tallennetun Artikkelivinkin tekijää voidaan muokata
         Given esimerkkiartikkelivinkki on tallennettu tietokantaan
         When komento Päivitä vinkki on valittu
         And esimerkkiartikkelivinkin otsikko on syötetty
-        And "Uusi otsikko" on syötetty
-        And "Uusi tekijä" on syötetty
+        And "Uusi testiotsikko" on syötetty
+        And "Uusi testitekija" on syötetty
+        And merkitään lukemattomaksi
         And tyhjä rivi on syötetty
         And komento Listaa vinkit on valittu
-        Then tuloste sisältää "Uusi tekijä"
+        Then tuloste sisältää "Uusi testitekija"
