@@ -40,29 +40,41 @@ public class InMemoryDAO implements VinkkiDAO {
     }
 
     public List<Vinkki> getKirjaByTekija(String tekija) {
-        return getTypeofByTekija(Tyyppi.Kirja, tekija);
-    }
-
-    public List<Vinkki> getBlogiByTekija(String tekija) {
-        return getTypeofByTekija(Tyyppi.Blog, tekija);
-    }
-
-    public List<Vinkki> getArtikkeliByTekija(String tekija) {
-        return getTypeofByTekija(Tyyppi.Artikkeli, tekija);
-    }
-
-    private List<Vinkki> getTypeofByTekija(Tyyppi tyyppi, String tekija){
         List<Vinkki> vinkit = new ArrayList<>();
 
         for (Vinkki v : vinkkiDB) {
-            if (v.getTyyppi() == tyyppi && v.getTekija().contains(tekija)) {
+            if (v.getTyyppi() == Tyyppi.Kirja && v.getTekija().contains(tekija)) {
                 vinkit.add(v);
             }
         }
 
         return vinkit;
     }
-    
+
+    public List<Vinkki> getBlogiByTekija(String tekija) {
+        List<Vinkki> vinkit = new ArrayList<>();
+
+        for (Vinkki v : vinkkiDB) {
+            if (v.getTyyppi() == Tyyppi.Blog && v.getTekija().contains(tekija)) {
+                vinkit.add(v);
+            }
+        }
+
+        return vinkit;
+    }
+
+    public List<Vinkki> getArtikkeliByTekija(String tekija) {
+        List<Vinkki> vinkit = new ArrayList<>();
+
+        for (Vinkki v : vinkkiDB) {
+            if (v.getTyyppi() == Tyyppi.Artikkeli && v.getTekija().contains(tekija)) {
+                vinkit.add(v);
+            }
+        }
+
+        return vinkit;
+    }
+
     @Override
     public List<Vinkki> getByTekija(String tekija) {
         List<Vinkki> vinkit = new ArrayList<>();
@@ -75,29 +87,41 @@ public class InMemoryDAO implements VinkkiDAO {
     }
 
     public List<Vinkki> getKirjaByNimi(String nimi) {
-        return getTypeofByNimi(Tyyppi.Kirja, nimi);
-    }
-
-    public List<Vinkki> getBlogiByNimi(String nimi) {
-        return getTypeofByNimi(Tyyppi.Blog, nimi);
-    }
-
-    public List<Vinkki> getArtikkeliByNimi(String nimi) {
-        return getTypeofByNimi(Tyyppi.Artikkeli, nimi);
-    }
-
-    private List<Vinkki> getTypeofByNimi(Tyyppi tyyppi, String nimi) {
         List<Vinkki> vinkit = new ArrayList<>();
 
         for (Vinkki v : vinkkiDB) {
-            if (v.getTyyppi() == tyyppi && v.getNimi().contains(nimi)) {
+            if (v.getTyyppi() == Tyyppi.Kirja && v.getNimi().contains(nimi)) {
                 vinkit.add(v);
             }
         }
 
         return vinkit;
     }
-    
+
+    public List<Vinkki> getBlogiByNimi(String nimi) {
+        List<Vinkki> vinkit = new ArrayList<>();
+
+        for (Vinkki v : vinkkiDB) {
+            if (v.getTyyppi() == Tyyppi.Blog && v.getNimi().contains(nimi)) {
+                vinkit.add(v);
+            }
+        }
+
+        return vinkit;
+    }
+
+    public List<Vinkki> getArtikkeliByNimi(String nimi) {
+        List<Vinkki> vinkit = new ArrayList<>();
+
+        for (Vinkki v : vinkkiDB) {
+            if (v.getTyyppi() == Tyyppi.Artikkeli && v.getNimi().contains(nimi)) {
+                vinkit.add(v);
+            }
+        }
+
+        return vinkit;
+    }
+
     @Override
     public List<Vinkki> getByNimi(String nimi) {
         List<Vinkki> vinkit = new ArrayList<>();
@@ -152,24 +176,36 @@ public class InMemoryDAO implements VinkkiDAO {
 
     @Override
     public List<Vinkki> getKaikkiKirjat() {
-        return getKaikkiOfType(Tyyppi.Kirja);
+        List<Vinkki> vinkit = new ArrayList<>();
+        
+        for (Vinkki v : this.vinkkiDB) {
+            if (v.getTyyppi() == Tyyppi.Kirja) {
+                vinkit.add(v);
+            }
+        }
+        
+        return vinkit;
     }
 
     @Override
     public List<Vinkki> getKaikkiBlogit() {
-        return getKaikkiOfType(Tyyppi.Blog);
+        List<Vinkki> vinkit = new ArrayList<>();
+        
+        for (Vinkki v : this.vinkkiDB) {
+            if (v.getTyyppi() == Tyyppi.Blog) {
+                vinkit.add(v);
+            }
+        }
+        
+        return vinkit;
     }
 
     @Override
     public List<Vinkki> getKaikkiArtikkelit() {
-        return getKaikkiOfType(Tyyppi.Artikkeli);
-    }
-    
-    private List<Vinkki> getKaikkiOfType(Tyyppi tyyppi){
         List<Vinkki> vinkit = new ArrayList<>();
         
         for (Vinkki v : this.vinkkiDB) {
-            if (v.getTyyppi() == tyyppi) {
+            if (v.getTyyppi() == Tyyppi.Artikkeli) {
                 vinkit.add(v);
             }
         }
