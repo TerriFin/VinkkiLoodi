@@ -10,3 +10,8 @@ Latest Codecov report: [![codecov](https://codecov.io/gh/TerriFin/VinkkiLoodi/br
 
 * [TaskLog](https://docs.google.com/spreadsheets/d/1oaHYrSnqn1GZMmRvOOsDc5I86-AQ0m7sGIxDy4t2HQI/edit?usp=sharing)
 * [BackLog](https://drive.google.com/open?id=1SSkjIl9Y88SwT35A8sQbslaZBVvGvaw5J6a34gC4aGU)
+
+
+
+
+Hyvää yö�tä
