@@ -5,8 +5,6 @@
  */
 package vinkkiloodi.ui;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
 import vinkkiloodi.database.VinkkiDAO;
 import vinkkiloodi.domain.ArtikkeliVinkki;
@@ -15,10 +13,6 @@ import vinkkiloodi.domain.KirjaVinkki;
 import vinkkiloodi.domain.Vinkki;
 import vinkkiloodi.io.IO;
 
-/**
- *
- * @author Pyry
- */
 public class Komento {
     
     
@@ -32,7 +26,6 @@ public class Komento {
     }
     
     public void getKomento(String komento) {
-        
         
             if (komento.equals("1")) {
                 lisaa();
