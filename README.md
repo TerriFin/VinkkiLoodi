@@ -14,4 +14,4 @@ Latest Codecov report: [![codecov](https://codecov.io/gh/TerriFin/VinkkiLoodi/br
 
 
 
-Hyvää yö�tä
+Hyvää työtä
