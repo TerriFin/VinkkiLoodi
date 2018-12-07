@@ -51,7 +51,6 @@ public class InMemoryDAOTest {
 
     @Test
     public void idHakuLoytaaOikeanElementin() {
-        int alkuKoko = dao.getAll().size();
 
         KirjaVinkki vinkki = new KirjaVinkki("Testi3", "Testi3");
         KirjaVinkki vinkki2 = new KirjaVinkki("Testi4", "Testi4");
@@ -66,7 +65,6 @@ public class InMemoryDAOTest {
 
     @Test
     public void olematonIdPalauttaaNull() {
-        int alkuKoko = dao.getAll().size();
 
         KirjaVinkki vinkki = new KirjaVinkki("Testi5", "Testi5");
 
