@@ -191,10 +191,10 @@ public class KomentoriviUI {
 
         io.printLine("Nykyinen otsikko: " + haettu.getNimi() + ", Uusi otsikko: ");
         String uusiOtsikko = io.nextLine();
-        
+
         io.printLine("Nykyinen tekijä: " + haettu.getTekija() + ", Uusi tekijä: ");
         String uusiTekija = io.nextLine();
-        
+
         String tarkastettu = "";
         if (haettu.getTarkastettu() == 0) {
             tarkastettu = "Ei";
@@ -203,19 +203,28 @@ public class KomentoriviUI {
         }
         io.printLine("On tarkastettu: " + tarkastettu + ", Onko (k/e): ");
         String uusiTarkastettu = io.nextLine();
-        
-        if (!uusiOtsikko.isEmpty())
+
+        if (!uusiOtsikko.isEmpty()) {
             haettu.setNimi(uusiOtsikko);
-        
-        if (!uusiTekija.isEmpty())
+        }
+
+        if (!uusiTekija.isEmpty()) {
             haettu.setTekija(uusiTekija);
-        
+        }
+
         if (uusiTarkastettu.equals("k")) {
             haettu.setTarkastettu(1);
         } else if (uusiTarkastettu.equals("e")) {
             haettu.setTarkastettu(0);
         }
 
+        haettu = paivittaja(haettu);
+        dao.update(haettu.getId(), haettu);
+        io.printLine("Päivitettiin vinkki \"" + haettu.getNimi() + "\".");
+
+    }
+
+    private Vinkki paivittaja(Vinkki haettu) {
         switch (haettu.getTyyppi()) {
             case Kirja:
                 haettu = paivitaKirja((KirjaVinkki) haettu);
@@ -229,33 +238,33 @@ public class KomentoriviUI {
             default:
                 break;
         }
-
-        dao.update(haettu.getId(), haettu);
-        io.printLine("Päivitettiin vinkki \"" + haettu.getNimi() + "\".");
-
+        return haettu;
     }
 
     private Vinkki paivitaKirja(KirjaVinkki kv) {
         io.printLine("Vanha ISBN: " + kv.getISBN() + ", Uusi ISBN: ");
         String uusiIsbn = io.nextLine();
-        if (!uusiIsbn.isEmpty())
+        if (!uusiIsbn.isEmpty()) {
             kv.setISBN(uusiIsbn);
+        }
         return kv;
     }
 
     private Vinkki paivitaBlogi(BlogiVinkki bv) {
         io.printLine("Vanha URL: " + bv.getUrl() + ", Uusi URL: ");
         String uusiUrl = io.nextLine();
-        if (!uusiUrl.isEmpty())
+        if (!uusiUrl.isEmpty()) {
             bv.setUrl(uusiUrl);
+        }
         return bv;
     }
 
     private Vinkki paivitaArtikkeli(ArtikkeliVinkki av) {
         io.printLine("Vanha julkaisija: " + av.getJulkaisija() + ", Uusi julkaisija: ");
         String uusiJulkaisija = io.nextLine();
-        if (!uusiJulkaisija.isEmpty())
+        if (!uusiJulkaisija.isEmpty()) {
             av.setJulkaisija(uusiJulkaisija);
+        }
         return av;
     }
 
