@@ -21,5 +21,4 @@ public class Tarkastettu implements Matcher {
             return false;
         }
     }
-    
 }

@@ -23,5 +23,4 @@ public class TekijaSisaltaa implements Matcher {
     public boolean matches(Vinkki v) {
         return v.getTekija().toLowerCase().contains(teksti);
     }
-    
 }

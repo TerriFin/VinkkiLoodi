@@ -17,5 +17,4 @@ public class Kaikki implements Matcher {
     public boolean matches(Vinkki v) {
         return true;
     }
-    
 }

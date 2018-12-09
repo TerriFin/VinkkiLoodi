@@ -23,5 +23,4 @@ public class Not implements Matcher {
     public boolean matches(Vinkki v) {
         return !matcher.matches(v);
     }
-    
 }
