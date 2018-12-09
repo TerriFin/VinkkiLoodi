@@ -46,7 +46,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         return conn;
     }
 
-    public void createTables() throws SQLException {
+    public final void createTables() throws SQLException {
         Connection conn = getConnection();
 
         // Create Kirjavinkki Table
