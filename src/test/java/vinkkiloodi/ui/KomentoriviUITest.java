@@ -164,10 +164,13 @@ public class KomentoriviUITest {
         lisaaTestiArtikkeli("kirjoittaja", "artikkeli", "testiLehti");
         paivitaTestiArtikkeli("artikkeli", "uusiArtikkeli", "uusiKirjoittaja", "k", "uusiLehti");
         paivitaTestiArtikkeli("uusiArtikkeli", "uusiArtikkel2", "uusiKirjoittaja", "k", "uusiLehti");
+        
         aloitaOhjelma();
+        
         List<Vinkki> vanhat = dao.getByNimi("artikkeli");
         List<Vinkki> uudet = dao.getByNimi("uusiArtikkeli");
         List<Vinkki> uudet2 = dao.getByNimi("uusiArtikkel2");
+        
         assertEquals(vanhat.size(), 0);
         assertEquals(uudet.size(), 0);
         assertEquals(uudet2.size(), 1);

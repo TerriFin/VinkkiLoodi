@@ -1,10 +1,13 @@
 package vinkkiloodi.ui;
 
+import filter.HakuBuilder;
+import filter.Matcher;
 import java.util.List;
 import vinkkiloodi.database.VinkkiDAO;
 import vinkkiloodi.domain.ArtikkeliVinkki;
 import vinkkiloodi.domain.BlogiVinkki;
 import vinkkiloodi.domain.KirjaVinkki;
+import vinkkiloodi.domain.Tyyppi;
 //import vinkkiloodi.domain.Tyyppi;
 import vinkkiloodi.domain.Vinkki;
 import vinkkiloodi.io.IO;
@@ -268,15 +271,16 @@ public class KomentoriviUI {
         return av;
     }
 
-    private Vinkki haeVinkkiOtsikolla(String haku) {
-        List<Vinkki> vinkit = dao.getAll();
-        for (int i = 0; i < vinkit.size(); i++) {
-            Vinkki v = vinkit.get(i);
-            if (v.getNimi().toLowerCase().trim().equals(haku)) {
-                return v;
-            }
+    private Vinkki haeVinkkiOtsikolla(String hakusana) {
+        Matcher haku = new HakuBuilder().nimiSisaltaa(hakusana).build();
+        
+        List<Vinkki> vinkit = dao.matches(haku);
+        
+        if (vinkit.isEmpty()) {
+            return null;
+        } else {
+            return vinkit.get(0);
         }
-        return null;
     }
 
     private void nopeaHaku() {
@@ -343,7 +347,9 @@ public class KomentoriviUI {
     }
 
     private void printtaaKaikkiKirjat() {
-        List<Vinkki> kirjat = dao.getKaikkiKirjat();
+        Matcher haku = new HakuBuilder().onTyyppia(Tyyppi.Kirja).build();
+        
+        List<Vinkki> kirjat = dao.matches(haku);
 
         for (Vinkki vinkki : kirjat) {
             io.printLine("\n" + vinkki.toString());
@@ -351,7 +357,9 @@ public class KomentoriviUI {
     }
 
     private void printtaaKaikkiBlogit() {
-        List<Vinkki> blogit = dao.getKaikkiBlogit();
+        Matcher haku = new HakuBuilder().onTyyppia(Tyyppi.Blog).build();
+        
+        List<Vinkki> blogit = dao.matches(haku);
 
         for (Vinkki vinkki : blogit) {
             io.printLine("\n" + vinkki.toString());
@@ -359,7 +367,9 @@ public class KomentoriviUI {
     }
 
     private void printtaaKaikkiArtikkelit() {
-        List<Vinkki> artikkelit = dao.getKaikkiArtikkelit();
+        Matcher haku = new HakuBuilder().onTyyppia(Tyyppi.Artikkeli).build();
+        
+        List<Vinkki> artikkelit = dao.matches(haku);
 
         for (Vinkki vinkki : artikkelit) {
             io.printLine("\n" + vinkki.toString());
@@ -374,7 +384,10 @@ public class KomentoriviUI {
 
     private void printtaaKaikkiTekijalla(String hakuSana) {
         io.printLine("Haetaan tekijällä \"" + hakuSana + "\"...");
-        List<Vinkki> vinkit = dao.getByTekija(hakuSana);
+        
+        Matcher haku = new HakuBuilder().tekijaSisaltaa(hakuSana).build();
+        
+        List<Vinkki> vinkit = dao.matches(haku);
 
         if (vinkit.isEmpty()) {
             io.printLine("Vinkkejä ei löytynyt!");
@@ -393,7 +406,9 @@ public class KomentoriviUI {
 
     private void printtaaKaikkiNimella(String hakuSana) {
         io.printLine("Haetaan otsikolla \"" + hakuSana + "\"...");
-        List<Vinkki> vinkit = dao.getByNimi(hakuSana);
+        Matcher haku = new HakuBuilder().nimiSisaltaa(hakuSana).build();
+        
+        List<Vinkki> vinkit = dao.matches(haku);
 
         if (vinkit.isEmpty()) {
             io.printLine("Vinkkejä ei löytynyt!");
@@ -403,9 +418,21 @@ public class KomentoriviUI {
             }
         }
     }
+    
+    private void oldPrinttaaKaikkiTarkastamattomat() {
+        List<Vinkki> vinkit = dao.getAll();
 
+        for (Vinkki vinkki : vinkit) {
+            if (vinkki.getTarkastettu() == 0) {
+                io.printLine("\n" + vinkki.toString());
+            }
+        }
+    }
+    
     private void printtaaKaikkiTarkastamattomat() {
-        List<Vinkki> tarkastamattomat = dao.getKaikkiTarkastamattomat();
+        Matcher haku = new HakuBuilder().tarkastamaton().build();
+        
+        List<Vinkki> tarkastamattomat = dao.matches(haku);
 
         for (Vinkki vinkki : tarkastamattomat) {
             io.printLine("\n" + vinkki.toString());
@@ -413,7 +440,9 @@ public class KomentoriviUI {
     }
 
     private void printtaaKaikkiTarkastetut() {
-        List<Vinkki> tarkastetut = dao.getKaikkitarkastetut();
+        Matcher haku = new HakuBuilder().tarkastettu().build();
+        
+        List<Vinkki> tarkastetut = dao.matches(haku);
 
         for (Vinkki vinkki : tarkastetut) {
             io.printLine("\n" + vinkki.toString());

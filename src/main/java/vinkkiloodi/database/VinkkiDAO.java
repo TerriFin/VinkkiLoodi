@@ -1,5 +1,6 @@
 package vinkkiloodi.database;
 
+import filter.Matcher;
 import java.util.List;
 import vinkkiloodi.domain.Vinkki;
 
@@ -32,4 +33,6 @@ public interface VinkkiDAO {
     public List<Vinkki> getKaikkitarkastetut();
     
     public List<Vinkki> megaHaku(String hakusana);
+    
+    public List<Vinkki> matches(Matcher matcher);
 }

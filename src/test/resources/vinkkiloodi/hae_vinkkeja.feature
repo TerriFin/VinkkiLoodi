@@ -90,14 +90,6 @@ Feature: Käyttäjä voi hakea tallennettuja vinkkejä Nopealla ja Tarkalla haul
     Then tuloste sisältää haetun esimerkkiartikkelivinkin
     And tuloste sisältää haetun esimerkkiblogivinkin
 
-  Scenario: Tarkan haun lukemattomien vinkkien tulostus ei tulosta luettuja
-    Given esimerkkikirjavinkki on tallennettu tietokantaan
-    And eri niminen toinen kirjavinkki on tallennettu tietokantaan
-    And toinen kirja merkitään tarkastetuksi
-    When komento Tarkka haku on valittu
-    And valitaan tulostettavaksi tarkastamattomia vinkkejä
-    Then tuloste ei sisällä toista kirjavinkkiä
-
   Scenario: Tarkalla haulla voi tulostaa tarkastetut vinkit eikä tarkastamattomia tulosteta
     Given esimerkkikirjavinkki on tallennettu tietokantaan
     And eri niminen toinen kirjavinkki on tallennettu tietokantaan

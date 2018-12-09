@@ -1,5 +1,7 @@
 package vinkkiloodi.database;
 
+import filter.HakuBuilder;
+import filter.Matcher;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -156,6 +158,21 @@ public class VinkkiSqliteDAOTest {
         Vinkki tulos = dao.getById(vinkki.getId());
 
         assertEquals(tulos.getTarkastettu(), 1);
+    }
+    
+    @Test
+    public void kirjanPaivitysMuuttaaISBN() {
+        KirjaVinkki vinkki = new KirjaVinkki("Alkuperäinen", "Alkuperäinen", 0, "4321");
+
+        dao.add(vinkki);
+
+        KirjaVinkki uusiVinkki = new KirjaVinkki("Alkuperäinen", "Alkuperäinen", 0, "1234");
+
+        dao.update(vinkki.getId(), uusiVinkki);
+
+        KirjaVinkki tulos = (KirjaVinkki) dao.getById(vinkki.getId());
+
+        assertEquals("1234", tulos.getISBN());
     }
 
     @Test
@@ -703,5 +720,52 @@ public class VinkkiSqliteDAOTest {
         List<Vinkki> haku = dao.getKaikkitarkastetut();
         
         assert(haku.size() == 1);
+    }
+    
+    @Test
+    public void hakuBuilderiLoytaaKirjat() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "123123");
+        
+        dao.add(vinkki);
+        
+        Matcher haku = new HakuBuilder().onTyyppia(Tyyppi.Kirja).build();
+        
+        List<Vinkki> vinkit = dao.matches(haku);
+        
+        assert(vinkit.size() == 1);
+    }
+    
+    @Test
+    public void hakuBuilderiLoytaaLukemattomatKirjat() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "123123");
+        Vinkki vinkki2 = new KirjaVinkki("testi2", "Uniikkinimi", 1, "432112");
+        Vinkki vinkki3 = new KirjaVinkki("testi3", "Uniikkinimi", 1, "7654123");
+        
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+        
+        Matcher haku = new HakuBuilder().tarkastamaton().build();
+        
+        List<Vinkki> vinkit = dao.matches(haku);
+        
+        assertEquals(1, vinkit.size());
+    }
+    
+    @Test
+    public void hakuBuilderiLoytaaLuetutKirjat() {
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "123123");
+        Vinkki vinkki2 = new KirjaVinkki("testi2", "Uniikkinimi", 1, "432112");
+        Vinkki vinkki3 = new KirjaVinkki("testi3", "Uniikkinimi", 1, "7654123");
+        
+        dao.add(vinkki);
+        dao.add(vinkki2);
+        dao.add(vinkki3);
+        
+        Matcher haku = new HakuBuilder().tarkastettu().build();
+        
+        List<Vinkki> vinkit = dao.matches(haku);
+        
+        assertEquals(2, vinkit.size());
     }
 }

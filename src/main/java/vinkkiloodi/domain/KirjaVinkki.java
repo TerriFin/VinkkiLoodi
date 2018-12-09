@@ -32,7 +32,7 @@ public class KirjaVinkki extends Vinkki {
 
     private String isbnToString() {
         String s = "";
-        if (!getISBN().equals("")) {
+        if (!getISBN().isEmpty()) {
             s = "ISBN: " + getISBN() + "\n";
         }
         return s;

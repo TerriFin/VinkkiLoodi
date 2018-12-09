@@ -1,5 +1,6 @@
 package vinkkiloodi.database;
 
+import filter.Matcher;
 import java.util.ArrayList;
 import java.util.List;
 import vinkkiloodi.domain.Tyyppi;
@@ -237,6 +238,20 @@ public class InMemoryDAO implements VinkkiDAO {
         }
         
         return vinkit;
+    }
+
+    @Override
+    public List<Vinkki> matches(Matcher matcher) {
+        List<Vinkki> vinkit = getAll();
+        List<Vinkki> tulokset = new ArrayList<>();
+        
+        for (Vinkki v : vinkit) {
+            if (matcher.matches(v)) {
+                tulokset.add(v);
+            }
+        }
+        
+        return tulokset;
     }
 
 }

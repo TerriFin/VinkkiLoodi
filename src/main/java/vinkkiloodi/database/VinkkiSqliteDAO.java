@@ -1,5 +1,6 @@
 package vinkkiloodi.database;
 
+import filter.Matcher;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -203,7 +204,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
             tulokset.next();
 
-            KirjaVinkki vinkki = new KirjaVinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getInt("checked_out"), "");
+            KirjaVinkki vinkki = new KirjaVinkki(tulokset.getString("author"), tulokset.getString("title"), tulokset.getInt("checked_out"), tulokset.getString("isbn"));
             vinkki.setId(id);
 
             tulokset.close();
@@ -801,4 +802,19 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
 
         return tulokset;
     }
+
+    @Override
+    public List<Vinkki> matches(Matcher matcher) {
+        List<Vinkki> vinkit = getAll();
+        List<Vinkki> tulokset = new ArrayList<>();
+        
+        for (Vinkki v : vinkit) {
+            if (matcher.matches(v)) {
+                tulokset.add(v);
+            }
+        }
+        
+        return tulokset;
+    }
+    
 }
