@@ -253,5 +253,4 @@ public class InMemoryDAO implements VinkkiDAO {
         
         return tulokset;
     }
-
 }

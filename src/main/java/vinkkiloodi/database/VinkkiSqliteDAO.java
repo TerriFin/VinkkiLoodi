@@ -131,9 +131,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
                     storeArtikkeli((ArtikkeliVinkki) vinkki);
                     break;
             }
-        } catch (SQLException e) {
-
-        }
+        } catch (SQLException e) {}
     }
 
     private void storeKirja(KirjaVinkki kirja) {
@@ -211,9 +209,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             haku.close();
 
             return vinkki;
-        } catch (SQLException e) {
-
-        }
+        } catch (SQLException e) {}
 
         return null;
     }
@@ -232,9 +228,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             haku.close();
 
             return vinkki;
-        } catch (SQLException e) {
-
-        }
+        } catch (SQLException e) {}
 
         return null;
     }
@@ -253,9 +247,7 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
             haku.close();
 
             return vinkki;
-        } catch (SQLException e) {
-
-        }
+        } catch (SQLException e) {}
 
         return null;
     }
@@ -660,7 +652,6 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         }
 
         return vinkit;
-
     }
 
     @Override
@@ -816,5 +807,4 @@ public class VinkkiSqliteDAO implements VinkkiDAO {
         
         return tulokset;
     }
-    
 }
