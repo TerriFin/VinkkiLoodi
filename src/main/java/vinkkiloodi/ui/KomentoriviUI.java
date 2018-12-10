@@ -80,6 +80,8 @@ public class KomentoriviUI {
                 printtaaKaikkiTarkastetut();
             } else if (komento.startsWith("pv ")) {
                 paivitaVinkki(komento.substring(2).trim());
+            } else if (komento.startsWith("ta ")) {
+                merkkaaTarkastetuksi(komento.substring(2).trim());
             } else if (komento.equals("par")) {
                 this.parser = new KomentoriviParserUI(io, dao);
                 parser.start();
@@ -457,11 +459,26 @@ public class KomentoriviUI {
                 + "\'lb\' = lisää blogivinkki\n"
                 + "Päivitä vinkkejä:\n"
                 + "\'pv\' + hakusana = päivitä vinkki otsikolla\n"
+                + "\'ta\' + hakusana = merkkaa vinkki tarkastetuksi"
                 + "Hae vinkkejä:\n"
                 + "\'s\' + hakusana = hae vinkkejä hakusanalla\n"
                 + "\'so\' + hakusana = hae vinkkejä otsikolla\n"
                 + "\'st\' + hakusana = hae vinkkejä tekijällä\n"
                 + "\'et\' = listaa tarkastamattomat vinkit (et = \"ei-tarkastetut\")\n"
                 + "\'kt\' = listaa tarkastetut vinkit (kt = \"kyllä-tarkastetut\")\n");
+    }
+
+    private void merkkaaTarkastetuksi(String haku) {
+        Vinkki haettu = haeVinkkiOtsikolla(haku);
+        
+        if (haettu == null) {
+            io.printLine("Ei löytynyt vinkkiä hakusanalla \"" + haku + "\".");
+            return;
+        }
+        
+        haettu.setTarkastettu(1);
+        dao.update(haettu.getId(), haettu);
+        
+        io.printLine("Vinkki '" + haku + "' merkattu luetuksi.");
     }
 }
