@@ -26,12 +26,16 @@ public class KomentoriviIO implements IO {
 
     @Override
     public void printLine(String text) {
-        System.out.println(text);
+        printLine(text, new ColorPlacer());
+    }
+    
+    @Override
+    public void printLine(String text, ColorPlacer placer) {
+        System.out.println(placer.colorize(text));
     }
 
     @Override
     public int nextInt() {
         return Integer.parseInt(scanner.nextLine());
     }
-
 }

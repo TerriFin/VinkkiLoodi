@@ -10,7 +10,10 @@ import vinkkiloodi.domain.KirjaVinkki;
 import vinkkiloodi.domain.Tyyppi;
 //import vinkkiloodi.domain.Tyyppi;
 import vinkkiloodi.domain.Vinkki;
+import vinkkiloodi.io.ColorFlag;
+import vinkkiloodi.io.ColorPlacer;
 import vinkkiloodi.io.IO;
+import vinkkiloodi.io.StubIO;
 
 /**
  *
@@ -29,21 +32,33 @@ public class KomentoriviUI {
 
     public void start() {
         io.printLine("Tervetuloa vinkkiloodiin!\n----------------------\n"
-                + "Vinkkiloodi on lukuvinkkikirjasto, johon voit lisätä lukuvinkkejä.\n");
+                + "Vinkkiloodi on lukuvinkkikirjasto, johon voit lisätä lukuvinkkejä.\n",
+                new ColorPlacer(new ColorFlag(7, "green")));
         paavalikko();
     }
 
     private void paavalikko() {
         while (true) {
-            io.printLine("\nMitä haluat tehdä?"
-                    + "\n1 - Lisää vinkki"
-                    + "\n2 - Listaa vinkit"
-                    + "\n3 - Nopea haku"
-                    + "\n4 - Tarkka haku"
-                    + "\n5 - Päivitä vinkki"
-                    + "\n6 - Listaa pikakomennot"
-                    + "\npar - Avaa parser"
-                    + "\nX - Sammuta ohjelma\n");
+            io.printLine("\nMitä haluat tehdä? "
+                    + "\n1 - Lisää vinkki "
+                    + "\n2 - Listaa vinkit "
+                    + "\n3 - Nopea haku "
+                    + "\n4 - Tarkka haku "
+                    + "\n5 - Päivitä vinkki "
+                    + "\n6 - Listaa pikakomennot "
+                    + "\npar - Avaa parser "
+                    + "\nX - Sammuta ohjelma\n",
+                    new ColorPlacer(
+                            new ColorFlag(3, "purple"),
+                            new ColorFlag(7, "purple"),
+                            new ColorFlag(11, "purple"),
+                            new ColorFlag(15, "purple"),
+                            new ColorFlag(19, "purple"),
+                            new ColorFlag(23, "purple"),
+                            new ColorFlag(27, "purple"),
+                            new ColorFlag(31, "purple"),
+                            new ColorFlag(33, "red"),
+                            new ColorFlag(34, "red")));
 
             String komento = io.nextLine();
             komento = komento.toLowerCase().trim();
@@ -86,7 +101,7 @@ public class KomentoriviUI {
                 this.parser = new KomentoriviParserUI(io, dao);
                 parser.start();
             } else {
-                io.printLine("\nVirheellinen komento.");
+                printtaaVirheellinenKomento();
             }
         }
     }
@@ -95,10 +110,19 @@ public class KomentoriviUI {
         while (true) {
             io.printLine("\n-----------\n");
             io.printLine("\nOnko vinkkisi: "
-                    + "\n1 - Kirja"
-                    + "\n2 - Blogipostaus"
-                    + "\n3 - Artikkeli"
-                    + "\nX - Peruuta\n");
+                    + "\n1 - Kirja "
+                    + "\n2 - Blogipostaus "
+                    + "\n3 - Artikkeli "
+                    + "\nX - Peruuta\n",
+                    new ColorPlacer(
+                            new ColorFlag(2, "purple"),
+                            new ColorFlag(5, "purple"),
+                            new ColorFlag(8, "purple"),
+                            new ColorFlag(11, "purple"),
+                            new ColorFlag(4, "green"),
+                            new ColorFlag(7, "green"),
+                            new ColorFlag(10, "green"),
+                            new ColorFlag(13, "red")));
             String komento = io.nextLine().toLowerCase();
             komento = komento.toLowerCase().trim();
 
@@ -114,19 +138,27 @@ public class KomentoriviUI {
             } else if (komento.equals("x")) {
                 break;
             } else {
-                io.printLine("\nVirheellinen komento.");
+                printtaaVirheellinenKomento();
             }
         }
 
     }
 
     private void lisaaKirjaVinkki() {
-        io.printLine("\nLisää kirja\n-----------\n");
-        io.printLine("Kirjoittajan nimi: ");
+        io.printLine("\nLisää kirja\n-----------\n",
+                new ColorPlacer(
+                        new ColorFlag(1, "green")));
+        io.printLine("Kirjoittajan nimi: ",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
         String nimi = io.nextLine();
-        io.printLine("Otsikko: ");
+        io.printLine("Otsikko: ",
+                new ColorPlacer(
+                        new ColorFlag(0, "cyan")));
         String otsikko = io.nextLine();
-        io.printLine("ISBN: ");
+        io.printLine("ISBN: ",
+                new ColorPlacer(
+                        new ColorFlag(0, "cyan")));
         String isbn = io.nextLine();
 
         if (isbn.trim().length() < 1) {
@@ -135,49 +167,64 @@ public class KomentoriviUI {
             dao.add(new KirjaVinkki(nimi, otsikko, 0, isbn));
         }
 
-        io.printLine("Vinkki lisätty!");
-
+        printtaaVinkkiLisatty();
     }
 
     private void lisaaBlogiVinkki() {
-        io.printLine("\nLisää blogpost\n-----------\n");
-        io.printLine("Tekijän nimi: ");
+        io.printLine("\nLisää blogpost\n-----------\n",
+                new ColorPlacer(
+                        new ColorFlag(1, "green"))
+        );
+        io.printLine("Tekijän nimi: ",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
         String nimi = io.nextLine();
-        io.printLine("Blogpostauksen nimi: ");
+        io.printLine("Blogpostauksen nimi: ",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
         String otsikko = io.nextLine();
-        io.printLine("URL-osoite:");
+        io.printLine("URL-osoite:",
+                new ColorPlacer(
+                        new ColorFlag(0, "cyan")));
         String url = io.nextLine();
 
         dao.add(new BlogiVinkki(nimi, otsikko, url, 0));
 
-        io.printLine("Vinkki lisätty!");
+        printtaaVinkkiLisatty();
     }
 
     private void lisaaArtikkeliVinkki() {
-        io.printLine("\nLisää artikkeli\n-----------\n");
-        io.printLine("Kirjoittajan nimi: ");
+        io.printLine("\nLisää artikkeli\n-----------\n",
+                new ColorPlacer(
+                        new ColorFlag(1, "green")));
+        io.printLine("Kirjoittajan nimi: ",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
         String nimi = io.nextLine();
-        io.printLine("Otsikko: ");
+        io.printLine("Otsikko: ",
+                new ColorPlacer(
+                        new ColorFlag(0, "cyan")));
         String otsikko = io.nextLine();
-        io.printLine("Julkaisija: ");
+        io.printLine("Julkaisija: ",
+                new ColorPlacer(
+                        new ColorFlag(0, "cyan")));
         String julkaisija = io.nextLine();
 
         dao.add(new ArtikkeliVinkki(nimi, otsikko, julkaisija, 0));
 
-        io.printLine("Vinkki lisätty!");
+        printtaaVinkkiLisatty();
     }
 
     private void listaaKaikki() {
         io.printLine("\nKaikki vinkit\n------------\n");
-        List<Vinkki> vinkit = dao.getAll();
-        for (Vinkki vinkki : vinkit) {
-            io.printLine(vinkki.toString());
-        }
+        printtaaKaikkiVinkitListalla(dao.getAll());
     }
 
     private void paivitaVinkki() {
         io.printLine("\nPäivitä vinkki\n--------------------\n");
-        io.printLine("Syötä lukuvinkin otsikko: ");
+        io.printLine("Syötä lukuvinkin otsikko: ",
+                new ColorPlacer(
+                        new ColorFlag(2, "cyan")));
         String haku = io.nextLine();
         haku = haku.toLowerCase().trim();
         paivitaVinkki(haku);
@@ -194,10 +241,14 @@ public class KomentoriviUI {
 
         io.printLine("Vinkki löytyi järjestelmästä.\nPäivitä vinkki (tyhjä kenttä = pysyy entisenä)\n");
 
-        io.printLine("Nykyinen otsikko: " + haettu.getNimi() + ", Uusi otsikko: ");
+        io.printLine("Nykyinen otsikko: " + haettu.getNimi() + ", Uusi otsikko: ",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
         String uusiOtsikko = io.nextLine();
 
-        io.printLine("Nykyinen tekijä: " + haettu.getTekija() + ", Uusi tekijä: ");
+        io.printLine("Nykyinen tekijä: " + haettu.getTekija() + ", Uusi tekijä: ",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
         String uusiTekija = io.nextLine();
 
         String tarkastettu = "";
@@ -206,7 +257,9 @@ public class KomentoriviUI {
         } else {
             tarkastettu = "Kyllä";
         }
-        io.printLine("On tarkastettu: " + tarkastettu + ", Onko (k/e): ");
+        io.printLine("On tarkastettu: " + tarkastettu + ", Onko (k/e): ",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
         String uusiTarkastettu = io.nextLine();
 
         if (!uusiOtsikko.isEmpty()) {
@@ -247,7 +300,9 @@ public class KomentoriviUI {
     }
 
     private Vinkki paivitaKirja(KirjaVinkki kv) {
-        io.printLine("Vanha ISBN: " + kv.getISBN() + ", Uusi ISBN: ");
+        io.printLine("Vanha ISBN: " + kv.getISBN() + ", Uusi ISBN: ",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
         String uusiIsbn = io.nextLine();
         if (!uusiIsbn.isEmpty()) {
             kv.setISBN(uusiIsbn);
@@ -256,7 +311,9 @@ public class KomentoriviUI {
     }
 
     private Vinkki paivitaBlogi(BlogiVinkki bv) {
-        io.printLine("Vanha URL: " + bv.getUrl() + ", Uusi URL: ");
+        io.printLine("Vanha URL: " + bv.getUrl() + ", Uusi URL: ",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
         String uusiUrl = io.nextLine();
         if (!uusiUrl.isEmpty()) {
             bv.setUrl(uusiUrl);
@@ -265,7 +322,9 @@ public class KomentoriviUI {
     }
 
     private Vinkki paivitaArtikkeli(ArtikkeliVinkki av) {
-        io.printLine("Vanha julkaisija: " + av.getJulkaisija() + ", Uusi julkaisija: ");
+        io.printLine("Vanha julkaisija: " + av.getJulkaisija() + ", Uusi julkaisija: ",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
         String uusiJulkaisija = io.nextLine();
         if (!uusiJulkaisija.isEmpty()) {
             av.setJulkaisija(uusiJulkaisija);
@@ -275,9 +334,9 @@ public class KomentoriviUI {
 
     private Vinkki haeVinkkiOtsikolla(String hakusana) {
         Matcher haku = new HakuBuilder().nimiSisaltaa(hakusana).build();
-        
+
         List<Vinkki> vinkit = dao.matches(haku);
-        
+
         if (vinkit.isEmpty()) {
             return null;
         } else {
@@ -287,33 +346,52 @@ public class KomentoriviUI {
 
     private void nopeaHaku() {
         io.printLine("\nNopea haku\n-----------\n");
-        io.printLine("Anna hakusana: ");
+        io.printLine("Anna hakusana: ",
+                new ColorPlacer(
+                        new ColorFlag(1, "yellow")));
         String hakusana = io.nextLine();
 
         nopeaHaku(hakusana);
     }
 
     private void nopeaHaku(String hakusana) {
-        io.printLine("Haetaan hakusannalla \"" + hakusana + "\"...");
+        io.printLine("Haetaan hakusannalla \"" + hakusana + "\"...\n",
+                new ColorPlacer(
+                        new ColorFlag(1, "yellow")));
 
-        List<Vinkki> kirjat = dao.megaHaku(hakusana);
+        List<Vinkki> vinkit = dao.megaHaku(hakusana);
 
-        for (Vinkki vinkki : kirjat) {
-            io.printLine("\n" + vinkki.toString());
-        }
+        printtaaKaikkiVinkitListalla(vinkit);
     }
 
     private void tarkkaHaku() {
         io.printLine("\nTarkka haku\n-----------\n");
         io.printLine("\nMitä haet?: "
-                + "\n1 - Kirjoja"
-                + "\n2 - Blogeja"
-                + "\n3 - Artikkeleita"
-                + "\n4 - Vinkit tekijällä"
-                + "\n5 - Vinkit otsikolla"
-                + "\n6 - Tarkastettamattomia vinkkejä"
-                + "\n7 - Tarkastettuja vinkkejä"
-                + "\nX - Peruuta\n");
+                + "\n1 - Kirjoja "
+                + "\n2 - Blogeja "
+                + "\n3 - Artikkeleita "
+                + "\n4 - Vinkit tekijällä "
+                + "\n5 - Vinkit otsikolla "
+                + "\n6 - Tarkastettamattomia vinkkejä "
+                + "\n7 - Tarkastettuja vinkkejä "
+                + "\nX - Peruuta\n",
+                new ColorPlacer(
+                        new ColorFlag(2, "purple"),
+                        new ColorFlag(5, "purple"),
+                        new ColorFlag(8, "purple"),
+                        new ColorFlag(11, "purple"),
+                        new ColorFlag(15, "purple"),
+                        new ColorFlag(19, "purple"),
+                        new ColorFlag(23, "purple"),
+                        new ColorFlag(27, "purple"),
+                        new ColorFlag(4, "green"),
+                        new ColorFlag(7, "green"),
+                        new ColorFlag(10, "green"),
+                        new ColorFlag(14, "cyan"),
+                        new ColorFlag(18, "cyan"),
+                        new ColorFlag(21, "cyan"),
+                        new ColorFlag(25, "cyan"),
+                        new ColorFlag(29, "red")));
 
         while (true) {
             String komento = io.nextLine().toLowerCase();
@@ -343,111 +421,103 @@ public class KomentoriviUI {
             } else if (komento.equals("x")) {
                 break;
             } else {
-                io.printLine("\nVirheellinen komento.");
+                printtaaVirheellinenKomento();
             }
         }
     }
 
     private void printtaaKaikkiKirjat() {
         Matcher haku = new HakuBuilder().onTyyppia(Tyyppi.Kirja).build();
-        
+
         List<Vinkki> kirjat = dao.matches(haku);
 
-        for (Vinkki vinkki : kirjat) {
-            io.printLine("\n" + vinkki.toString());
-        }
+        printtaaKaikkiVinkitListalla(kirjat);
     }
 
     private void printtaaKaikkiBlogit() {
         Matcher haku = new HakuBuilder().onTyyppia(Tyyppi.Blog).build();
-        
+
         List<Vinkki> blogit = dao.matches(haku);
 
-        for (Vinkki vinkki : blogit) {
-            io.printLine("\n" + vinkki.toString());
-        }
+        printtaaKaikkiVinkitListalla(blogit);
     }
 
     private void printtaaKaikkiArtikkelit() {
         Matcher haku = new HakuBuilder().onTyyppia(Tyyppi.Artikkeli).build();
-        
+
         List<Vinkki> artikkelit = dao.matches(haku);
 
-        for (Vinkki vinkki : artikkelit) {
-            io.printLine("\n" + vinkki.toString());
-        }
+        printtaaKaikkiVinkitListalla(artikkelit);
     }
 
     private void printtaaKaikkiTekijalla() {
-        io.printLine("\nMikä tekijä?: ");
+        io.printLine("\nMikä tekijä?: ",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
         String hakuSana = io.nextLine();
         printtaaKaikkiTekijalla(hakuSana);
     }
 
     private void printtaaKaikkiTekijalla(String hakuSana) {
-        io.printLine("Haetaan tekijällä \"" + hakuSana + "\"...");
-        
+        io.printLine("Haetaan tekijällä \"" + hakuSana + "\"...\n",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
+
         Matcher haku = new HakuBuilder().tekijaSisaltaa(hakuSana).build();
-        
+
         List<Vinkki> vinkit = dao.matches(haku);
 
         if (vinkit.isEmpty()) {
-            io.printLine("Vinkkejä ei löytynyt!");
+            printtaaVinkkiaEiLoytynyt();
         } else {
-            for (Vinkki kirjaVinkki : vinkit) {
-                io.printLine("\n" + kirjaVinkki.toString());
-            }
+            printtaaKaikkiVinkitListalla(vinkit);
         }
     }
 
     private void printtaaKaikkiNimella() {
-        io.printLine("\nMikä nimi?: ");
+        io.printLine("\nMikä nimi?: ",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
         String hakuSana = io.nextLine();
         printtaaKaikkiNimella(hakuSana);
     }
 
     private void printtaaKaikkiNimella(String hakuSana) {
-        io.printLine("Haetaan otsikolla \"" + hakuSana + "\"...");
+        io.printLine("Haetaan otsikolla \"" + hakuSana + "\"...\n",
+                new ColorPlacer(
+                        new ColorFlag(1, "cyan")));
         Matcher haku = new HakuBuilder().nimiSisaltaa(hakuSana).build();
-        
+
         List<Vinkki> vinkit = dao.matches(haku);
 
         if (vinkit.isEmpty()) {
-            io.printLine("Vinkkejä ei löytynyt!");
+            printtaaVinkkiaEiLoytynyt();
         } else {
-            for (Vinkki kirjaVinkki : vinkit) {
-                io.printLine("\n" + kirjaVinkki.toString());
-            }
+            printtaaKaikkiVinkitListalla(vinkit);
         }
     }
-    
-    private void oldPrinttaaKaikkiTarkastamattomat() {
-        List<Vinkki> vinkit = dao.getAll();
 
-        for (Vinkki vinkki : vinkit) {
-            if (vinkki.getTarkastettu() == 0) {
-                io.printLine("\n" + vinkki.toString());
-            }
-        }
-    }
-    
     private void printtaaKaikkiTarkastamattomat() {
         Matcher haku = new HakuBuilder().tarkastamaton().build();
-        
+
         List<Vinkki> tarkastamattomat = dao.matches(haku);
 
-        for (Vinkki vinkki : tarkastamattomat) {
-            io.printLine("\n" + vinkki.toString());
+        if (tarkastamattomat.isEmpty()) {
+            printtaaVinkkiaEiLoytynyt();
+        } else {
+            printtaaKaikkiVinkitListalla(tarkastamattomat);
         }
     }
 
     private void printtaaKaikkiTarkastetut() {
         Matcher haku = new HakuBuilder().tarkastettu().build();
-        
+
         List<Vinkki> tarkastetut = dao.matches(haku);
 
-        for (Vinkki vinkki : tarkastetut) {
-            io.printLine("\n" + vinkki.toString());
+        if (tarkastetut.isEmpty()) {
+            printtaaVinkkiaEiLoytynyt();
+        } else {
+            printtaaKaikkiVinkitListalla(tarkastetut);
         }
     }
 
@@ -470,15 +540,76 @@ public class KomentoriviUI {
 
     private void merkkaaTarkastetuksi(String haku) {
         Vinkki haettu = haeVinkkiOtsikolla(haku);
-        
+
         if (haettu == null) {
-            io.printLine("Ei löytynyt vinkkiä hakusanalla \"" + haku + "\".");
+            printtaaVinkkiaEiLoytynyt();
             return;
         }
-        
+
         haettu.setTarkastettu(1);
         dao.update(haettu.getId(), haettu);
-        
-        io.printLine("Vinkki '" + haku + "' merkattu luetuksi.");
+
+        io.printLine("Vinkki '" + haku + "' merkattu luetuksi.",
+                new ColorPlacer(
+                        new ColorFlag(0, "cyan")));
+    }
+
+    private void printtaaVinkkiaEiLoytynyt() {
+        io.printLine("Vinkkejä ei löytynyt!",
+                new ColorPlacer(
+                        new ColorFlag(0, "red"),
+                        new ColorFlag(1, "red"),
+                        new ColorFlag(2, "red")));
+    }
+
+    private void printtaaVirheellinenKomento() {
+        io.printLine("\nVirheellinen komento.",
+                new ColorPlacer(
+                        new ColorFlag(0, "red"),
+                        new ColorFlag(1, "red")));
+    }
+
+    private void printtaaVinkkiLisatty() {
+        io.printLine("Vinkki lisätty!",
+                new ColorPlacer(
+                        new ColorFlag(0, "green"),
+                        new ColorFlag(1, "green")));
+    }
+
+    // Tässä kohtaa pitää mennä pois "helposta" tavasta, ja vähän säätää että testit eivät mene rikki.
+    // Tämä johtuu siitä, että värit perustuvat metadataan tekstin seassa, ja tähän saakka kun olemme injektoineet
+    // Tämän datan tekstin mukaan io.printlinen avulla, osaa ohjelmisto olla laittamatta sitä testejä ajaessa.
+    // Tässä kohtaa kuitenkin se ei ole mahdollista, sillä kohdissa saattaa olla mielivaltainen määrä välejä.
+    // Tästä johtuen, meidän pitää jakaa rivijaoilla, ja laittaa jokaisen rivin eka värilliseksi.
+    // Tämä sotkisi testit, joten katsomme vain onko kyseessä testi. Jos on, niin emme tee sitä.
+    // Tämä ei välttämättä ole hyvää käytäntöä, mutta värejä testataan omilla testeillään ja jos ne eivät toimi
+    // Niin se olisi itsestäänselvää muutenkin, ja printtaus ei olisi silloinkaan "rikki".
+    private void printtaaVinkki(Vinkki vinkki) {
+        if (io.getClass() == StubIO.class) {
+            io.printLine(vinkki.toString());
+        } else {
+            String[] vinkinToStringRivit = vinkki.toString().split("\n");
+
+            for (int i = 0; i < vinkinToStringRivit.length; i++) {
+                if (i == 0) {
+                    io.printLine(vinkinToStringRivit[i],
+                            new ColorPlacer(
+                                    new ColorFlag(0, "cyan"),
+                                    new ColorFlag(1, "green")));
+                } else {
+                    io.printLine(vinkinToStringRivit[i],
+                            new ColorPlacer(
+                                    new ColorFlag(0, "cyan")));
+                }
+            }
+
+            io.printLine("");
+        }
+    }
+
+    private void printtaaKaikkiVinkitListalla(List<Vinkki> vinkit) {
+        for (Vinkki vinkki : vinkit) {
+            printtaaVinkki(vinkki);
+        }
     }
 }

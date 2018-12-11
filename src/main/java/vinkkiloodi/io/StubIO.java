@@ -33,6 +33,11 @@ public class StubIO implements IO {
     public void printLine(String text) {
         output.add(text);
     }
+    
+    @Override
+    public void printLine(String text, ColorPlacer placer) {
+        output.add(text);
+    }
 
     @Override
     public int nextInt() {

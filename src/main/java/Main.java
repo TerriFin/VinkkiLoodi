@@ -19,7 +19,7 @@ public class Main {
 
         // Testausta varten käytetään mieluummin InMemoryDAOa
         //InMemoryDAO dao = new InMemoryDAO();
-        VinkkiSqliteDAO dao = new VinkkiSqliteDAO("tietokanta.db");
+        VinkkiSqliteDAO dao = new VinkkiSqliteDAO("testi-tietokanta.db");
 
         KomentoriviUI ui = new KomentoriviUI(io, dao);
         ui.start();

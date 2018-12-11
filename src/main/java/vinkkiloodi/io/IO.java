@@ -14,6 +14,8 @@ public interface IO {
     String nextLine();
 
     void printLine(String text);
+    
+    void printLine(String text, ColorPlacer colorPlacer);
 
     int nextInt();
 }
