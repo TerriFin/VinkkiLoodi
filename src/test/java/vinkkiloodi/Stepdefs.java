@@ -16,6 +16,8 @@ import vinkkiloodi.database.VinkkiDAO;
 import vinkkiloodi.database.VinkkiSqliteDAO;
 import vinkkiloodi.database.VinkkiSqliteDAOTest;
 import vinkkiloodi.domain.ArtikkeliVinkki;
+import vinkkiloodi.domain.BlogiVinkki;
+import vinkkiloodi.domain.KirjaVinkki;
 import vinkkiloodi.domain.Vinkki;
 import vinkkiloodi.io.StubIO;
 import vinkkiloodi.ui.KomentoriviUI;
@@ -116,6 +118,16 @@ public class Stepdefs {
     @Given("^tarkastettu esimerkkiartikkelivinkki on tallennettu tietokantaan$")
     public void tarkastettu_esimerkkiartikkelivinkki_on_tallennettu_tietokantaan() throws Throwable {
         dao.add(new ArtikkeliVinkki("testitekija", "testiotsikko", "testjulkasija", 1));
+    }
+
+    @Given("^tarkastettu esimerkkikirjavinkki on tallennettu tietokantaan$")
+    public void tarkastettu_esimerkkikirjavinkki_on_tallennettu_tietokantaan() throws Throwable {
+        dao.add(new KirjaVinkki("testitekija", "testiotsikko", 1, "12323"));
+    }
+
+    @Given("^tarkastettu esimerkkiblogivinkki on tallennettu tietokantaan$")
+    public void tarkastettu_esimerkkiblogivinkki_on_tallennettu_tietokantaan() throws Throwable {
+        dao.add(new BlogiVinkki("testitekija", "testiotsikko", "testurl", 1));
     }
 
     @When("^writer \"([^\"]*)\" title \"([^\"]*)\" and ISBN \"([^\"]*)\" are entered$")
@@ -366,6 +378,25 @@ public class Stepdefs {
         aloita();
         assert (outputista_loytyy_sana("testiotsikko")
                 && outputista_loytyy_sana("Tarkastettu: Kyllä"));
+    }
+
+    @Then("^tuloste ei sisällä esimerkkiblogivinkkiä$")
+    public void tuloste_ei_sisalla_esimerkkiblogivinkkia() throws Throwable {
+        aloita();
+        assert (!outputista_loytyy_sana("testurl"));
+
+    }
+
+    @Then("^tuloste ei sisällä esimerkkiartikkelivinkkiä$")
+    public void tuloste_ei_sisällä_esimerkkiartikkelivinkkiä() throws Throwable {
+        aloita();
+        assert (!outputista_loytyy_sana("testjulkasija"));
+    }
+
+    @Then("^tuloste ei sisällä esimerkkikirjavinkkiä$")
+    public void tuloste_ei_sisällä_esimerkkikirjavinkkiä() throws Throwable {
+        aloita();
+        assert (!outputista_loytyy_sana("12323"));
     }
 
     private boolean outputista_loytyy_sana(String sana) {

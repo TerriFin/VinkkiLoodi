@@ -55,12 +55,148 @@ Feature: Käyttäjä voi hyödyntää pikakomentoja
     And pikakomento "st testitekija" on syötetty
     Then tuloste sisältää haetun esimerkkikirjavinkin
 
-  Scenario: Tarkastamattomia vinkkejä voidaan hakea pikakomennolla
-    And esimerkkiblogivinkki on tallennettu tietokantaan
+  Scenario: Kaikki tarkastamattomat vinkit voidaan hakea pikakomennolla
+    Given esimerkkiblogivinkki on tallennettu tietokantaan
+    And esimerkkikirjavinkki on tallennettu tietokantaan
+    And esimerkkiartikkelivinkki on tallennettu tietokantaan
     And pikakomento "et" on syötetty
     Then tuloste sisältää haetun esimerkkiblogivinkin
+    And tuloste sisältää haetun esimerkkikirjavinkin
+    And tuloste sisältää haetun esimerkkiartikkelivinkin
 
-  Scenario: Tarkastettuja vinkkejä voidaan hakea pikakomennolla
-    Given tarkastettu esimerkkiartikkelivinkki on tallennettu tietokantaan
+  Scenario: Vain Tarkastamattomat kirjaVinkit voidaan hakea pikakomennolla
+    Given esimerkkikirjavinkki on tallennettu tietokantaan
+    And esimerkkiblogivinkki on tallennettu tietokantaan
+    And esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And pikakomento "et k" on syötetty
+    Then tuloste sisältää haetun esimerkkikirjavinkin
+    And tuloste ei sisällä esimerkkiblogivinkkiä
+    And tuloste ei sisällä esimerkkiartikkelivinkkiä
+
+  Scenario: Vain Tarkastamattomat blogiVinkit voidaan hakea pikakomennolla
+    Given esimerkkikirjavinkki on tallennettu tietokantaan
+    And esimerkkiblogivinkki on tallennettu tietokantaan
+    And esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And pikakomento "et b" on syötetty
+    Then tuloste sisältää haetun esimerkkiblogivinkin
+    And tuloste ei sisällä esimerkkikirjavinkkiä
+    And tuloste ei sisällä esimerkkiartikkelivinkkiä
+
+  Scenario: Vain Tarkastamattomat artikkeliVinkit voidaan hakea pikakomennolla
+    Given esimerkkikirjavinkki on tallennettu tietokantaan
+    And esimerkkiblogivinkki on tallennettu tietokantaan
+    And esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And pikakomento "et a" on syötetty
+    Then tuloste sisältää haetun esimerkkiartikkelivinkin
+    And tuloste ei sisällä esimerkkikirjavinkkiä
+    And tuloste ei sisällä esimerkkiblogivinkkiä
+
+  Scenario: Vain Tarkastamattomat blogi- ja kirjavinkit voidaan hakea pikakomennolla
+    Given esimerkkikirjavinkki on tallennettu tietokantaan
+    And esimerkkiblogivinkki on tallennettu tietokantaan
+    And esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And pikakomento "et kb" on syötetty
+    Then tuloste sisältää haetun esimerkkiblogivinkin
+    And tuloste sisältää haetun esimerkkikirjavinkin
+    And tuloste ei sisällä esimerkkiartikkelivinkkiä
+
+  Scenario: Vain Tarkastamattomat kirja- ja artikkelivinkit voidaan hakea pikakomennolla
+    Given esimerkkikirjavinkki on tallennettu tietokantaan
+    And esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And esimerkkiblogivinkki on tallennettu tietokantaan
+    And pikakomento "et ka" on syötetty
+    And tuloste sisältää haetun esimerkkikirjavinkin
+    And tuloste sisältää haetun esimerkkiartikkelivinkin
+    And tuloste ei sisällä esimerkkiblogivinkkiä
+
+  Scenario: Vain Tarkastamattomat blogi- ja artikkelivinkit voidaan hakea pikakomennolla
+    Given esimerkkikirjavinkki on tallennettu tietokantaan
+    And esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And esimerkkiblogivinkki on tallennettu tietokantaan
+    And pikakomento "et ab" on syötetty
+    Then tuloste sisältää haetun esimerkkiblogivinkin
+    And tuloste sisältää haetun esimerkkiartikkelivinkin
+    And tuloste ei sisällä esimerkkikirjavinkkiä
+
+  Scenario: Kaikki tarkastamattomat vinkit voidaan hakea yhdistelmä-pikakomennolla
+    Given esimerkkiblogivinkki on tallennettu tietokantaan
+    And esimerkkikirjavinkki on tallennettu tietokantaan
+    And esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And pikakomento "et kab" on syötetty
+    Then tuloste sisältää haetun esimerkkiblogivinkin
+    And tuloste sisältää haetun esimerkkikirjavinkin
+    And tuloste sisältää haetun esimerkkiartikkelivinkin
+
+  Scenario: Kaikki tarkastetut vinkit voidaan hakea pikakomennolla
+    Given tarkastettu esimerkkiblogivinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkikirjavinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkiartikkelivinkki on tallennettu tietokantaan
     And pikakomento "kt" on syötetty
     Then tuloste sisältää haetun esimerkkiartikkelivinkin
+    And tuloste sisältää haetun esimerkkiblogivinkin
+    And tuloste sisältää haetun esimerkkikirjavinkin
+
+  Scenario: Vain tarkastetut kirjaVinkit voidaan hakea pikakomennolla
+    Given tarkastettu esimerkkiblogivinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkikirjavinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And pikakomento "kt k" on syötetty
+    Then tuloste sisältää haetun esimerkkikirjavinkin
+    And tuloste ei sisällä esimerkkiblogivinkkiä
+    And tuloste ei sisällä esimerkkiartikkelivinkkiä
+
+  Scenario: Vain Tarkastetut blogiVinkit voidaan hakea pikakomennolla
+    Given tarkastettu esimerkkiblogivinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkikirjavinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And pikakomento "kt b" on syötetty
+    Then tuloste sisältää haetun esimerkkiblogivinkin
+    And tuloste ei sisällä esimerkkiartikkelivinkkiä
+    And tuloste ei sisällä esimerkkikirjavinkkiä
+
+  Scenario: Vain tarkastetut artikkeliVinkit voidaan hakea pikakomennolla
+    Given tarkastettu esimerkkiblogivinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkikirjavinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And pikakomento "kt a" on syötetty
+    Then tuloste sisältää haetun esimerkkiartikkelivinkin
+    And tuloste ei sisällä esimerkkiblogivinkkiä
+    And tuloste ei sisällä esimerkkikirjavinkkiä
+
+  Scenario: Vain Tarkastetut kirja- ja artikkeliVinkit voidaan hakea pikakomennolla
+    Given tarkastettu esimerkkiblogivinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkikirjavinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And pikakomento "kt ka" on syötetty
+    Then tuloste sisältää haetun esimerkkiartikkelivinkin
+    And tuloste sisältää haetun esimerkkikirjavinkin
+    And tuloste ei sisällä esimerkkiblogivinkkiä
+
+  Scenario: Vain Tarkastetut kirja- ja blogiVinkit voidaan hakea pikakomennolla
+    Given tarkastettu esimerkkiblogivinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkikirjavinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And pikakomento "kt kb" on syötetty
+    Then tuloste sisältää haetun esimerkkiblogivinkin
+    And tuloste sisältää haetun esimerkkikirjavinkin
+    And tuloste ei sisällä esimerkkiartikkelivinkkiä
+
+  Scenario: Vain Tarkastetut artikkeli- ja blogiVinkit voidaan hakea pikakomennolla
+    Given tarkastettu esimerkkiblogivinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkikirjavinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And pikakomento "kt ab" on syötetty
+    Then tuloste sisältää haetun esimerkkiblogivinkin
+    And tuloste sisältää haetun esimerkkiartikkelivinkin
+    And tuloste ei sisällä esimerkkikirjavinkkiä
+
+
+  Scenario: Kaikki tarkastetut vinkit voidaan hakea yhdistelmä-pikakomennolla
+    Given tarkastettu esimerkkiblogivinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkikirjavinkki on tallennettu tietokantaan
+    And tarkastettu esimerkkiartikkelivinkki on tallennettu tietokantaan
+    And pikakomento "kt kab" on syötetty
+    Then tuloste sisältää haetun esimerkkiartikkelivinkin
+    And tuloste sisältää haetun esimerkkiblogivinkin
+    And tuloste sisältää haetun esimerkkikirjavinkin
+
