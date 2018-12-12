@@ -5,6 +5,7 @@
  */
 package vinkkiloodi.ui;
 
+import filter.HakuBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
@@ -149,27 +150,28 @@ public class KomentoriviUITest {
 
     @Test
     public void voiPaivittaaArtikkeliVinkin() {
-        lisaaTestiArtikkeli("kirjoittaja", "artikkeli", "testiLehti");
-        paivitaTestiArtikkeli("artikkeli", "uusiArtikkeli", "uusiKirjoittaja", "k", "uusiLehti");
+        lisaaTestiArtikkeli("kirjoittaja", "vanhaArtikkeli", "testiLehti");
+        paivitaTestiArtikkeli("vanhaArtikkeli", "uusiArtikkeli", "uusiKirjoittaja", "k", "uusiLehti");
 
         aloitaOhjelma();
-        List<Vinkki> vanhat = dao.getByNimi("artikkeli");
-        List<Vinkki> uudet = dao.getByNimi("uusiArtikkeli");
+        
+        List<Vinkki> vanhat = dao.matches(new HakuBuilder().nimiSisaltaa("vanhaArtikkeli").build());
+        List<Vinkki> uudet = dao.matches(new HakuBuilder().nimiSisaltaa("uusiArtikkeli").build());
         assertEquals(vanhat.size(), 0);
         assertEquals(uudet.size(), 1);
     }
 
     @Test
     public void voiPaivittaaArtikkeliVinkinMontaKertaa() {
-        lisaaTestiArtikkeli("kirjoittaja", "artikkeli", "testiLehti");
-        paivitaTestiArtikkeli("artikkeli", "uusiArtikkeli", "uusiKirjoittaja", "k", "uusiLehti");
-        paivitaTestiArtikkeli("uusiArtikkeli", "uusiArtikkel2", "uusiKirjoittaja", "k", "uusiLehti");
+        lisaaTestiArtikkeli("kirjoittaja", "vanhaArtikkeli", "testiLehti");
+        paivitaTestiArtikkeli("vanhaArtikkeli", "uudempiArtikkeli", "uusiKirjoittaja", "k", "uusiLehti");
+        paivitaTestiArtikkeli("uudempiArtikkeli", "uusinArtikkeli", "uusiKirjoittaja", "k", "uusiLehti");
 
         aloitaOhjelma();
 
-        List<Vinkki> vanhat = dao.getByNimi("artikkeli");
-        List<Vinkki> uudet = dao.getByNimi("uusiArtikkeli");
-        List<Vinkki> uudet2 = dao.getByNimi("uusiArtikkel2");
+        List<Vinkki> vanhat = dao.matches(new HakuBuilder().nimiSisaltaa("vanhaArtikkeli").build());
+        List<Vinkki> uudet = dao.matches(new HakuBuilder().nimiSisaltaa("uudempiArtikkeli").build());
+        List<Vinkki> uudet2 = dao.matches(new HakuBuilder().nimiSisaltaa("uusinArtikkeli").build());
 
         assertEquals(vanhat.size(), 0);
         assertEquals(uudet.size(), 0);
@@ -182,48 +184,49 @@ public class KomentoriviUITest {
         paivitaTestiBlogi("blogiposti", "uusiBlogi", "uusiKirjoittaja", "e", "uusiUrl");
 
         aloitaOhjelma();
-        List<Vinkki> vanhat = dao.getByNimi("blogiposti");
-        List<Vinkki> uudet = dao.getByNimi("uusiBlogi");
+        List<Vinkki> vanhat = dao.matches(new HakuBuilder().nimiSisaltaa("blogiposti").build());
+        List<Vinkki> uudet = dao.matches(new HakuBuilder().nimiSisaltaa("uusiBlogi").build());
         assertEquals(vanhat.size(), 0);
         assertEquals(uudet.size(), 1);
     }
 
     @Test
     public void voiPaivittaaKirjaVinkin() {
-        lisaaTestiKirja("kirjoittaja", "kirja", "12345");
-        paivitaTestiKirja("kirja", "uusiKirja", "uusiKirjoittaja", "k", "987653");
+        lisaaTestiKirja("kirjoittaja", "vanhaKirja", "12345");
+        paivitaTestiKirja("vanhaKirja", "uusiKirja", "uusiKirjoittaja", "k", "987653");
 
         aloitaOhjelma();
-        List<Vinkki> vanhat = dao.getByNimi("kirja");
-        List<Vinkki> uudet = dao.getByNimi("uusiKirja");
+        List<Vinkki> vanhat = dao.matches(new HakuBuilder().nimiSisaltaa("vanhaKirja").build());
+        List<Vinkki> uudet = dao.matches(new HakuBuilder().nimiSisaltaa("uusiKirja").build());
+        
         assertEquals(vanhat.size(), 0);
         assertEquals(uudet.size(), 1);
     }
 
     @Test
     public void voiPaivittaaKirjaVinkinPikakomennolla() {
-        lisaaTestiKirja("kirjoittaja", "kirja", "12345");
-        input.add("pv kirja");
+        lisaaTestiKirja("kirjoittaja", "vanhaKirja", "12345");
+        input.add("pv vanhaKirja");
         input.add("uusiKirja");
         input.add("uusiKirjoittaja");
         input.add("k");
         input.add("987653");
 
         aloitaOhjelma();
-        List<Vinkki> vanhat = dao.getByNimi("kirja");
-        List<Vinkki> uudet = dao.getByNimi("uusiKirja");
+        List<Vinkki> vanhat = dao.matches(new HakuBuilder().nimiSisaltaa("vanhaKirja").build());
+        List<Vinkki> uudet = dao.matches(new HakuBuilder().nimiSisaltaa("uusiKirja").build());
         assertEquals(vanhat.size(), 0);
         assertEquals(uudet.size(), 1);
     }
 
     @Test
     public void eiPaivitaVinkkiaJosEiLoydy() {
-        lisaaTestiKirja("kirjoittaja", "kirja", "12345");
+        lisaaTestiKirja("kirjoittaja", "vanhaKirja", "12345");
         paivitaTestiKirja("vaarahakusana", "uusiKirja", "uusiKirjoittaja", "k", "987653");
 
         aloitaOhjelma();
-        List<Vinkki> vanhat = dao.getByNimi("kirja");
-        List<Vinkki> uudet = dao.getByNimi("uusiKirja");
+        List<Vinkki> vanhat = dao.matches(new HakuBuilder().nimiSisaltaa("vanhaKirja").build());
+        List<Vinkki> uudet = dao.matches(new HakuBuilder().nimiSisaltaa("uusiKirja").build());
         assertEquals(vanhat.size(), 1);
         assertEquals(uudet.size(), 0);
     }
@@ -529,8 +532,8 @@ public class KomentoriviUITest {
 
         aloitaOhjelma();
 
-        assertEquals(dao.getByNimi("1kirja").get(0).getTarkastettu(), 0);
-        assertEquals(dao.getByNimi("2kirja").get(0).getTarkastettu(), 1);
+        assertEquals(dao.matches(new HakuBuilder().nimiSisaltaa("1kirja").build()).get(0).getTarkastettu(), 0);
+        assertEquals(dao.matches(new HakuBuilder().nimiSisaltaa("2kirja").build()).get(0).getTarkastettu(), 1);
     }
 
     @Test

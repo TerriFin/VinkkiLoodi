@@ -16,7 +16,7 @@ public class TekijaSisaltaa implements Matcher {
     private String teksti;
     
     public TekijaSisaltaa(String teksti) {
-        this.teksti = teksti;
+        this.teksti = teksti.toLowerCase();
     }
     
     @Override

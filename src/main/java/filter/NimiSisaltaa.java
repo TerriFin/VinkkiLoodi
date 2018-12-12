@@ -16,7 +16,7 @@ public class NimiSisaltaa implements Matcher {
     private String teksti;
     
     public NimiSisaltaa(String teksti) {
-        this.teksti = teksti;
+        this.teksti = teksti.toLowerCase();
     }
     
     @Override

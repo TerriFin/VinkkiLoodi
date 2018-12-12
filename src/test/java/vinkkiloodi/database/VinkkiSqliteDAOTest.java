@@ -358,31 +358,57 @@ public class VinkkiSqliteDAOTest {
     }
 
     @Test
+    public void paivitysMuuttaaKirjoittajaa() {
+        KirjaVinkki vinkki = new KirjaVinkki("Alkuperäinen", "Alkuperäinen");
+
+        dao.add(vinkki);
+
+        KirjaVinkki uusiVinkki = new KirjaVinkki("Uusi Kirjoittaja", "Alkuperäinen");
+
+        dao.update(vinkki.getId(), uusiVinkki);
+
+        Vinkki tulos = dao.getById(vinkki.getId());
+
+        assertEquals(tulos.getTekija(), "Uusi Kirjoittaja");
+    }
+
+    @Test
+    public void päivitysMuuttaaOtsikkoa() {
+        KirjaVinkki vinkki = new KirjaVinkki("Alkuperäinen", "Alkuperäinen");
+
+        dao.add(vinkki);
+
+        KirjaVinkki uusiVinkki = new KirjaVinkki("Alkuperäinen", "Uusi Otsikko");
+
+        dao.update(vinkki.getId(), uusiVinkki);
+
+        Vinkki tulos = dao.getById(vinkki.getId());
+
+        assertEquals(tulos.getNimi(), "Uusi Otsikko");
+    }
+
+    @Test
+    public void paivitysMuuttaaLuettua() {
+        KirjaVinkki vinkki = new KirjaVinkki("Alkuperäinen", "Alkuperäinen");
+
+        dao.add(vinkki);
+
+        KirjaVinkki uusiVinkki = new KirjaVinkki("Alkuperäinen", "Alkuperäinen", 1, "");
+
+        dao.update(vinkki.getId(), uusiVinkki);
+
+        Vinkki tulos = dao.getById(vinkki.getId());
+
+        assertEquals(tulos.getTarkastettu(), 1);
+    }
+
+    @Test
     public void kirjaLoytyyTekijalla() {
         Vinkki vinkki = new KirjaVinkki("Uniikkitekija", "testi", 0, "12345678");
         dao.add(vinkki);
 
-        List<Vinkki> haku = dao.getKirjaByTekija("Uniikkitekija");
-
-        assertEquals(1, haku.size());
-    }
-    
-    @Test
-    public void kirjaLoytyyTekijallaPrefix() {
-        Vinkki vinkki = new KirjaVinkki("Uniikkitekija", "testi", 0, "12345678");
-        dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getKirjaByTekija("Uniikki");
-
-        assertEquals(1, haku.size());
-    }
-    
-    @Test
-    public void kirjaLoytyyTekijallaSuffix() {
-        Vinkki vinkki = new KirjaVinkki("Uniikkitekija", "testi", 0, "12345678");
-        dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getKirjaByTekija("tekija");
+        Matcher kirjanHaku = new HakuBuilder().tekijaSisaltaa("Uniikkitekija").onTyyppia(Tyyppi.Kirja).build();
+        List<Vinkki> haku = dao.matches(kirjanHaku);
 
         assertEquals(1, haku.size());
     }
@@ -393,29 +419,8 @@ public class VinkkiSqliteDAOTest {
         Vinkki vinkki = new BlogiVinkki("Uniikkitekija", "testi", "hienptestnurl.net", 0);
         dao.add(vinkki);
 
-        List<Vinkki> haku = dao.getBlogiByTekija("Uniikkitekija");
-
-        assertEquals(1, haku.size());
-    }
-    
-    @Test
-    public void BlogiLoytyyTekijallaPrefix() {
-
-        Vinkki vinkki = new BlogiVinkki("Uniikkitekija", "testi", "hienptestnurl.net", 0);
-        dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getBlogiByTekija("Uniikki");
-
-        assertEquals(1, haku.size());
-    }
-    
-    @Test
-    public void BlogiLoytyyTekijallaSuffix() {
-
-        Vinkki vinkki = new BlogiVinkki("Uniikkitekija", "testi", "hienptestnurl.net", 0);
-        dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getBlogiByTekija("tekija");
+        Matcher bloginHaku = new HakuBuilder().tekijaSisaltaa("Uniikkitekija").onTyyppia(Tyyppi.Blog).build();
+        List<Vinkki> haku = dao.matches(bloginHaku);
 
         assertEquals(1, haku.size());
     }
@@ -426,29 +431,8 @@ public class VinkkiSqliteDAOTest {
         Vinkki vinkki = new ArtikkeliVinkki("Uniikkitekija", "testi", "julkaisija", 0);
         dao.add(vinkki);
 
-        List<Vinkki> haku = dao.getArtikkeliByTekija("Uniikkitekija");
-
-        assertEquals(1, haku.size());
-    }
-    
-    @Test
-    public void ArtikkeliLoytyyTekijallaPrefix() {
-
-        Vinkki vinkki = new ArtikkeliVinkki("Uniikkitekija", "testi", "julkaisija", 0);
-        dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getArtikkeliByTekija("Uniikki");
-
-        assertEquals(1, haku.size());
-    }
-    
-    @Test
-    public void ArtikkeliLoytyyTekijallaSuffix() {
-
-        Vinkki vinkki = new ArtikkeliVinkki("Uniikkitekija", "testi", "julkaisija", 0);
-        dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getArtikkeliByTekija("tekija");
+        Matcher artikkelinHaku = new HakuBuilder().tekijaSisaltaa("Uniikkitekija").onTyyppia(Tyyppi.Artikkeli).build();
+        List<Vinkki> haku = dao.matches(artikkelinHaku);
 
         assertEquals(1, haku.size());
     }
@@ -463,7 +447,8 @@ public class VinkkiSqliteDAOTest {
         dao.add(vinkki2);
         dao.add(vinkki3);
 
-        List<Vinkki> haku = dao.getByTekija("Uniikkitekija");
+        Matcher hakuTekijalla = new HakuBuilder().tekijaSisaltaa("Uniikkitekija").build();
+        List<Vinkki> haku = dao.matches(hakuTekijalla);
 
         assertEquals(3, haku.size());
     }
@@ -472,28 +457,9 @@ public class VinkkiSqliteDAOTest {
     public void kirjaLoytyyNimella() {
         Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
         dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getKirjaByNimi("Uniikkinimi");
-
-        assertEquals(1, haku.size());
-    }
-    
-    @Test
-    public void kirjaLoytyyNimellaPrefix() {
-        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
-        dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getKirjaByNimi("Uniikki");
-
-        assertEquals(1, haku.size());
-    }
-    
-    @Test
-    public void kirjaLoytyyNimellaSuffix() {
-        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
-        dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getKirjaByNimi("Uniikki");
+        
+        Matcher kirjanHaku = new HakuBuilder().nimiSisaltaa("Uniikkinimi").onTyyppia(Tyyppi.Kirja).build();
+        List<Vinkki> haku = dao.matches(kirjanHaku);
 
         assertEquals(1, haku.size());
     }
@@ -504,29 +470,8 @@ public class VinkkiSqliteDAOTest {
         Vinkki vinkki = new BlogiVinkki("testi", "Uniikkinimi", "hienptestnurl.net", 0);
         dao.add(vinkki);
 
-        List<Vinkki> haku = dao.getBlogiByNimi("Uniikkinimi");
-
-        assertEquals(1, haku.size());
-    }
-    
-    @Test
-    public void BlogiLoytyyNimellaPrefix() {
-
-        Vinkki vinkki = new BlogiVinkki("testi", "Uniikkinimi", "hienptestnurl.net", 0);
-        dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getBlogiByNimi("Uniikki");
-
-        assertEquals(1, haku.size());
-    }
-    
-    @Test
-    public void BlogiLoytyyNimellaSuffix() {
-
-        Vinkki vinkki = new BlogiVinkki("testi", "Uniikkinimi", "hienptestnurl.net", 0);
-        dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getBlogiByNimi("nimi");
+        Matcher bloginHaku = new HakuBuilder().nimiSisaltaa("Uniikkinimi").onTyyppia(Tyyppi.Blog).build();
+        List<Vinkki> haku = dao.matches(bloginHaku);
 
         assertEquals(1, haku.size());
     }
@@ -537,29 +482,8 @@ public class VinkkiSqliteDAOTest {
         Vinkki vinkki = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
         dao.add(vinkki);
 
-        List<Vinkki> haku = dao.getArtikkeliByNimi("Uniikkinimi");
-
-        assertEquals(1, haku.size());
-    }
-    
-    @Test
-    public void ArtikkeliLoytyyNimellaPrefix() {
-
-        Vinkki vinkki = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
-        dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getArtikkeliByNimi("Uniikki");
-
-        assertEquals(1, haku.size());
-    }
-    
-    @Test
-    public void ArtikkeliLoytyyNimellaSuffix() {
-
-        Vinkki vinkki = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
-        dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getArtikkeliByNimi("nimi");
+        Matcher artikkelinHaku = new HakuBuilder().nimiSisaltaa("Uniikkinimi").onTyyppia(Tyyppi.Artikkeli).build();
+        List<Vinkki> haku = dao.matches(artikkelinHaku);
 
         assertEquals(1, haku.size());
     }
@@ -574,37 +498,8 @@ public class VinkkiSqliteDAOTest {
         dao.add(vinkki2);
         dao.add(vinkki3);
 
-        List<Vinkki> haku = dao.getByNimi("Uniikkinimi");
-
-        assertEquals(3, haku.size());
-    }
-    
-    @Test
-    public void VinkitLoytyvatMegaHaulla() {
-        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
-        Vinkki vinkki2 = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
-        Vinkki vinkki3 = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
-
-        dao.add(vinkki);
-        dao.add(vinkki2);
-        dao.add(vinkki3);
-
-        List<Vinkki> haku = dao.megaHaku("Uniikkinimi");
-
-        assertEquals(3, haku.size());
-    }
-    
-    @Test
-    public void VinkitLoytyvatMegaHaullaPrefix() {
-        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
-        Vinkki vinkki2 = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
-        Vinkki vinkki3 = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
-
-        dao.add(vinkki);
-        dao.add(vinkki2);
-        dao.add(vinkki3);
-
-        List<Vinkki> haku = dao.megaHaku("Uniikki");
+        Matcher kysely = new HakuBuilder().nimiSisaltaa("Uniikkinimi").build();
+        List<Vinkki> haku = dao.matches(kysely);
 
         assertEquals(3, haku.size());
     }
@@ -624,7 +519,8 @@ public class VinkkiSqliteDAOTest {
         dao.add(vinkkiBlogi);
         dao.add(vinkkiArtikkeli);
         
-        List<Vinkki> haku = dao.getKaikkiKirjat();
+        Matcher kysely = new HakuBuilder().onTyyppia(Tyyppi.Kirja).build();
+        List<Vinkki> haku = dao.matches(kysely);
         
         for (Vinkki v : haku) {
             if (v.getTyyppi() != Tyyppi.Kirja) {
@@ -652,7 +548,8 @@ public class VinkkiSqliteDAOTest {
         dao.add(vinkkiArtikkeli);
         dao.add(vinkkiArtikkeli2);
         
-        List<Vinkki> haku = dao.getKaikkiBlogit();
+        Matcher kysely = new HakuBuilder().onTyyppia(Tyyppi.Blog).build();
+        List<Vinkki> haku = dao.matches(kysely);
         
         for (Vinkki v : haku) {
             if (v.getTyyppi() != Tyyppi.Blog) {
@@ -680,7 +577,8 @@ public class VinkkiSqliteDAOTest {
         dao.add(vinkkiArtikkeli);
         dao.add(vinkkiArtikkeli2);
         
-        List<Vinkki> haku = dao.getKaikkiArtikkelit();
+        Matcher kysely = new HakuBuilder().onTyyppia(Tyyppi.Artikkeli).build();
+        List<Vinkki> haku = dao.matches(kysely);
         
         for (Vinkki v : haku) {
             if (v.getTyyppi() != Tyyppi.Artikkeli) {
@@ -702,7 +600,8 @@ public class VinkkiSqliteDAOTest {
         dao.add(vinkki2);
         dao.add(vinkkiBlogi);
         
-        List<Vinkki> haku = dao.getKaikkiTarkastamattomat();
+        Matcher kysely = new HakuBuilder().tarkastamaton().build();
+        List<Vinkki> haku = dao.matches(kysely);
         
         assert(haku.size() == 1);
     }
@@ -717,7 +616,8 @@ public class VinkkiSqliteDAOTest {
         dao.add(vinkki);
         dao.add(vinkkiBlogi);
         
-        List<Vinkki> haku = dao.getKaikkitarkastetut();
+        Matcher kysely = new HakuBuilder().tarkastettu().build();
+        List<Vinkki> haku = dao.matches(kysely);
         
         assert(haku.size() == 1);
     }

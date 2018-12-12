@@ -4,6 +4,8 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import filter.HakuBuilder;
+import filter.Matcher;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -266,9 +268,11 @@ public class Stepdefs {
 
     @Then("^system saves the Vinkki titled \"([^\"]*)\"$")
     public void system_saves_the_Vinkki_titled(String arg1) throws Throwable {
-        List<Vinkki> ennen = dao.getByNimi(arg1);
+        Matcher hakuNimella = new HakuBuilder().nimiSisaltaa(arg1).build();
+        
+        List<Vinkki> ennen = dao.matches(hakuNimella);
         aloita();
-        List<Vinkki> jalkeen = dao.getByNimi(arg1);
+        List<Vinkki> jalkeen = dao.matches(hakuNimella);
         assertEquals(ennen.size() + 1, jalkeen.size());
     }
 

@@ -1,5 +1,7 @@
 package vinkkiloodi.database;
 
+import filter.HakuBuilder;
+import filter.Matcher;
 import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -127,7 +129,8 @@ public class InMemoryDAOTest {
         Vinkki vinkki = new KirjaVinkki("Uniikkitekija", "testi", 0, "12345678");
         dao.add(vinkki);
 
-        List<Vinkki> haku = dao.getKirjaByTekija("Uniikkitekija");
+        Matcher kirjanHaku = new HakuBuilder().tekijaSisaltaa("Uniikkitekija").onTyyppia(Tyyppi.Kirja).build();
+        List<Vinkki> haku = dao.matches(kirjanHaku);
 
         assertEquals(1, haku.size());
     }
@@ -138,7 +141,8 @@ public class InMemoryDAOTest {
         Vinkki vinkki = new BlogiVinkki("Uniikkitekija", "testi", "hienptestnurl.net", 0);
         dao.add(vinkki);
 
-        List<Vinkki> haku = dao.getBlogiByTekija("Uniikkitekija");
+        Matcher bloginHaku = new HakuBuilder().tekijaSisaltaa("Uniikkitekija").onTyyppia(Tyyppi.Blog).build();
+        List<Vinkki> haku = dao.matches(bloginHaku);
 
         assertEquals(1, haku.size());
     }
@@ -149,7 +153,8 @@ public class InMemoryDAOTest {
         Vinkki vinkki = new ArtikkeliVinkki("Uniikkitekija", "testi", "julkaisija", 0);
         dao.add(vinkki);
 
-        List<Vinkki> haku = dao.getArtikkeliByTekija("Uniikkitekija");
+        Matcher artikkelinHaku = new HakuBuilder().tekijaSisaltaa("Uniikkitekija").onTyyppia(Tyyppi.Artikkeli).build();
+        List<Vinkki> haku = dao.matches(artikkelinHaku);
 
         assertEquals(1, haku.size());
     }
@@ -164,60 +169,49 @@ public class InMemoryDAOTest {
         dao.add(vinkki2);
         dao.add(vinkki3);
 
-        List<Vinkki> haku = dao.getByTekija("Uniikkitekija");
+        Matcher hakuTekijalla = new HakuBuilder().tekijaSisaltaa("Uniikkitekija").build();
+        List<Vinkki> haku = dao.matches(hakuTekijalla);
 
         assertEquals(3, haku.size());
     }
 
     @Test
     public void kirjaLoytyyNimella() {
-        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkiinimi", 0, "12345678");
+        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
         dao.add(vinkki);
-
-        List<Vinkki> haku = dao.getKirjaByNimi("Uniikkiinimi");
+        
+        Matcher kirjanHaku = new HakuBuilder().nimiSisaltaa("Uniikkinimi").onTyyppia(Tyyppi.Kirja).build();
+        List<Vinkki> haku = dao.matches(kirjanHaku);
 
         assertEquals(1, haku.size());
     }
 
     @Test
-    public void BlogiLoytyyNimella() {
+    public void blogiLoytyyNimella() {
 
-        Vinkki vinkki = new BlogiVinkki("testi", "Uniikkiinimi", "hienptestnurl.net", 0);
+        Vinkki vinkki = new BlogiVinkki("testi", "Uniikkinimi", "hienptestnurl.net", 0);
         dao.add(vinkki);
 
-        List<Vinkki> haku = dao.getBlogiByNimi("Uniikkiinimi");
+        Matcher bloginHaku = new HakuBuilder().nimiSisaltaa("Uniikkinimi").onTyyppia(Tyyppi.Blog).build();
+        List<Vinkki> haku = dao.matches(bloginHaku);
 
         assertEquals(1, haku.size());
     }
 
     @Test
-    public void ArtikkeliLoytyyNimella() {
+    public void artikkeliLoytyyNimella() {
 
-        Vinkki vinkki = new ArtikkeliVinkki("testi", "Uniikkiinimi", "julkaisija", 0);
+        Vinkki vinkki = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
         dao.add(vinkki);
 
-        List<Vinkki> haku = dao.getArtikkeliByNimi("Uniikkiinimi");
+        Matcher artikkelinHaku = new HakuBuilder().nimiSisaltaa("Uniikkinimi").onTyyppia(Tyyppi.Artikkeli).build();
+        List<Vinkki> haku = dao.matches(artikkelinHaku);
 
         assertEquals(1, haku.size());
     }
 
     @Test
     public void VinkitLoytyvatNimella() {
-        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkiinimi", 0, "12345678");
-        Vinkki vinkki2 = new BlogiVinkki("testi", "Uniikkiinimi", "www.url.ei", 0);
-        Vinkki vinkki3 = new ArtikkeliVinkki("testi", "Uniikkiinimi", "julkaisija", 0);
-
-        dao.add(vinkki);
-        dao.add(vinkki2);
-        dao.add(vinkki3);
-
-        List<Vinkki> haku = dao.getByNimi("Uniikkiinimi");
-
-        assertEquals(3, haku.size());
-    }
-    
-    @Test
-    public void VinkitLoytyvatMegaHaulla() {
         Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
         Vinkki vinkki2 = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
         Vinkki vinkki3 = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
@@ -226,22 +220,8 @@ public class InMemoryDAOTest {
         dao.add(vinkki2);
         dao.add(vinkki3);
 
-        List<Vinkki> haku = dao.megaHaku("Uniikkinimi");
-
-        assertEquals(3, haku.size());
-    }
-    
-    @Test
-    public void VinkitLoytyvatMegaHaullaPrefix() {
-        Vinkki vinkki = new KirjaVinkki("testi", "Uniikkinimi", 0, "12345678");
-        Vinkki vinkki2 = new BlogiVinkki("testi", "Uniikkinimi", "www.url.ei", 0);
-        Vinkki vinkki3 = new ArtikkeliVinkki("testi", "Uniikkinimi", "julkaisija", 0);
-
-        dao.add(vinkki);
-        dao.add(vinkki2);
-        dao.add(vinkki3);
-
-        List<Vinkki> haku = dao.megaHaku("Uniikki");
+        Matcher kysely = new HakuBuilder().nimiSisaltaa("Uniikkinimi").build();
+        List<Vinkki> haku = dao.matches(kysely);
 
         assertEquals(3, haku.size());
     }
@@ -261,7 +241,8 @@ public class InMemoryDAOTest {
         dao.add(vinkkiBlogi);
         dao.add(vinkkiArtikkeli);
         
-        List<Vinkki> haku = dao.getKaikkiKirjat();
+        Matcher kysely = new HakuBuilder().onTyyppia(Tyyppi.Kirja).build();
+        List<Vinkki> haku = dao.matches(kysely);
         
         for (Vinkki v : haku) {
             if (v.getTyyppi() != Tyyppi.Kirja) {
@@ -289,7 +270,8 @@ public class InMemoryDAOTest {
         dao.add(vinkkiArtikkeli);
         dao.add(vinkkiArtikkeli2);
         
-        List<Vinkki> haku = dao.getKaikkiBlogit();
+        Matcher kysely = new HakuBuilder().onTyyppia(Tyyppi.Blog).build();
+        List<Vinkki> haku = dao.matches(kysely);
         
         for (Vinkki v : haku) {
             if (v.getTyyppi() != Tyyppi.Blog) {
@@ -317,7 +299,8 @@ public class InMemoryDAOTest {
         dao.add(vinkkiArtikkeli);
         dao.add(vinkkiArtikkeli2);
         
-        List<Vinkki> haku = dao.getKaikkiArtikkelit();
+        Matcher kysely = new HakuBuilder().onTyyppia(Tyyppi.Artikkeli).build();
+        List<Vinkki> haku = dao.matches(kysely);
         
         for (Vinkki v : haku) {
             if (v.getTyyppi() != Tyyppi.Artikkeli) {
@@ -339,7 +322,8 @@ public class InMemoryDAOTest {
         dao.add(vinkki2);
         dao.add(vinkkiBlogi);
         
-        List<Vinkki> haku = dao.getKaikkiTarkastamattomat();
+        Matcher kysely = new HakuBuilder().tarkastamaton().build();
+        List<Vinkki> haku = dao.matches(kysely);
         
         assert(haku.size() == 1);
     }
@@ -354,7 +338,8 @@ public class InMemoryDAOTest {
         dao.add(vinkki);
         dao.add(vinkkiBlogi);
         
-        List<Vinkki> haku = dao.getKaikkitarkastetut();
+        Matcher kysely = new HakuBuilder().tarkastettu().build();
+        List<Vinkki> haku = dao.matches(kysely);
         
         assert(haku.size() == 1);
     }

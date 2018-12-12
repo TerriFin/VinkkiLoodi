@@ -18,21 +18,5 @@ public interface VinkkiDAO {
 
     public void update(int id, Vinkki vinkki);
     
-    public List<Vinkki> getKaikkiKirjat();
-    
-    public List<Vinkki> getKaikkiBlogit();
-    
-    public List<Vinkki> getKaikkiArtikkelit();
-
-    public List<Vinkki> getByTekija(String tekija);
-
-    public List<Vinkki> getByNimi(String tekija);
-    
-    public List<Vinkki> getKaikkiTarkastamattomat();
-    
-    public List<Vinkki> getKaikkitarkastetut();
-    
-    public List<Vinkki> megaHaku(String hakusana);
-    
     public List<Vinkki> matches(Matcher matcher);
 }
