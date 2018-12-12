@@ -39,7 +39,7 @@ Feature: Käyttäjä voi lisätä vinkkejä parserin avulla
     And käyttäjä antaa komennon 'Lisää kirja ("Eetu" Eetun uusi hieno kirja" "1234")'
     And käyttäjä antaa komennon '("Eetu" "Eetun uusi hieno kirja" "1234")'
     And käyttäjä sulkee parserin
-    Then tuloste sisältää "Antamassasi attribuutit ovat joko väärässä muodossa tai lainausmerkit ovat väärin"
+    Then tuloste sisältää "Antamasi attribuutit ovat joko väärässä muodossa tai lainausmerkit ovat väärin"
     And tuloste sisältää "Uusi kirja 'Eetun uusi hieno kirja' lisätty!"
 
   Scenario: Parserilla syötetyt kirjavinkit löytyvät tietokannasta

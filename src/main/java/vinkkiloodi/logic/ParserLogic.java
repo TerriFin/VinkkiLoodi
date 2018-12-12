@@ -148,7 +148,7 @@ public class ParserLogic {
     }
 
     private String pyydäUusiaAttribuutteja(String tarvitutAttribuutit) {
-        io.printLine("Antamassasi attribuutit ovat joko väärässä muodossa tai lainausmerkit ovat väärin"
+        io.printLine("Antamasi attribuutit ovat joko väärässä muodossa tai lainausmerkit ovat väärin"
                 + "\n"
                 + "\nLaita uudet attribuutit muodossa: " + tarvitutAttribuutit
                 + "\n");
@@ -424,18 +424,6 @@ public class ParserLogic {
         }
         
         return tulokset.get(0);
-    }
-
-    private String poistaValilyonnit(String syote) {
-        String palaute = "";
-
-        for (int i = 0; i < syote.length(); i++) {
-            if (syote.charAt(i) != ' ') {
-                palaute += syote.charAt(i);
-            }
-        }
-
-        return palaute;
     }
 
     private int tarkistaOnkoSyoteTarkastanut(String syote) {
