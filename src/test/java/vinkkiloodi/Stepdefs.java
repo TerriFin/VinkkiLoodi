@@ -269,6 +269,21 @@ public class Stepdefs {
         // Write code here that turns the phrase above into concrete actions
         inputLines.add(url);
     }
+    
+    @When("^käyttäjä antaa komennon \'([^\']*)\'")
+    public void anna_komento(String komento) throws Throwable {
+        inputLines.add(komento);
+    }
+    
+    @When("^komento Avaa parser on valittu$")
+    public void avaa_parser_komento() throws Throwable {
+        inputLines.add("par");
+    }
+    
+    @When("^käyttäjä sulkee parserin$")
+    public void sulje_parser() throws Throwable {
+        inputLines.add("x");
+    }
 
     // Then
     @Then("^tuloste sisältää \"([^\"]*)\"$")
