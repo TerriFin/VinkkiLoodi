@@ -515,10 +515,12 @@ public class KomentoriviUITest {
                 + "\'s\' + hakusana = hae vinkkejä hakusanalla\n"
                 + "\'so\' + hakusana = hae vinkkejä otsikolla\n"
                 + "\'st\' + hakusana = hae vinkkejä tekijällä\n"
-                + "\'et\' = listaa tarkastamattomat vinkit (et = \"ei-tarkastetut\")\n"
-                + "\'kt\' = listaa tarkastetut vinkit (kt = \"kyllä-tarkastetut\")\n");
+                + "\'et\' + tyhjä/k/a/b = listaa tarkastamattomat vinkit (tyhjä = kaikki,"
+                + " k = kirjat, a = artikkelit, b = blogit) (esim. \'et ka\') \n"
+                + "\'kt\' + tyhjä/k/a/b = listaa tarkastetut vinkit (tyhjä = kaikki,"
+                + " k = kirjat, a = artikkelit, b = blogit) (esim. \'kt ab\') \n");
     }
-    
+
     @Test
     public void merkkaaTarkastetuksiPikakomentoToimii() {
         lisaaTestiKirja("kirjoittaja", "1kirja", "12345");
@@ -526,17 +528,17 @@ public class KomentoriviUITest {
         input.add("ta 2kirja");
 
         aloitaOhjelma();
-        
+
         assertEquals(dao.getByNimi("1kirja").get(0).getTarkastettu(), 0);
         assertEquals(dao.getByNimi("2kirja").get(0).getTarkastettu(), 1);
     }
-    
+
     @Test
     public void merkkaaTarkastetuksiPikakomentoTulostaaVirheTekstinJosVinkkiEiLoydy() {
         input.add("ta 2kirja");
 
         List<String> tuloste = aloitaOhjelmaJaPalautaTulostus();
-        
+
         assertEquals(tuloste.get(tuloste.size() - 2), "Vinkkejä ei löytynyt!");
     }
 }
