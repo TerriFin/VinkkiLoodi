@@ -518,4 +518,25 @@ public class KomentoriviUITest {
                 + "\'et\' = listaa tarkastamattomat vinkit (et = \"ei-tarkastetut\")\n"
                 + "\'kt\' = listaa tarkastetut vinkit (kt = \"kyllä-tarkastetut\")\n");
     }
+    
+    @Test
+    public void merkkaaTarkastetuksiPikakomentoToimii() {
+        lisaaTestiKirja("kirjoittaja", "1kirja", "12345");
+        lisaaTestiKirja("kirjoittaja", "2kirja", "12345");
+        input.add("ta 2kirja");
+
+        aloitaOhjelma();
+        
+        assertEquals(dao.getByNimi("1kirja").get(0).getTarkastettu(), 0);
+        assertEquals(dao.getByNimi("2kirja").get(0).getTarkastettu(), 1);
+    }
+    
+    @Test
+    public void merkkaaTarkastetuksiPikakomentoTulostaaVirheTekstinJosVinkkiEiLoydy() {
+        input.add("ta 2kirja");
+
+        List<String> tuloste = aloitaOhjelmaJaPalautaTulostus();
+        
+        assertEquals(tuloste.get(tuloste.size() - 2), "Vinkkejä ei löytynyt!");
+    }
 }
