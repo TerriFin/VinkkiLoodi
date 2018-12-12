@@ -203,6 +203,11 @@ public class Stepdefs {
         inputLines.add("e");
     }
 
+    @When("^merkitään luetuksi$")
+    public void merkitaan_luetuksi() throws Throwable {
+        inputLines.add("y");
+    }
+
     // Tarkan haun valinnat
     @When("^valitaan tulostettavaksi kirjoja$")
     public void tarkka_valinta_1() throws Throwable {
@@ -281,7 +286,7 @@ public class Stepdefs {
     @Then("^system saves the Vinkki titled \"([^\"]*)\"$")
     public void system_saves_the_Vinkki_titled(String arg1) throws Throwable {
         Matcher hakuNimella = new HakuBuilder().nimiSisaltaa(arg1).build();
-        
+
         List<Vinkki> ennen = dao.matches(hakuNimella);
         aloita();
         List<Vinkki> jalkeen = dao.matches(hakuNimella);
