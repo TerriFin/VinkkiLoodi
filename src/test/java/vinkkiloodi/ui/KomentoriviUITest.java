@@ -154,7 +154,7 @@ public class KomentoriviUITest {
         paivitaTestiArtikkeli("vanhaArtikkeli", "uusiArtikkeli", "uusiKirjoittaja", "k", "uusiLehti");
 
         aloitaOhjelma();
-        
+
         List<Vinkki> vanhat = dao.matches(new HakuBuilder().nimiSisaltaa("vanhaArtikkeli").build());
         List<Vinkki> uudet = dao.matches(new HakuBuilder().nimiSisaltaa("uusiArtikkeli").build());
         assertEquals(vanhat.size(), 0);
@@ -198,7 +198,7 @@ public class KomentoriviUITest {
         aloitaOhjelma();
         List<Vinkki> vanhat = dao.matches(new HakuBuilder().nimiSisaltaa("vanhaKirja").build());
         List<Vinkki> uudet = dao.matches(new HakuBuilder().nimiSisaltaa("uusiKirja").build());
-        
+
         assertEquals(vanhat.size(), 0);
         assertEquals(uudet.size(), 1);
     }
@@ -500,6 +500,14 @@ public class KomentoriviUITest {
         List<String> tuloste = aloitaOhjelmaJaPalautaTulostus();
         assertEquals(tuloste.get(tuloste.size() - 2), "Tyyppi: Kirja\nTekijä:"
                 + " kirjoittaja\nNimi: kirja\nTarkastettu: Ei\nISBN: 12345\n");
+    }
+
+    @Test
+    public void merkkaaVinkkiLuetuksiToimiiPikakomennolla() {
+        lisaaTestiArtikkeli("Teppo Toimittaja", "ankea artikkeli", "lehti");
+        input.add("ta ankea artikkeli");
+        List<String> tuloste = aloitaOhjelmaJaPalautaTulostus();
+        assertEquals(tuloste.get(tuloste.size() - 2), "Vinkki 'ankea artikkeli' merkattu luetuksi.");
     }
 
     @Test
