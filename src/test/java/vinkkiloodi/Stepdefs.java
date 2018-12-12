@@ -15,6 +15,7 @@ import static org.junit.Assert.*;
 import vinkkiloodi.database.VinkkiDAO;
 import vinkkiloodi.database.VinkkiSqliteDAO;
 import vinkkiloodi.database.VinkkiSqliteDAOTest;
+import vinkkiloodi.domain.ArtikkeliVinkki;
 import vinkkiloodi.domain.Vinkki;
 import vinkkiloodi.io.StubIO;
 import vinkkiloodi.ui.KomentoriviUI;
@@ -96,7 +97,7 @@ public class Stepdefs {
         inputLines.add("toinen otsikko");
         inputLines.add("98765");
     }
-    
+
     @Given("^toinen kirja merkitään tarkastetuksi$")
     public void merkitse_toinen_kirja_tarkastetuksi() throws Throwable {
         inputLines.add("5");
@@ -105,6 +106,16 @@ public class Stepdefs {
         inputLines.add("");
         inputLines.add("k");
         inputLines.add("");
+    }
+
+    @Given("^pikakomento \"([^\"]*)\" on syötetty$")
+    public void pikakomento_on_syötetty(String pikakomento) throws Throwable {
+        inputLines.add(pikakomento);
+    }
+
+    @Given("^tarkastettu esimerkkiartikkelivinkki on tallennettu tietokantaan$")
+    public void tarkastettu_esimerkkiartikkelivinkki_on_tallennettu_tietokantaan() throws Throwable {
+        dao.add(new ArtikkeliVinkki("testitekija", "testiotsikko", "testjulkasija", 1));
     }
 
     @When("^writer \"([^\"]*)\" title \"([^\"]*)\" and ISBN \"([^\"]*)\" are entered$")
@@ -214,6 +225,32 @@ public class Stepdefs {
         inputLines.add("7");
     }
 
+    @When("^Nimi \"([^\"]*)\" on syötetty$")
+    public void nimi_on_syötetty(String nimi) throws Throwable {
+        inputLines.add(nimi);
+    }
+
+    @When("^Otsikko \"([^\"]*)\" on syötetty$")
+    public void otsikko_on_syötetty(String otsikko) throws Throwable {
+        inputLines.add(otsikko);
+    }
+
+    @When("^ISBN \"([^\"]*)\" on syötetty$")
+    public void isbn_on_syötetty(String isbn) throws Throwable {
+        inputLines.add(isbn);
+    }
+
+    @When("^Julkaisija \"([^\"]*)\" on syötetty$")
+    public void julkaisija_on_syötetty(String julkaisija) throws Throwable {
+        inputLines.add(julkaisija);
+    }
+
+    @When("^URL \"([^\"]*)\" on syötetty$")
+    public void url_on_syötetty(String url) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        inputLines.add(url);
+    }
+
     // Then
     @Then("^tuloste sisältää \"([^\"]*)\"$")
     public void tuloste_sisaltaa(String sana) throws Throwable {
@@ -245,7 +282,7 @@ public class Stepdefs {
 
     @Then("^esimerkkiblogivinkki näytetään käyttäjälle$")
     public void esimerkkiblogivinkki_näytetään_käyttäjälle() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+
         List<Vinkki> ennen = dao.getAll();
         aloita();
         List<Vinkki> jalkeen = dao.getAll();
@@ -254,7 +291,10 @@ public class Stepdefs {
 
     @Then("^esimerkkiartikkelivinkki näytetään käyttäjälle$")
     public void esimerkkiartikkelivinkki_näytetään_käyttäjälle() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+        List<Vinkki> ennen = dao.getAll();
+        aloita();
+        List<Vinkki> jalkeen = dao.getAll();
+        assertEquals(ennen.size() + 1, jalkeen.size());
 
     }
 
@@ -319,6 +359,13 @@ public class Stepdefs {
         assert (outputista_loytyy_sana("12323")
                 && outputista_loytyy_sana("testjulkasija")
                 && outputista_loytyy_sana("testurl"));
+    }
+
+    @Then("^tuloste sisältää vinkin tarkastettuna$")
+    public void tuloste_sisältää_vinkin_tarkastettuna() throws Throwable {
+        aloita();
+        assert (outputista_loytyy_sana("testiotsikko")
+                && outputista_loytyy_sana("Tarkastettu: Kyllä"));
     }
 
     private boolean outputista_loytyy_sana(String sana) {
