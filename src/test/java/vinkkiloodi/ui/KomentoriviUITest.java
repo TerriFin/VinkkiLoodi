@@ -510,7 +510,7 @@ public class KomentoriviUITest {
                 + "\'lb\' = lisää blogivinkki\n"
                 + "Päivitä vinkkejä:\n"
                 + "\'pv\' + hakusana = päivitä vinkki otsikolla\n"
-                + "\'ta\' + hakusana = merkkaa vinkki tarkastetuksi"
+                + "\'ta\' + hakusana = merkkaa vinkki tarkastetuksi\n"
                 + "Hae vinkkejä:\n"
                 + "\'s\' + hakusana = hae vinkkejä hakusanalla\n"
                 + "\'so\' + hakusana = hae vinkkejä otsikolla\n"
