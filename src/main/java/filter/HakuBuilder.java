@@ -5,6 +5,7 @@
  */
 package filter;
 
+import java.util.ArrayList;
 import vinkkiloodi.domain.Tyyppi;
 
 /**
@@ -68,15 +69,33 @@ public class HakuBuilder {
     }
 
     public HakuBuilder matchOne(Matcher... matchers) {
-        haku = new Or(matchers);
+        haku = new And(haku,
+                new Or(matchers)
+        );
 
         return this;
     }
 
     public HakuBuilder onJokuHalutuistaTyypeista(boolean kirja, boolean artikkeli, boolean blog) {
-        haku = new And(haku,
-                new OnJotainTyypeista(kirja, artikkeli, blog)
-        );
+        ArrayList<Matcher> filtterit = new ArrayList<>();
+        
+        if (kirja) {
+            filtterit.add(new OnTyyppia(Tyyppi.Kirja));
+        }
+        
+        if (artikkeli) {
+            filtterit.add(new OnTyyppia(Tyyppi.Artikkeli));
+        }
+        
+        if (blog) {
+            filtterit.add(new OnTyyppia(Tyyppi.Blog));
+        }
+        
+        Matcher[] matcherit = new Matcher[filtterit.size()];
+        filtterit.toArray(matcherit);
+        
+        haku = this.matchOne(matcherit).build();
+        
         return this;
     }
 }
