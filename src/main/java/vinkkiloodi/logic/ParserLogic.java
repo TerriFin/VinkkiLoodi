@@ -438,7 +438,7 @@ public class ParserLogic {
 
     private void printtaaKaikkiVinkit(List<Vinkki> vinkit) {
         vinkit.forEach((vinkki) -> {
-                io.printLine("\n" + vinkki);
-            });
+            io.printLine("\n" + vinkki);
+        });
     }
 }
