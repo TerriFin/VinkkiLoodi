@@ -1,5 +1,7 @@
 package vinkkiloodi.logic;
 
+import filter.HakuBuilder;
+import filter.Matcher;
 import java.util.ArrayList;
 import java.util.List;
 import vinkkiloodi.database.VinkkiDAO;
@@ -258,8 +260,13 @@ public class ParserLogic {
     }
 
     private void kasitteleNopeaHaku() {
-        String komento = getSeuraavaKomento();
-        List<Vinkki> loydetytVinkit = dao.megaHaku(komento);
+        String hakusana = getSeuraavaKomento();
+        
+        Matcher haku = new HakuBuilder().matchOne(new HakuBuilder().tekijaSisaltaa(hakusana).build(),
+                                                new HakuBuilder().nimiSisaltaa(hakusana).build()
+        ).build();
+        
+        List<Vinkki> loydetytVinkit = dao.matches(haku);
 
         printtaaKaikkiVinkit(loydetytVinkit);
     }
@@ -269,13 +276,16 @@ public class ParserLogic {
 
         while (true) {
             if (komento.equals("kirjoja") || komento.equals("kirja") || komento.equals("k")) {
-                printtaaKaikkiVinkit(dao.getKaikkiKirjat());
+                Matcher haku = new HakuBuilder().onTyyppia(Tyyppi.Kirja).build();
+                printtaaKaikkiVinkit(dao.matches(haku));
                 break;
             } else if (komento.equals("blogeja") || komento.equals("blogi") || komento.equals("b")) {
-                printtaaKaikkiVinkit(dao.getKaikkiBlogit());
+                Matcher haku = new HakuBuilder().onTyyppia(Tyyppi.Blog).build();
+                printtaaKaikkiVinkit(dao.matches(haku));
                 break;
             } else if (komento.equals("artikkeleita") || komento.equals("artikkeli") || komento.equals("a")) {
-                printtaaKaikkiVinkit(dao.getKaikkiArtikkelit());
+                Matcher haku = new HakuBuilder().onTyyppia(Tyyppi.Artikkeli).build();
+                printtaaKaikkiVinkit(dao.matches(haku));
                 break;
             } else if (komento.equals("tekija") || komento.equals("tekijan") || komento.equals("tekijä") || komento.equals("tekijän")) {
                 kasitteleTekijaHaku();
@@ -284,10 +294,12 @@ public class ParserLogic {
                 kasitteleNimiHaku();
                 break;
             } else if (komento.equals("tarkastamattomia") || komento.equals("tarkastamattomat")) {
-                printtaaKaikkiVinkit(dao.getKaikkiTarkastamattomat());
+                Matcher haku = new HakuBuilder().tarkastamaton().build();
+                printtaaKaikkiVinkit(dao.matches(haku));
                 break;
             } else if (komento.equals("tarkastettuja") || komento.equals("tarkastetut")) {
-                printtaaKaikkiVinkit(dao.getKaikkitarkastetut());
+                Matcher haku = new HakuBuilder().tarkastettu().build();
+                printtaaKaikkiVinkit(dao.matches(haku));
                 break;
             } else {
                 komento = pyydaKomentoUudestaan(komento, "kirjoja, blogeja, artikkeleita, tekijä, nimi, tarkastamattomat, tarkastetut");
@@ -296,15 +308,19 @@ public class ParserLogic {
     }
 
     private void kasitteleTekijaHaku() {
-        String komento = getSeuraavaKomento();
+        String hakusana = getSeuraavaKomento();
 
-        printtaaKaikkiVinkit(dao.getByTekija(komento));
+        Matcher haku = new HakuBuilder().tekijaSisaltaa(hakusana).build();
+        
+        printtaaKaikkiVinkit(dao.matches(haku));
     }
 
     private void kasitteleNimiHaku() {
-        String komento = getSeuraavaKomento();
+        String hakusana = getSeuraavaKomento();
 
-        printtaaKaikkiVinkit(dao.getByNimi(komento));
+        Matcher haku = new HakuBuilder().tekijaSisaltaa(hakusana).build();
+        
+        printtaaKaikkiVinkit(dao.matches(haku));
     }
 
     private void kasittelePaivitys() {
@@ -398,18 +414,16 @@ public class ParserLogic {
         }
     }
 
-    private Vinkki haeVinkkiOtsikolla(String haku) {
-        haku = haku.toLowerCase().trim();
-
-        List<Vinkki> vinkit = dao.getAll();
-        for (int i = 0; i < vinkit.size(); i++) {
-            Vinkki v = vinkit.get(i);
-            String vinkkiNimi = poistaValilyonnit(v.getNimi().toLowerCase().trim());
-            if (vinkkiNimi.equals(haku)) {
-                return v;
-            }
+    private Vinkki haeVinkkiOtsikolla(String hakusana) {
+        Matcher haku = new HakuBuilder().nimiSisaltaa(hakusana).build();
+        
+        List<Vinkki> tulokset = dao.matches(haku);
+        
+        if (tulokset.isEmpty()) {
+            return null;
         }
-        return null;
+        
+        return tulokset.get(0);
     }
 
     private String poistaValilyonnit(String syote) {

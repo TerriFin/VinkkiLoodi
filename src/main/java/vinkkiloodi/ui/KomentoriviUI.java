@@ -359,7 +359,11 @@ public class KomentoriviUI {
                 new ColorPlacer(
                         new ColorFlag(1, "yellow")));
         
-        List<Vinkki> vinkit = dao.megaHaku(hakusana);
+        Matcher haku = new HakuBuilder().matchOne(new HakuBuilder().tekijaSisaltaa(hakusana).build(),
+                                                new HakuBuilder().nimiSisaltaa(hakusana).build()
+        ).build();
+        
+        List<Vinkki> vinkit = dao.matches(haku);
         
         printtaaKaikkiVinkitListalla(vinkit);
     }
