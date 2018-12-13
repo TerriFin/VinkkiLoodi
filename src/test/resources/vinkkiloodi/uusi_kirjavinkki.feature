@@ -1,13 +1,17 @@
-Feature: As a user I want to be able to add a book Vinkki
+Feature: Käyttäjä voi lisätä uuden vinkin
 
-  Scenario: Adding is possible with writer,title and ISBN
-    Given command Lisää vinkki is selected
-    And command Kirja is selected
-    When writer "matti" title "testi" and ISBN "12345678" are entered
-    Then system responds with "Vinkki lisätty!"
+  Scenario: KirjaVinkin voi lisätä
+    Given valitaan komento lisää kirjaVinkki
+    When argumentit "matti", "testi", "12345678" syotetaan
+    Then tuloste sisältää "Vinkki lisätty!"
 
-  Scenario: Adding adds vinkki into to system
-    Given command Lisää vinkki is selected
-    And command Kirja is selected
-    When writer "matti" title "testi2" and ISBN "21345678" are entered
-    Then system saves the Vinkki titled "testi2"
+  Scenario: BlogiVinkin voi lisätä
+    Given valitaan komento lisaa blogiVinkki
+    When argumentit "pekka", "testi2", "testiurl" syotetaan
+    Then tuloste sisältää "Vinkki lisätty!"
+
+
+Scenario: ArtikkeliVinkin voi listata
+    Given valitaan komento lisaa artikkelivinkki
+    When argumentit "maija", "testi3", "julkaisija" syotetaan
+    Then tuloste sisältää "Vinkki lisätty!"

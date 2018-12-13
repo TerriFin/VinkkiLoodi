@@ -4,8 +4,6 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import filter.HakuBuilder;
-import filter.Matcher;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -53,15 +51,22 @@ public class Stepdefs {
 
     }
 
-    @Given("^command Lisää vinkki is selected$")
-    public void command_lisaa_vinkki_is_selected() throws Throwable {
+    @Given("^valitaan komento lisää kirjaVinkki$")
+    public void valitaan_komento_lisää_kirjaVinkki() throws Throwable {
         inputLines.add("1");
-
+        inputLines.add("1");
     }
 
-    @Given("^command Kirja is selected$")
-    public void command_Kirja_is() throws Throwable {
+    @Given("^valitaan komento lisaa blogiVinkki$")
+    public void valitaan_komento_lisaa_blogiVinkki() throws Throwable {
         inputLines.add("1");
+        inputLines.add("2");
+    }
+
+    @Given("^valitaan komento lisaa artikkelivinkki$")
+    public void valitaan_komento_lisaa_artikkelivinkki() throws Throwable {
+        inputLines.add("1");
+        inputLines.add("3");
     }
 
     @Given("^esimerkkikirjavinkki on tallennettu tietokantaan$")
@@ -132,18 +137,11 @@ public class Stepdefs {
         dao.add(new BlogiVinkki("testitekija", "testiotsikko", "testurl", 1));
     }
 
-    @When("^writer \"([^\"]*)\" title \"([^\"]*)\" and ISBN \"([^\"]*)\" are entered$")
-    public void writer_title_and_ISBN_are_entered(String writer, String title, String ISBN) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        inputLines.add(writer);
-        inputLines.add(title);
-        inputLines.add(ISBN);
-
-    }
-
-    @When("^all vinkkis are printed$")
-    public void all_vinkkis_are_printed() throws Throwable {
-        inputLines.add("2");
+    @When("^argumentit \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" syotetaan$")
+    public void argumentit_syotetaan(String syote0, String syote1, String syote2) throws Throwable {
+        inputLines.add(syote0);
+        inputLines.add(syote1);
+        inputLines.add(syote2);
     }
 
     @When("^komento Päivitä vinkki on valittu$")
@@ -266,20 +264,19 @@ public class Stepdefs {
 
     @When("^URL \"([^\"]*)\" on syötetty$")
     public void url_on_syötetty(String url) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
         inputLines.add(url);
     }
-    
+
     @When("^käyttäjä antaa komennon \'([^\']*)\'")
     public void anna_komento(String komento) throws Throwable {
         inputLines.add(komento);
     }
-    
+
     @When("^komento Avaa parser on valittu$")
     public void avaa_parser_komento() throws Throwable {
         inputLines.add("par");
     }
-    
+
     @When("^käyttäjä sulkee parserin$")
     public void sulje_parser() throws Throwable {
         inputLines.add("x");
@@ -290,22 +287,6 @@ public class Stepdefs {
     public void tuloste_sisaltaa(String sana) throws Throwable {
         aloita();
         assert (outputista_loytyy_sana(sana));
-    }
-
-    @Then("^system responds with \"([^\"]*)\"$")
-    public void system_will_respond_with(String expectedOutput) throws Throwable {
-        aloita();
-        assert (io.getOutput().contains(expectedOutput));
-    }
-
-    @Then("^system saves the Vinkki titled \"([^\"]*)\"$")
-    public void system_saves_the_Vinkki_titled(String arg1) throws Throwable {
-        Matcher hakuNimella = new HakuBuilder().nimiSisaltaa(arg1).build();
-
-        List<Vinkki> ennen = dao.matches(hakuNimella);
-        aloita();
-        List<Vinkki> jalkeen = dao.matches(hakuNimella);
-        assertEquals(ennen.size() + 1, jalkeen.size());
     }
 
     @Then("^esimerkkikirjavinkki näytetään käyttäjälle$")
