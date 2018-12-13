@@ -318,7 +318,7 @@ public class ParserLogic {
     private void kasitteleNimiHaku() {
         String hakusana = getSeuraavaKomento();
 
-        Matcher haku = new HakuBuilder().tekijaSisaltaa(hakusana).build();
+        Matcher haku = new HakuBuilder().nimiSisaltaa(hakusana).build();
         
         printtaaKaikkiVinkit(dao.matches(haku));
     }

@@ -58,7 +58,7 @@ Feature: Käyttäjä haluaa käyttää parseria hakujen tekemiseen
   Scenario: Käyttäjä haluaa hakea vinkkiä nimen perusteella
     When komento Avaa parser on valittu
     And käyttäjä antaa komennon 'Lisää kirja ("Eetu" "Eetun uusi hieno kirja" "1234")'
-    And käyttäjä antaa komennon 'tarkkahaku nimi eetu'
+    And käyttäjä antaa komennon 'tarkkahaku nimi eetun'
     And käyttäjä sulkee parserin
     Then tuloste sisältää "Tekijä: Eetu"
 
