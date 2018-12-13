@@ -6,6 +6,11 @@ import java.util.List;
 /**
  *
  * @author samisaukkonen
+ * Tämän luokan oli tarkoitus hoitaa komennon jakaminen osiin parser logiikkaa varten,
+ * mutta vaikka tämä toimi normaalilla käyttäjällä, testit kuitenkin meni rikki.
+ * (vaikka toimi oletetulla tavalla kun käyttäjä syötti testien inputit)
+ * Sen sijaan että poistaisin testit niin jätän tämän vain käyttämättä, kun ei ole aikaa
+ * tehdä testejä uusiksi tällä sprintillä.
  */
 public class ParserKomentoManageri {
 

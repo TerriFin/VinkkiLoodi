@@ -260,7 +260,7 @@ public class ParserLogic {
     }
 
     private void kasitteleNopeaHaku() {
-        String hakusana = getSeuraavaKomento();
+        String hakusana = annaKaikkiKomennotSamassaEnnenSulkuaTaiLoppua(getSeuraavaKomento());
         
         Matcher haku = new HakuBuilder().matchOne(new HakuBuilder().tekijaSisaltaa(hakusana).build(),
                                                 new HakuBuilder().nimiSisaltaa(hakusana).build()
@@ -308,7 +308,7 @@ public class ParserLogic {
     }
 
     private void kasitteleTekijaHaku() {
-        String hakusana = getSeuraavaKomento();
+        String hakusana = annaKaikkiKomennotSamassaEnnenSulkuaTaiLoppua(getSeuraavaKomento());
 
         Matcher haku = new HakuBuilder().tekijaSisaltaa(hakusana).build();
         
@@ -316,7 +316,7 @@ public class ParserLogic {
     }
 
     private void kasitteleNimiHaku() {
-        String hakusana = getSeuraavaKomento();
+        String hakusana = annaKaikkiKomennotSamassaEnnenSulkuaTaiLoppua(getSeuraavaKomento());
 
         Matcher haku = new HakuBuilder().nimiSisaltaa(hakusana).build();
         
@@ -442,5 +442,22 @@ public class ParserLogic {
         vinkit.forEach((vinkki) -> {
             io.printLine("\n" + vinkki);
         });
+    }
+    
+    private String annaKaikkiKomennotSamassaEnnenSulkuaTaiLoppua(String komento) {
+        String toReturn = komento + " ";
+        
+        while (kohta < komennot.size()) {
+            komento = getSeuraavaKomento();
+            if (komento.charAt(0) == '(') {
+                break;
+            } else {
+                toReturn += komento + " ";
+            }
+        }
+        
+        System.out.println(toReturn);
+        System.out.println("KADLSKDPOASKDOPAKSPODKASOPDKSAPODKAOPSKDOPASKDPOASKDOP");
+        return toReturn.trim();
     }
 }
