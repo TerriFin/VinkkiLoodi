@@ -42,6 +42,22 @@ Feature: Käyttäjä voi lisätä vinkkejä parserin avulla
     Then tuloste sisältää "Antamasi attribuutit ovat joko väärässä muodossa tai lainausmerkit ovat väärin"
     And tuloste sisältää "Uusi kirja 'Eetun uusi hieno kirja' lisätty!"
 
+  Scenario: Käyttäjä haluaa lisätä artikkelivinkin, mutta antaa attribuutit väärin
+    When komento Avaa parser on valittu
+    And käyttäjä antaa komennon 'Lisää artikkeli ("Uusi" Artikkeli" "julkaisija")'
+    And käyttäjä antaa komennon '("Uusi" "Artikkeli" "julkaisija")'
+    And käyttäjä sulkee parserin
+    Then tuloste sisältää "Antamasi attribuutit ovat joko väärässä muodossa tai lainausmerkit ovat väärin"
+    And tuloste sisältää "Uusi artikkeli 'Artikkeli' lisätty!"
+
+  Scenario: Käyttäjä haluaa lisätä artikkelivinkin, mutta antaa attribuutit väärin
+    When komento Avaa parser on valittu
+    And käyttäjä antaa komennon 'Lisää blog ("Uusi" "Blog" osoite")'
+    And käyttäjä antaa komennon '("Uusi" "Blog" "osoite")'
+    And käyttäjä sulkee parserin
+    Then tuloste sisältää "Antamasi attribuutit ovat joko väärässä muodossa tai lainausmerkit ovat väärin"
+    And tuloste sisältää "Uusi blogi 'Blog' lisätty!"
+
   Scenario: Parserilla syötetyt kirjavinkit löytyvät tietokannasta
     When komento Avaa parser on valittu
     And käyttäjä antaa komennon 'Lisää kirja ("Eetu" "Eetun uusi hieno kirja" "1234")'

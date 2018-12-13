@@ -61,3 +61,12 @@ Feature: Käyttäjä haluaa käyttää parseria hakujen tekemiseen
     And käyttäjä antaa komennon 'tarkkahaku nimi eetu'
     And käyttäjä sulkee parserin
     Then tuloste sisältää "Tekijä: Eetu"
+
+  Scenario: Tarkkahaku kysyy käyttäjältä uudelleen väärin kirjoitetun attribuutin
+    Given esimerkkiblogivinkki on tallennettu tietokantaan
+    When komento Avaa parser on valittu
+    And käyttäjä antaa komennon 'tarkkahaku blo'
+    And käyttäjä antaa komennon 'blogeja'
+    And käyttäjä sulkee parserin
+    Then tuloste sisältää haetun esimerkkiblogivinkin
+    And tuloste sisältää "Komento 'blo' ei vastaa mitään validia komentoa"

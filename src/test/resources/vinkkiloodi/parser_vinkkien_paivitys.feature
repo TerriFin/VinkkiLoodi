@@ -23,10 +23,36 @@ Feature: Käyttäjä voi päivittää lisäämiään vinkkejä
     Then tuloste sisältää "Artikkeli ikkeli onnistuneesti päivitetty!"
     And tuloste sisältää "Tarkastettu: Kyllä"
 
-  Scenario: Käyttäjälle tarjotaan mahdollisuus antaa uudet attribuutit jos annetut ovat väärässä muodossa
+  Scenario: Käyttäjälle tarjotaan mahdollisuus antaa uudet attribuutit artikkelille jos annetut ovat väärässä muodossa
     When komento Avaa parser on valittu
     And käyttäjä antaa komennon 'Lisää artikkeli ("Art" "ikkeli" "julkaisija")'
     And käyttäjä antaa komennon 'päivitä ikkeli ("Art" "ikkeli" "julkaisija" "true)'
     And käyttäjä antaa komennon '("Art" "ikkeli" "julkaisija" "true")'
     And käyttäjä sulkee parserin
     Then tuloste sisältää "Artikkeli ikkeli onnistuneesti päivitetty!"
+    And tuloste sisältää "Antamasi attribuutit ovat joko väärässä muodossa tai lainausmerkit ovat väärin"
+
+  Scenario: Käyttäjälle tarjotaan mahdollisuus antaa uudet attribuutit kirjalle jos annetut ovat väärässä muodossa
+    When komento Avaa parser on valittu
+    And käyttäjä antaa komennon 'Lisää kirja ("Teppo" "muistelmat" "123123")'
+    And käyttäjä antaa komennon 'päivitä muistelmat ("Teppo" "muistelmat" "123123" "true)'
+    And käyttäjä antaa komennon '("Teppo" "muistelmat" "123123" "true")'
+    And käyttäjä sulkee parserin
+    Then tuloste sisältää "Kirja muistelmat onnistuneesti päivitetty!"
+    And tuloste sisältää "Antamasi attribuutit ovat joko väärässä muodossa tai lainausmerkit ovat väärin"
+
+  Scenario: Käyttäjälle tarjotaan mahdollisuus antaa uudet attribuutit blogille jos annetut ovat väärässä muodossa
+    When komento Avaa parser on valittu
+    And käyttäjä antaa komennon 'Lisää blog ("Timo" "ploki" "osoite")'
+    And käyttäjä antaa komennon 'päivitä ploki ("Timo" "ploki" "osoite" "true)'
+    And käyttäjä antaa komennon '("Timo" "ploki" "osoite" "true")'
+    And käyttäjä sulkee parserin
+    Then tuloste sisältää "Blogi ploki onnistuneesti päivitetty!"
+    And tuloste sisältää "Antamasi attribuutit ovat joko väärässä muodossa tai lainausmerkit ovat väärin"
+
+  Scenario: Jos päivitettävää vinkkiä ei löydy, siitä ilmoitetaan käyttäjälle
+    When komento Avaa parser on valittu
+    And käyttäjä antaa komennon 'Lisää artikkeli ("Art" "ikkeli" "julkaisija")'
+    And käyttäjä antaa komennon 'päivitä JokinOlematon ("Art" "ikkeli" "julkaisija" "true)'
+    And käyttäjä sulkee parserin
+    Then tuloste sisältää "Ei löytynyt vinkkiä hakusanalla"
