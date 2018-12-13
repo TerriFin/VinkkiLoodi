@@ -456,8 +456,6 @@ public class ParserLogic {
             }
         }
         
-        System.out.println(toReturn);
-        System.out.println("KADLSKDPOASKDOPAKSPODKASOPDKSAPODKAOPSKDOPASKDPOASKDOP");
         return toReturn.trim();
     }
 }
