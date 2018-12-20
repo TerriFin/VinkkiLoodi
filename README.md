@@ -5,6 +5,7 @@ Latest Codecov report: [![codecov](https://codecov.io/gh/TerriFin/VinkkiLoodi/br
 
 ## Ohtu miniprojekti
 ### Dokumentaatio
+* [Raportti projektin kulusta](https://github.com/TerriFin/VinkkiLoodi/blob/master/docs/raportti.md)
 * [Käyttöohje](https://github.com/TerriFin/VinkkiLoodi/blob/master/docs/kayttoohje.md)
 * [Definition of Done](https://github.com/TerriFin/VinkkiLoodi/blob/master/docs/definition-of-done.md)
 * [Alustava tietokanta skeema](https://github.com/TerriFin/VinkkiLoodi/blob/master/docs/tietokanta.md)
