@@ -28,5 +28,4 @@ public class And implements Matcher {
         
         return true;
     }
-    
 }

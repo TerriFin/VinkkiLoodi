@@ -21,5 +21,4 @@ public class Tarkistamaton implements Matcher {
             return false;
         }
     }
-    
 }

@@ -23,5 +23,4 @@ public class NimiSisaltaa implements Matcher {
     public boolean matches(Vinkki v) {
         return v.getNimi().toLowerCase().contains(teksti);
     }
-    
 }

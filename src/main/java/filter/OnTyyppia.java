@@ -24,5 +24,4 @@ public class OnTyyppia implements Matcher {
     public boolean matches(Vinkki v) {
         return v.getTyyppi() == vinkinTyyppi;
     }
-    
 }

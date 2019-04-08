@@ -28,5 +28,4 @@ public class Or implements Matcher {
         
         return false;
     }
-    
 }
